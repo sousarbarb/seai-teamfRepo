@@ -30,8 +30,8 @@ body {
 }
 
 .page-content {
-  width: calc(100% - 17rem);
-  margin-left: 17rem;
+  width: 100% ;
+  margin-left: 0;
   transition: all 0.4s;
 }
 
@@ -77,7 +77,7 @@ body {
 }
 
 .nav-tabs .nav-item {
-  margin-bottom:-1px
+  margin-bottom:-1px;
 }
 /*
 .nav-tabs .nav-link{border:1px solid transparent;border-top-left-radius:.25rem;border-top-right-radius:.25rem}
@@ -91,6 +91,22 @@ body {
 .nav-justified .nav-item{-ms-flex-preferred-size:0;flex-basis:0;-ms-flex-positive:1;flex-grow:1;text-align:center}
 .tab-content>.tab-pane{display:none}
 */
+
+.icon-side {
+  width: 25px;
+}
+
+.active {
+  background-color: lightgrey;
+  color: white;
+}
+
+.dropdown-container {
+  display: none;
+  background-color: #ffffff;
+  padding-left: 8px;
+}
+
 /*------------------------------TEXT BEFORE LOGIN ----------------------------*/
 * {
   box-sizing: border-box;
@@ -154,6 +170,7 @@ width: 100%;
 button:hover {
 opacity: 0.8;
 }
+
 /* Center the image and position the close button */
 .imgcontainer {
 text-align: center;
@@ -229,4 +246,30 @@ span.psw {
 display: block;
 float: none;
 }
+}
 /*------------------ Create Account ----------------------------------------- */
+
+
+/*------------------ Logout -------------------------------*/
+.submitAsBtn {
+  background-color: #31ACF7;
+  color: white;
+  padding: 14px 20px;
+  margin: 4px 2px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/*-------------------- Menus After Login ---------------------*/
+.menusLogin {
+  width: calc(100% -17rem);
+  margin-left: 17rem;
+  transition: all 0.4s;
+}
+
+.myaccountlabel {
+  width: 10rem;
+  font-size:1.25rem;
+  font-weight:300;
+}

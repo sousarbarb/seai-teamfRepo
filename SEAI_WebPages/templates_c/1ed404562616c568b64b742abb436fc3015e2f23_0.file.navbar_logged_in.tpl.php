@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-11-27 17:59:15
+/* Smarty version 3.1.33, created on 2019-11-30 12:40:43
   from '/usr/users2/2015/up201503070/public_html/SEAI_WebPages/templates/navbar_logged_in.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5ddeb9737edcb4_39340089',
+  'unifunc' => 'content_5de2634b2c0a15_29872450',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1ed404562616c568b64b742abb436fc3015e2f23' => 
     array (
       0 => '/usr/users2/2015/up201503070/public_html/SEAI_WebPages/templates/navbar_logged_in.tpl',
-      1 => 1574877551,
+      1 => 1575117642,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5ddeb9737edcb4_39340089 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5de2634b2c0a15_29872450 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <body>
@@ -31,40 +31,61 @@ function content_5ddeb9737edcb4_39340089 (Smarty_Internal_Template $_smarty_tpl)
         </div>
       </div>
 
-      <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+      <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Menu</p>
 
       <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
           <a href="#" class="nav-link text-dark font-italic bg-light">
-                    <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+                    <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                     My Account
                 </a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link text-dark font-italic">
-                    <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+                    <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-submarine.png"></i>
                     Vehicles
                 </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link text-dark font-italic dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Requests
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div class="dropdown-container" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="#">History</a>
             <a class="dropdown-item" href="#">In Progess</a>
-            <div class="dropdown-divider"></div>
+            <!--<div class="dropdown-divider"></div>-->
             <a class="dropdown-item" href="#">New</a>
           </div>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link text-dark font-italic">
-                    <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                    <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-notification.png"></i>
                     Notifications
                 </a>
         </li>
       </ul>
     </div>
+
+<?php echo '<script'; ?>
+>
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-toggle");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+    } else {
+      dropdownContent.style.display = "block";
+    }
+  });
+}
+<?php echo '</script'; ?>
+>
 </body>
 </html>
 <?php }
