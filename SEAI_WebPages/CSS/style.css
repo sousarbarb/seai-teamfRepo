@@ -141,7 +141,7 @@ body {
 }
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+.container input[type=text], .container input[type=password] {
 width: 100%;
 padding: 12px 20px;
 margin: 8px 0;
@@ -272,4 +272,14 @@ float: none;
   width: 10rem;
   font-size:1.25rem;
   font-weight:300;
+}
+
+.myacc form input {
+  line-height: 0.5em;
+  width: 30rem;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
