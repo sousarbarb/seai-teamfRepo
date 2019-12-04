@@ -1,3 +1,6 @@
+{include file='../common/header.tpl'}
+{include file='../common/login_form.tpl'}
+
 <!                                MAIN TEXT                                    >
   <div class="page-content p-5" id="content">
     <h2 class="display-4 text-white">SEAI- WEB PAGE</h2>
@@ -49,14 +52,14 @@
     </ol>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="auv2.jpg" class="d-block w-100" >
+        <img src="../HTML/auv2.jpg" class="d-block w-100" >
         <div class="carousel-caption d-none d-md-block">
           <h5>First slide label</h5>
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </div>
       </div>
       <div class="carousel-item">
-        <img src="auv3.jpg" class="d-block w-100">
+        <img src="../HTML/auv3.jpg" class="d-block w-100">
         <div class="carousel-caption d-none d-md-block">
           <h5>Second slide label</h5>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>

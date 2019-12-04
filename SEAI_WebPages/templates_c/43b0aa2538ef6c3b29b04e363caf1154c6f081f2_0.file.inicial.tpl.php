@@ -1,27 +1,33 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-02 00:33:58
+/* Smarty version 3.1.33, created on 2019-12-03 19:35:35
   from '/usr/users2/2015/up201503070/public_html/SEAI_WebPages/templates/inicial.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5de45bf63b8877_91011054',
+  'unifunc' => 'content_5de6b907a1cb48_37663952',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '43b0aa2538ef6c3b29b04e363caf1154c6f081f2' => 
     array (
       0 => '/usr/users2/2015/up201503070/public_html/SEAI_WebPages/templates/inicial.tpl',
-      1 => 1575246806,
+      1 => 1575401679,
       2 => 'file',
     ),
   ),
   'includes' => 
   array (
+    'file:header.tpl' => 1,
+    'file:login_form.tpl' => 1,
   ),
 ),false)) {
-function content_5de45bf63b8877_91011054 (Smarty_Internal_Template $_smarty_tpl) {
-?><!                                MAIN TEXT                                    >
+function content_5de6b907a1cb48_37663952 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->_subTemplateRender('file:header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+$_smarty_tpl->_subTemplateRender('file:login_form.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
+
+<!                                MAIN TEXT                                    >
   <div class="page-content p-5" id="content">
     <h2 class="display-4 text-white">SEAI- WEB PAGE</h2>
     <p class="lead text-white mb-0">SMALL DESCRIPTION HERE</p>
@@ -72,14 +78,14 @@ function content_5de45bf63b8877_91011054 (Smarty_Internal_Template $_smarty_tpl)
     </ol>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="auv2.jpg" class="d-block w-100" >
+        <img src="../HTML/auv2.jpg" class="d-block w-100" >
         <div class="carousel-caption d-none d-md-block">
           <h5>First slide label</h5>
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </div>
       </div>
       <div class="carousel-item">
-        <img src="auv3.jpg" class="d-block w-100">
+        <img src="../HTML/auv3.jpg" class="d-block w-100">
         <div class="carousel-caption d-none d-md-block">
           <h5>Second slide label</h5>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>

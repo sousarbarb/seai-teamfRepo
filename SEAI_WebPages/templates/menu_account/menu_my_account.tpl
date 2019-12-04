@@ -1,3 +1,7 @@
+{include file='../common/header.tpl'}
+{include file='../common/navbar_logged_in.tpl'}
+{include file='../common/logout.tpl'}
+
 <div class="menusLogin p-5">
   <h2 class="display-4 text-white">MY ACCOUNT</h2>
   <p class="lead text-white mb-0">Manage account information</p>
@@ -22,7 +26,7 @@
       <br>
       {*{/if}*}
 
-      <form action="#">
+      <form action="{$BASE_URL}pages/menu_my_account_change.php">
           <input type="submit" class= "button4 submitAsBtn" style="width:auto;" value="Change User Info" />
       </form>
 

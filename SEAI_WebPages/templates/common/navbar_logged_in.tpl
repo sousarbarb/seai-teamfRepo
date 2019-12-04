@@ -12,13 +12,13 @@
 
       <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic bg-light">
+          <a href="{$BASE_URL}pages/index.php" class="nav-link text-dark font-italic bg-light">
                     <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                     My Account
                 </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
+          <a href="{$BASE_URL}pages/menu_vehicles.php" class="nav-link text-dark font-italic">
                     <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-submarine.png"></i>
                     Vehicles
                 </a>

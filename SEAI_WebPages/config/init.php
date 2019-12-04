@@ -2,7 +2,7 @@
 session_start();
 
 $BASE_DIR = dirname(__DIR__) . "/" ;
-$BASE_URL = ' c:\inetpub\wwwroot\SEAI_WebPages\ ';
+$BASE_URL = 'http://localhost/seai-teamfRepo/SEAI_WebPages/';
 
 include_once($BASE_DIR . 'lib/smarty/Smarty.class.php');
 

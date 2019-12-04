@@ -274,12 +274,52 @@ float: none;
   font-weight:300;
 }
 
-.myacc form input {
+.myacc form input:not([type="submit"]) {
   line-height: 0.5em;
   width: 30rem;
-  padding: 12px 20px;
+  padding: 6px 20px;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
+}
+
+/*--------------- Vehicles -------------*/
+.vehicles_table {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+.vehicles_row {
+  display: table-row;
+}
+
+.vehicle {
+  width: 10rem;
+  display: table-cell;
+  padding:5px;
+}
+
+.vehicle_frame {
+  width: 10rem;
+  height: 10rem;
+  background-color: black;
+  border-style: solid;
+}
+
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.vehicle_frame img {
+  max-width: 9.6rem;
+  vertical-align: middle;
+}
+
+.vehicle label {
+  text-align: center;
+  width: 100%;
 }
