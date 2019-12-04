@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-04 03:18:06
+/* Smarty version 3.1.33, created on 2019-12-04 21:02:38
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_account\menu_my_account.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5de7175e91a9c9_11846657',
+  'unifunc' => 'content_5de810de32f5e0_70492820',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '3354c24122fae3336179afedff2410c13436fc2d' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_account\\menu_my_account.tpl',
-      1 => 1575425883,
+      1 => 1575489685,
       2 => 'file',
     ),
   ),
@@ -21,9 +21,10 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/header.tpl' => 1,
     'file:../common/navbar_logged_in.tpl' => 1,
     'file:../common/logout.tpl' => 1,
+    'file:../common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5de7175e91a9c9_11846657 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5de810de32f5e0_70492820 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -60,5 +61,7 @@ pages/menu_my_account_change.php">
   </div>
 
 </div>
-<?php }
+
+<?php $_smarty_tpl->_subTemplateRender('file:../common/footer.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+}
 }

@@ -4,7 +4,7 @@
 <!                               NAVIGATION                                    >
   <div class="vertical-nav bg-white" id="sidebar">
       <div class="py-4 px-3 mb-4 bg-light">
-        <div class="media d-flex align-items-center"><img src="https://paginas.fe.up.pt/~cesg/images/logo_feup.png"  width="150" >
+        <div class="media d-flex align-items-center"><img src="{$BASE_URL}images/logo/feup.png"  width="150" >
         </div>
       </div>
 
@@ -12,19 +12,19 @@
 
       <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
-          <a href="{$BASE_URL}pages/index.php" class="nav-link text-dark font-italic bg-light">
+          <a href="{$BASE_URL}pages/index.php" class="nav-link text-dark font-italic menu-highlight">
                     <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                     My Account
                 </a>
         </li>
         <li class="nav-item">
-          <a href="{$BASE_URL}pages/menu_vehicles.php" class="nav-link text-dark font-italic">
+          <a href="{$BASE_URL}pages/menu_vehicles.php" class="nav-link text-dark font-italic menu-highlight">
                     <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-submarine.png"></i>
                     Vehicles
                 </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link text-dark font-italic dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Requests
           </a>
@@ -36,7 +36,7 @@
           </div>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
+          <a href="#" class="nav-link text-dark font-italic menu-highlight">
                     <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-notification.png"></i>
                     Notifications
                 </a>
@@ -51,7 +51,7 @@ var i;
 
 for (i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
+    this.classList.toggle("dropdown-active");
     var dropdownContent = this.nextElementSibling;
     if (dropdownContent.style.display === "block") {
       dropdownContent.style.display = "none";
@@ -60,6 +60,15 @@ for (i = 0; i < dropdown.length; i++) {
     }
   });
 }
+
+$(document).ready(function() {
+    $("[href]").each(function() {
+        if (this.href == window.location.href) {
+            $(this).addClass("menu-highlight-active");
+        }
+    });
+});
+
 </script>
 </body>
 </html>

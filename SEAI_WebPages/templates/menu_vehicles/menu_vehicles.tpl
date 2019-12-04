@@ -11,25 +11,25 @@
         <div class="vehicles_row">
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+               <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+               <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
@@ -37,25 +37,25 @@
         <div class="vehicles_row">
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
@@ -65,3 +65,5 @@
   </div>
 
 </div>
+
+{include file='../common/footer-short.tpl'}

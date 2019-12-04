@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-04 04:51:56
+/* Smarty version 3.1.33, created on 2019-12-04 21:15:45
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_vehicles\menu_vehicles.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5de72d5ccba913_50867842',
+  'unifunc' => 'content_5de813f14d77d3_58060162',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0afbdce37463a8d953e6fd18d1c38be186b1ac25' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_vehicles\\menu_vehicles.tpl',
-      1 => 1575431516,
+      1 => 1575490544,
       2 => 'file',
     ),
   ),
@@ -21,9 +21,10 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/header.tpl' => 1,
     'file:../common/navbar_logged_in.tpl' => 1,
     'file:../common/logout.tpl' => 1,
+    'file:../common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5de72d5ccba913_50867842 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5de813f14d77d3_58060162 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -38,25 +39,29 @@ $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cach
         <div class="vehicles_row">
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+               <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+               <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
@@ -64,25 +69,29 @@ $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cach
         <div class="vehicles_row">
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
           <div class="vehicle">
             <div class="vehicle_frame">
-               <span class="helper"></span><img src="../img/auv.png"></img>
+              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/vehicles/auv.png"></img>
             </div>
             <label>sup</label>
           </div>
@@ -92,5 +101,7 @@ $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cach
   </div>
 
 </div>
-<?php }
+
+<?php $_smarty_tpl->_subTemplateRender('file:../common/footer-short.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+}
 }

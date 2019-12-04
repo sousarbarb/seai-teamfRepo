@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-04 04:24:51
+/* Smarty version 3.1.33, created on 2019-12-04 20:56:21
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\common\navbar_logged_in.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5de72703395809_29723872',
+  'unifunc' => 'content_5de80f651efa42_39777505',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4a5f412744aef8d44f6670bcad960004efd0eeeb' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\common\\navbar_logged_in.tpl',
-      1 => 1575429832,
+      1 => 1575489373,
       2 => 'file',
     ),
   ),
@@ -20,14 +20,15 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5de72703395809_29723872 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5de80f651efa42_39777505 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <body>
 <!                               NAVIGATION                                    >
   <div class="vertical-nav bg-white" id="sidebar">
       <div class="py-4 px-3 mb-4 bg-light">
-        <div class="media d-flex align-items-center"><img src="https://paginas.fe.up.pt/~cesg/images/logo_feup.png"  width="150" >
+        <div class="media d-flex align-items-center"><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+images/logo/feup.png"  width="150" >
         </div>
       </div>
 
@@ -36,20 +37,20 @@ function content_5de72703395809_29723872 (Smarty_Internal_Template $_smarty_tpl)
       <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
           <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-pages/index.php" class="nav-link text-dark font-italic bg-light">
+pages/index.php" class="nav-link text-dark font-italic menu-highlight">
                     <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                     My Account
                 </a>
         </li>
         <li class="nav-item">
           <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-pages/menu_vehicles.php" class="nav-link text-dark font-italic">
+pages/menu_vehicles.php" class="nav-link text-dark font-italic menu-highlight">
                     <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-submarine.png"></i>
                     Vehicles
                 </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link text-dark font-italic dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Requests
           </a>
@@ -61,7 +62,7 @@ pages/menu_vehicles.php" class="nav-link text-dark font-italic">
           </div>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
+          <a href="#" class="nav-link text-dark font-italic menu-highlight">
                     <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-notification.png"></i>
                     Notifications
                 </a>
@@ -77,7 +78,7 @@ var i;
 
 for (i = 0; i < dropdown.length; i++) {
   dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
+    this.classList.toggle("dropdown-active");
     var dropdownContent = this.nextElementSibling;
     if (dropdownContent.style.display === "block") {
       dropdownContent.style.display = "none";
@@ -86,6 +87,15 @@ for (i = 0; i < dropdown.length; i++) {
     }
   });
 }
+
+$(document).ready(function() {
+    $("[href]").each(function() {
+        if (this.href == window.location.href) {
+            $(this).addClass("menu-highlight-active");
+        }
+    });
+});
+
 <?php echo '</script'; ?>
 >
 </body>
