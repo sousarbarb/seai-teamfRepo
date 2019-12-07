@@ -14,7 +14,7 @@
       <label class="myaccountlabel">Phone Number</label> <label class="lead">+123453674980</label>
       <br>
       <br>
-      {*{if ...type="provider"}*}
+      {*{if $acc_type="provider"}*}
       <label class="myaccountlabel">Entity Name</label> <label class="lead">Entity that I represent</label>
       <br>
       <label class="myaccountlabel">Address</label> <label class="lead">Entity address</label>
@@ -35,4 +35,4 @@
 
 </div>
 
-{include file='../common/footer.tpl'}
+{include file='../common/footer-short.tpl'}

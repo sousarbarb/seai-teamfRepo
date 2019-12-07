@@ -6,6 +6,7 @@
   <h2 class="display-4 text-white">VEHICLES</h2>
   <p class="lead text-white mb-0">Infomation about public vehicles</p>
   <div class="separator"></div>
+  <div class="grid_vehicles">
     <div class="text-white">
       <div class="vehicles_table">
         <div class="vehicles_row">
@@ -61,6 +62,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="vehicles_sideText">
+      adjaodjn
     </div>
   </div>
 

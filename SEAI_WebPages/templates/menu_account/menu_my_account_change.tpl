@@ -19,7 +19,7 @@
       <input type="text" class="lead" placeholder="Enter your phone number" value="+123453674980">
       <br>
       <br>
-      {*{if ...type="provider"}*}
+      {*{if $acc_type="provider"}*}
       <label class="myaccountlabel">Entity Name</label>
       <input type="text" class="lead" placeholder="Enter the entity name" value="Entity that I represent">
       <br>
@@ -44,4 +44,4 @@
 
 </div>
 
-{include file='../common/footer.tpl'}
+{include file='../common/footer-short.tpl'}
