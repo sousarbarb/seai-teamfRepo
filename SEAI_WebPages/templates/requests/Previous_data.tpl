@@ -8,11 +8,11 @@
 
 	<table class='table_pd' id="foo">
 	<tr>
-	<th>Area covered</th><th>Service Provider</th><th>Date</th><th>Vehicle</th><th>Price</th><th></th>
+	<th>Area covered</th><th>Service Provider</th><th>Date</th><th>Price</th><th></th>
 	</tr>
 	<!-- {foreach $requests as $request}{
 		<tr>
-		<td>{$request.area}</td><td>{$request.sp}</td><td>{$request.date}</td><td>{$request.specs}</td><td>{$request.price}</td><td><input type="radio" name="check" value="{$request.id}"></td> 
+		<td>{$request.area}</td><td>{$request.sp}</td><td>{$request.date}</td><td>{$request.price}</td><td><input type="checkbox" name="check" value="{$request.id}"></td> 
 		</tr>
 		<tr>
 	    <td div class="info" colspan="6" ></td>
@@ -20,13 +20,13 @@
 	{/foreach}
 	 -->
 	 <tr>
-	 <td>90%</td><td>lsts</td><td>4/12</td><td>dasda</td><td>100$</td><td><input type="radio" name="check" value="3"></td>
+	 <td>90%</td><td>lsts</td><td>4/12</td><td>100$</td><td><input type="checkbox" name="check" value="3"></td>
 	 </tr>
 	 <tr>
 	 <td div class="info" colspan="6" >555.555.555</td>
 	 </tr>
 	 <tr>
-	 <td>70%</td><td>seai</td><td>4/12</td><td>dasda</td><td>100$</td><td><input type="radio" name="check" value="3"></td>
+	 <td>70%</td><td>seai</td><td>4/12</td><td>100$</td><td><input type="checkbox" name="check" value="3"></td>
 	 </tr>
 	 <tr>
 	 <td div class="info" colspan="6" >radddwadqwqdq</td>
