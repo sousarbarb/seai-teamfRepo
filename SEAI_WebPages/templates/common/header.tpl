@@ -28,5 +28,6 @@
 	  <!-- Maps Library -->
 	  <script src="../js/mapsLib.js"></script>
 	  <script type="text/javascript" src="../js/table_dropdown.js"></script>
+	  <script type="text/javascript" src="../js/Popup.js"></script>
   </head>
 </html>

@@ -15,5 +15,8 @@
 	<div class="filters"></div>
 	<div class="infotext">	
 	<p id="info"></p>
-	<button type="button" class="help" data-toggle="tooltip" data-html="true" title="Instruction on how to use the interactive map: &#010 -Double click the end point to finnish the area edition, &#010 -Double click on an already created polygon to edit it, "> Help </button>
+	
+	<div class="popup" onclick="myFunction()"> Help
+	  <span class="popuptext" id="myPopup">Instruction on how to use the interactive map: <br> -Double click the end point to finnish the area edition, <br> -Double click on an already created polygon to edit it,</span>
+	</div>
 </div>
