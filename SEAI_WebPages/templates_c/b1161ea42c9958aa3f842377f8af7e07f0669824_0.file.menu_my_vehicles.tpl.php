@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-10 01:25:52
-  from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_vehicles\menu_vehicles.tpl' */
+/* Smarty version 3.1.33, created on 2019-12-10 04:05:05
+  from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_vehicles\menu_my_vehicles.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5deee610490313_38536932',
+  'unifunc' => 'content_5def0b618e8e61_55147109',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '0afbdce37463a8d953e6fd18d1c38be186b1ac25' => 
+    'b1161ea42c9958aa3f842377f8af7e07f0669824' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_vehicles\\menu_vehicles.tpl',
-      1 => 1575937551,
+      0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_vehicles\\menu_my_vehicles.tpl',
+      1 => 1575947100,
       2 => 'file',
     ),
   ),
@@ -24,15 +24,22 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5deee610490313_38536932 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5def0b618e8e61_55147109 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
+<?php if (($_smarty_tpl->tpl_vars['acc_type']->value != "provider")) {?>
 <div class="menusLogin p-5">
-  <h2 class="display-4 text-white">VEHICLES</h2>
-  <p class="lead text-white mb-0">Infomation about public vehicles</p>
+  <h2 class="display-4 text-white">Error</h2>
+  <p class="lead text-white mb-0">You don't have permission to see this page</p>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+<?php } else { ?>
+<div class="menusLogin p-5">
+  <h2 class="display-4 text-white">MY VEHICLES</h2>
+  <p class="lead text-white mb-0">Infomation about my institution's vehicles</p>
   <div class="separator"></div>
     <div class="grid_vehicles">
       <div class="text-white vehicles_table">
@@ -113,6 +120,7 @@ actions/action_vehicles_filter.php">
     </div>
 
 </div>
+<?php }?>
 
 <?php $_smarty_tpl->_subTemplateRender('file:../common/footer-short.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>

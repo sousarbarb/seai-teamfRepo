@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-07 13:44:33
+/* Smarty version 3.1.33, created on 2019-12-10 03:54:50
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\common\navbar_logged_in.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5deb9eb1e96871_55291587',
+  'unifunc' => 'content_5def08fa579ed9_78695495',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4a5f412744aef8d44f6670bcad960004efd0eeeb' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\common\\navbar_logged_in.tpl',
-      1 => 1575722672,
+      1 => 1575946482,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5deb9eb1e96871_55291587 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5def08fa579ed9_78695495 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <body>
@@ -54,16 +54,19 @@ pages/menu_my_data.php">My Data</a>
 pages/menu_data.php">Full List</a>
           </div>
         </li>
-        <?php if (1) {?>
-                <li class="nav-item">
+                <?php if ($_smarty_tpl->tpl_vars['acc_type']->value == "client") {?>
+        <li class="nav-item">
           <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 pages/menu_vehicles.php" class="nav-link text-dark font-italic menu-highlight <?php if ($_smarty_tpl->tpl_vars['menu']->value == "3") {?> menu-highlight-active <?php }?>">
                     <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-submarine.png"></i>
                     Vehicles
                 </a>
         </li>
-        <?php } elseif (0) {?>
-                <li class="nav-item dropdown">
+                <?php } else {
+$_prefixVariable1 = "provider";
+$_smarty_tpl->_assignInScope('acc_type', $_prefixVariable1);
+if ($_prefixVariable1) {?>
+        <li class="nav-item dropdown">
           <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight <?php if ($_smarty_tpl->tpl_vars['menu']->value == "3") {?> menu-highlight-active <?php }?>" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-submarine.png"></i>
             Vehicles
@@ -75,7 +78,7 @@ pages/menu_my_vehicles.php">My Vehicles</a>
 pages/menu_vehicles.php">Full List</a>
           </div>
         </li>
-        <?php }?>
+        <?php }}?>
         <li class="nav-item dropdown">
           <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight <?php if ($_smarty_tpl->tpl_vars['menu']->value == "4") {?> menu-highlight-active <?php }?>" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>

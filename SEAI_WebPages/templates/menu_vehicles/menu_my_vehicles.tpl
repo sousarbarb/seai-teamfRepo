@@ -2,9 +2,16 @@
 {include file='../common/navbar_logged_in.tpl'}
 {include file='../common/logout.tpl'}
 
+{if ($acc_type!="provider")}
 <div class="menusLogin p-5">
-  <h2 class="display-4 text-white">VEHICLES</h2>
-  <p class="lead text-white mb-0">Infomation about public vehicles</p>
+  <h2 class="display-4 text-white">Error</h2>
+  <p class="lead text-white mb-0">You don't have permission to see this page</p>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+{else}
+<div class="menusLogin p-5">
+  <h2 class="display-4 text-white">MY VEHICLES</h2>
+  <p class="lead text-white mb-0">Infomation about my institution's vehicles</p>
   <div class="separator"></div>
     <div class="grid_vehicles">
       <div class="text-white vehicles_table">
@@ -76,6 +83,7 @@
     </div>
 
 </div>
+{/if}
 
 {include file='../common/footer-short.tpl'}
 

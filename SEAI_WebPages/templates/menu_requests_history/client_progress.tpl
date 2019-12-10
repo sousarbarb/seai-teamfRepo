@@ -16,11 +16,12 @@
         <tr>
         <td>{$request.area}</td>
         <td>{$request.sp}</td>
-    
+
         <td>{if $plan==false}
         <a href="client_progress.tpl">Select Available Plans</a>
         {else}
         <input type="checkbox" checked="true" onclick="return false;"/>
+        {/if}
         </td>
 
         <td>
@@ -28,7 +29,7 @@
         </td>
 
 
-        <td>{<a href="client_progress.tpl">See Status</a>}</td>
+        <td><a href="client_progress.tpl">See Status</a></td>
         </tr>
     {/foreach}
      -->

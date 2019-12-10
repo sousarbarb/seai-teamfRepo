@@ -364,6 +364,15 @@ a.menu-highlight:hover {
 }
 
 /*--------------- Vehicles -------------*/
+.grid-vehicles {
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-columns: 50% auto;
+  grid-template-rows: auto auto auto;
+  z-index: -100;
+}
+
 .vehicles_table {
   display: table;
   border-collapse: separate;
@@ -372,6 +381,7 @@ a.menu-highlight:hover {
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 3;
+  float: left;
 }
 
 .vehicles_row {

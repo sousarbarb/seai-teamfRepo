@@ -5,6 +5,6 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
   die(header('Location: index.php'));
 } else {
   $smarty->assign('menu', '3');
-  $smarty->display('menu_vehicles/menu_vehicles.tpl');
+  $smarty->display('menu_vehicles/menu_my_vehicles.tpl');
 }
 ?>
