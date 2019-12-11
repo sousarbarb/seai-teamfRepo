@@ -10,3 +10,4 @@ if(isset($_SESSION['login']) && !empty($_SESSION['login'])) {
   $smarty->display('inicial/inicial.tpl');
 }
  ?>
+ 
