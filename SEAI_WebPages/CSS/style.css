@@ -363,6 +363,39 @@ a.menu-highlight:hover {
   box-sizing: border-box;
 }
 
+.buttonsAcc {
+  background-color: #31ACF7;
+  color: white;
+  padding: 14px 20px;
+  margin: 4px 2px;
+  border: none;
+  cursor: pointer;
+  width:auto;
+  text-decoration:none;
+}
+
+.msg_success {
+  color: lightgreen;
+  font-size: 20px;
+  padding-bottom: 1em;
+  margin-top: 1em;
+  border-radius: 2em;
+}
+
+.msg_error {
+  color: red;
+  font-size: 20px;
+  padding-bottom: 1em;
+  margin-top: 1em;
+  border-radius: 2em;
+}
+
+.msg_close {
+  float: left;
+  text-decoration: none;
+  padding-right: 1em;
+}
+
 /*--------------- Vehicles -------------*/
 .grid-vehicles {
   width:100%;

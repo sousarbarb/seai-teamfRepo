@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></link>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" 
@@ -29,5 +30,15 @@
 	  <script src="../js/mapsLib.js"></script>
 	  <script type="text/javascript" src="../js/table_dropdown.js"></script>
 	  <script type="text/javascript" src="../js/Popup.js"></script>
+	  
+<!-- NavBar -->
+    <script src="{$BASE_URL}js/menu_dropdown.js" type="text/javascript"></script>
+
+    <!-- Messages Close Button -->
+    <script src="{$BASE_URL}js/msg_close.js" type="text/javascript"></script>
+
+    <!-- Vehicles Filter Auto Submit -->
+    <script src="{$BASE_URL}js/vehicles_filter.js" type="text/javascript"></script>
+
   </head>
 </html>

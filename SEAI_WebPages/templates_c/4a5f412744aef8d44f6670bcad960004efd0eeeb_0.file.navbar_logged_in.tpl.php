@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-10 03:54:50
+/* Smarty version 3.1.33, created on 2019-12-10 21:44:45
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\common\navbar_logged_in.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5def08fa579ed9_78695495',
+  'unifunc' => 'content_5df003bdccf3f6_64513058',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4a5f412744aef8d44f6670bcad960004efd0eeeb' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\common\\navbar_logged_in.tpl',
-      1 => 1575946482,
+      1 => 1576010619,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5def08fa579ed9_78695495 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5df003bdccf3f6_64513058 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <body>
@@ -90,7 +90,8 @@ pages/menu_requests_history.php">History</a>
             <a class="dropdown-in" href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 pages/menu_requests_progress.php">In Progess</a>
             <!--<div class="dropdown-divider"></div>-->
-            <a class="dropdown-in" href="#">New</a>
+            <a class="dropdown-in" href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+pages/map.php">New</a>
           </div>
         </li>
         <li class="nav-item">
@@ -102,26 +103,6 @@ pages/menu_requests_progress.php">In Progess</a>
       </ul>
     </div>
 
-<?php echo '<script'; ?>
->
-/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-toggle");
-var i;
-
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("dropdown-active");
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-}
-
-<?php echo '</script'; ?>
->
 </body>
 </html>
 <?php }

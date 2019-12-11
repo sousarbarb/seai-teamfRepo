@@ -6,37 +6,49 @@
   <h2 class="display-4 text-white">MY ACCOUNT</h2>
   <p class="lead text-white mb-0">Manage account information</p>
   <div class="separator"></div>
+  {if (isset($error_messages))}
+    {foreach $error_messages as $error}
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+    {/foreach}
+  {/if}
   <div class="myacc">
-  <form action="../actions/menu_my_account_confirmar.php">
+  <form method="post" action="../actions/my_account_confirm.php">
     <div class="text-white">
       <label class="myaccountlabel">Name</label>
-      <input type="text" class="lead" placeholder="Enter a name" value="My name">
+      <input type="text" name="name" class="lead" placeholder="Enter a name"
+            value="{if isset($form_values)}{$form_values.name}{else}My name{/if}">
       <br>
       <label class="myaccountlabel">E-mail</label>
-      <input type="email" class="lead" placeholder="Enter an e-mail" value="user_email@emailprovider.com">
+      <input type="email" name="email" class="lead" placeholder="Enter an e-mail"
+            value="{if isset($form_values)}{$form_values.email}{else}user_email@emailprovider.com{/if}">
       <br>
       <label class="myaccountlabel">Phone Number</label>
-      <input type="text" class="lead" placeholder="Enter your phone number" value="+123453674980">
+      <input type="text" name="number" class="lead" placeholder="Enter your phone number"
+            value="{if isset($form_values)}{$form_values.number}{else}+123453674980{/if}">
       <br>
       <br>
-      {*{if $acc_type="provider"}*}
+      {if $acc_type=="provider"}
       <label class="myaccountlabel">Entity Name</label>
-      <input type="text" class="lead" placeholder="Enter the entity name" value="Entity that I represent">
+      <input type="text" name="entity_name" class="lead" placeholder="Enter the entity name"
+            value="{if isset($form_values)}{$form_values.entity_name}{else}Entity that I represent{/if}">
       <br>
       <label class="myaccountlabel">Address</label>
-      <input type="text" class="lead" placeholder="Enter the entity address" value="Entity address">
+      <input type="text" name="entity_address" class="lead" placeholder="Enter the entity address"
+            value="{if isset($form_values)}{$form_values.entity_address}{else}Entity address{/if}">
       <br>
       <label class="myaccountlabel">E-mail</label>
-      <input type="email" class="lead" placeholder="Enter the entity e-mail" value="entity_email@emailprovider.com">
+      <input type="email" name="entity_email" class="lead" placeholder="Enter the entity e-mail"
+            value="{if isset($form_values)}{$form_values.entity_email}{else}entity_email@emailprovider.com{/if}">
       <br>
       <label class="myaccountlabel">Phone Number</label>
-      <input type="text" class="lead" placeholder="Enter the entity phone number" value="+425745359078">
+      <input type="text" name="entity_number" class="lead" placeholder="Enter the entity phone number"
+            value="{if isset($form_values)}{$form_values.entity_number}{else}+425745359078{/if}">
       <br>
       <br>
-      {*{/if}*}
+      {/if}
 
-      <input type="submit" class= "button4 submitAsBtn" style="width:auto;" value="Confirm Changes" />
-
+      <input type="submit" name="submit" class= "button4 buttonsAcc" value="Confirm Changes" />
+      <a href="{$BASE_URL}pages/index.php" class="button4 buttonsAcc" style="text-decoration:none;color:white"> Cancel </a>
     </div>
   </form>
   </div>

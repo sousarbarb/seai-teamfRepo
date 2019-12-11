@@ -57,7 +57,7 @@
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_history.php">History</a>
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_progress.php">In Progess</a>
             <!--<div class="dropdown-divider"></div>-->
-            <a class="dropdown-in" href="#">New</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/map.php">New</a>
           </div>
         </li>
         <li class="nav-item">
@@ -69,23 +69,5 @@
       </ul>
     </div>
 
-<script>
-/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-toggle");
-var i;
-
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("dropdown-active");
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-}
-
-</script>
 </body>
 </html>
