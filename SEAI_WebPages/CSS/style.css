@@ -533,15 +533,16 @@ a.menu-highlight:hover {
 .popup .popuptext {
   visibility: hidden;
   width: 160px;
-  font-size: 10px;
+  font-size: 13px;
   background-color: #555;
   color: #fff;
   border-radius: 0.3em;
   padding: 0.5em 0.3em 0.5em 0.3em ;
   position: absolute;
   z-index: 100000;
-  margin-top: -105px;
-  margin-left: -100px;
+  margin-top: -13.5em;
+  margin-left: -7.692em;
+  line-height: 1.5em;
 }
 
 /* Popup arrow */
@@ -606,7 +607,7 @@ a.menu-highlight:hover {
   background-color: #31ACF7;
   color: white;
   font-size: 20px;
-  margin-left:5em;
+  margin-left:4em;
   margin-top:1em;
 }
 .info {

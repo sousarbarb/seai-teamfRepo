@@ -33,7 +33,7 @@
 	 </tr>
 	</table>
 	<br>
-	<input type="submit" name="back" class="comfirm" value="Select new Area" >
+	<input type="submit" name="back" class="comfirm" value="Go back to Map" >
 	<input type="submit" name="Confirm" class="comfirm" value="Confirm Selection" >
 	<input type="submit" name="Plan" class="comfirm" value="Plan new Mission" >
 	</form>
