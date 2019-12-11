@@ -55,6 +55,7 @@ if ($error) {
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 } else {
   $_SESSION['success_messages'][]="Changes applied successfully";
+  $_SESSION['entity_name']=$_POST['entity_name'];
   die(header('Location: ' . $BASE_URL.'pages/index.php'));
 }
 

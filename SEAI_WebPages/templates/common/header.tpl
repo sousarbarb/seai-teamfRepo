@@ -12,7 +12,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" 
+	<link rel="stylesheet"
 			href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 			integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 			crossorigin=""/>
@@ -30,8 +30,11 @@
 	  <script src="../js/mapsLib.js"></script>
 	  <script type="text/javascript" src="../js/table_dropdown.js"></script>
 	  <script type="text/javascript" src="../js/Popup.js"></script>
-	  
-<!-- NavBar -->
+
+    <!-- Login Form -->
+    <script src="{$BASE_URL}js/login_form.js" type="text/javascript"></script>
+
+    <!-- NavBar -->
     <script src="{$BASE_URL}js/menu_dropdown.js" type="text/javascript"></script>
 
     <!-- Messages Close Button -->

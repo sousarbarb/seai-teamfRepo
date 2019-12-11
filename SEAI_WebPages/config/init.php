@@ -24,8 +24,8 @@ $smarty->compile_dir = $BASE_DIR . 'templates_c/';
 //**************VARIAVEIS TESTE******************
 $_SESSION['login']="user";    //teste com login
 //unset($_SESSION['login']);  //teste sem login
-$acc_type="client";         //provider ou client
-$entity_name="lsts";
+$_SESSION['acc_type']="provider";         //provider ou client
+$_SESSION['$entity_name']="lsts";
 //**************VARIAVEIS TESTE******************
 
 
@@ -33,8 +33,12 @@ if (isset($_SESSION['login'])) {
   $smarty->assign('login', $_SESSION['login']);
 }
 
-if (isset($acc_type)) {
-  $smarty->assign('acc_type', $acc_type);
+if (isset($_SESSION['acc_type'])) {
+  $smarty->assign('acc_type', $_SESSION['acc_type']);
+}
+
+if (isset($_SESSION['entity_name'])) {
+  $smarty->assign('login', $_SESSION['entity_name']);
 }
 
 if (isset($_SESSION['form_values'])) {

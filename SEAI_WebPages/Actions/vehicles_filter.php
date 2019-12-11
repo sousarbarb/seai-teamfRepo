@@ -4,7 +4,7 @@ include_once('../config/init.php');
 //global $conn;
 /*$stmt = $conn->prepare('SELECT *
                         FROM vehicles
-                        WHERE privacy = ?
+                        WHERE ? = ?
                         AND vehicles_filter1 = ?
                         AND vehicles_filter2 = ?
                         AND vehicles_filter3 = ?');
@@ -24,8 +24,10 @@ $i=0;
     foreach($filtered_get as $key => $value) {
       //$query .= " $keynames[$key] = '$value'";  // $filtered_get keyname = $filtered_get['keyname'] value
       if ($value=='privacy') {
+        array_push($arguments, 'entity_name');
         array_push($arguments, $entity_name);
       } elseif ($i==0) {
+        array_push($arguments, 'privacy');
         array_push($arguments, 'public');
         array_push($arguments, $value);
       }
