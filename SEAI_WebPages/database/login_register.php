@@ -12,7 +12,7 @@
     $stmt->execute(array($name, sha1($password), $email, $number, $entity_name, $entity_address, $entity_email, $entity_number));
   }
 
-  function isLoginCorrect($username, $password) {
+  function isLoginCorrect($name, $password) {
     global $conn;
     $stmt = $conn->prepare("SELECT *
                             FROM users

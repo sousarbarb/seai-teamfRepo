@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-11 04:19:51
+/* Smarty version 3.1.33, created on 2019-12-11 17:06:25
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_vehicles\menu_vehicles.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df060573d1ca7_15317135',
+  'unifunc' => 'content_5df1140139c595_12089821',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0afbdce37463a8d953e6fd18d1c38be186b1ac25' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_vehicles\\menu_vehicles.tpl',
-      1 => 1576034390,
+      1 => 1576080106,
       2 => 'file',
     ),
   ),
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5df060573d1ca7_15317135 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5df1140139c595_12089821 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -106,7 +106,7 @@ pages/menu_vehicles_add.php" class="button4 buttonsAcc" style="text-decoration:n
         <?php }?>
         <label class="vehicle_filtro_lbl">Filter type 1</label><br>
         <form method="get" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-actions/vehicles_filter.php">
+actions/vehicles_filter_public.php">
           <input type="radio" name="vehicles_filter1" value="all" <?php if ((!(isset($_smarty_tpl->tpl_vars['form_values']->value)) || ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'all'))) {?>checked="checked"<?php }?>> All</input><br>
           <input type="radio" name="vehicles_filter1" value="filter1" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter1'))) {?>checked="checked"<?php }?>> Filter1</input><br>
           <input type="radio" name="vehicles_filter1" value="filter2" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter2'))) {?>checked="checked"<?php }?>> Filter2</input><br>

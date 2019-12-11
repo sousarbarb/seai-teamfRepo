@@ -68,7 +68,7 @@
         <br><br>
         {/if}
         <label class="vehicle_filtro_lbl">Filter type 1</label><br>
-        <form method="get" action="{$BASE_URL}actions/vehicles_filter.php">
+        <form method="get" action="{$BASE_URL}actions/vehicles_filter_public.php">
           <input type="radio" name="vehicles_filter1" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter1=='all'))}checked="checked"{/if}> All</input><br>
           <input type="radio" name="vehicles_filter1" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter1'))}checked="checked"{/if}> Filter1</input><br>
           <input type="radio" name="vehicles_filter1" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter2'))}checked="checked"{/if}> Filter2</input><br>
