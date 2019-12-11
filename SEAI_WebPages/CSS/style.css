@@ -317,7 +317,7 @@ font-size: 30px;
 color: black;
 }
 
-input[type="radio"] {
+.register input[type="radio"] {
 -ms-transform: scale(1.5); /* IE 9 */
 -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
 transform: scale(2);
@@ -361,7 +361,7 @@ border-spacing: 0 10px;
 width: 250px;
 }
 
-input[type=text]{ 
+.register input[type=text]{
 border-radius:4px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
@@ -374,7 +374,7 @@ width:250px;
 height: 20px;
 }
 
-input[type=password]{ 
+.register input[type=password]{
 border-radius:4px;
 -moz-border-radius:4px; 
 -webkit-border-radius:4px;
