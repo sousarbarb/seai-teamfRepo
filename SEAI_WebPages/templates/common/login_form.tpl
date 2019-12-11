@@ -7,7 +7,7 @@
           <img src="https://www.elegantthemes.com/blog/wp-content/uploads/2017/01/shutterstock_534491617-600.jpg" alt="Avatar" class="avatar">
         </div>
       <div class="container">
-        <input type="text" placeholder="Enter Username" name="username" required>
+        <input type="text" placeholder="Enter Username" name="name" required>
         <input type="password" placeholder="Enter Password" name="password" required>
         <button type="submit"> Confirm </button>
         <label>

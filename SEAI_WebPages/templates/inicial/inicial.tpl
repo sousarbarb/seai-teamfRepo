@@ -8,6 +8,16 @@
      - Automation and Instrumentation carried out by students of the 5th year of the Integrated
      Master in Electrical and Computer Engineering of the Faculty of Engineering, University of Porto.</p>
     <div class="separator"></div>
+    {if (isset($success_messages))}
+      {foreach $success_messages as $success}
+        <div class="msg_success">{$success} <a class="msg_close" href="#"  style="text-decoration:none;">&#215;</a></div>
+      {/foreach}
+    {/if}
+    {if (isset($error_messages))}
+      {foreach $error_messages as $error}
+        <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+      {/foreach}
+    {/if}
     <div class="row text-white">
       <div class="col-lg-6">
         <p class="lead">The future of maritime operations, particularly with unmanned vehicles,
