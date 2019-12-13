@@ -9,6 +9,55 @@ function test_input($data) {
   return $data;
 }
 
+function send_mail_provider($email,$username,$password,$entity){
+$to      = $email; // Send email to our user
+$subject = 'App Signup'; // Give the email a subject 
+$message = '
+ 
+Thanks for signing up!
+Your account has been created.
+You can login with the following credentials:
+ 
+------------------------
+Username: '.$username.'
+Password: '.$password.'
+Entity: '.$entity.'
+------------------------
+ 
+Enjoy our app!
+ 
+'; // Our message
+					 
+$headers = 'From:noreply@seaiteamf.com' . "\r\n"; // Set from headers
+mail($to, $subject, $message, $headers); // Send our email
+
+}
+
+
+function send_mail_client($email,$username,$password){
+$to      = $email; // Send email to our user
+$subject = 'App Signup'; // Give the email a subject 
+$message = '
+ 
+Thanks for signing up!
+Your account has been created.
+You can login with the following credentials:
+ 
+------------------------
+Username: '.$username.'
+Password: '.$password.'
+------------------------
+ 
+Enjoy our app!
+ 
+'; // Our message
+					 
+$headers = 'From:noreply@seaiteamf.com' . "\r\n"; // Set from headers
+mail($to, $subject, $message, $headers); // Send our email
+
+}
+
+
 if ($_POST["selectform"]=='provider') {
   if (empty($_POST["entity"])) {
     $_SESSION['error_messages'][]="Entity name required";
@@ -195,8 +244,10 @@ $_SESSION['success_messages'][]="Your registration request was successfully subm
 if ($_POST["selectform"]=='provider') {
 //enviar $entity, $address, $mail1, ... para a base de dados
 //...
+send_mail_provider($mail1,$name ,$password,$entity);
 } else {
   //enviar apenas dados do client para a base de dados
+	send_mail_provider($mail1,$name ,$password);
 }
 
 $_SESSION['form_values']=$_POST;
