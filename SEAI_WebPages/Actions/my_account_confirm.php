@@ -30,13 +30,13 @@ if (!(preg_match('/^\+\d+$/', $_POST['number'])) || (strlen($_POST['number'])<8)
 }
 
 if ($acc_type!="client") {
-  if ((strlen($_POST['entity_name'])<3) || !(preg_match('/^[a-zA-Z ]+$/', $_POST['entity_name']))) {
+  if ((strlen($_POST['entity_name'])<3) || !(preg_match('/^[a-zA-Z0-9 ]+$/', $_POST['entity_name']))) {
     $_SESSION['error_messages'][]="Entity name should contain more than 3 characters";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
 
-  if ((strlen($_POST['entity_address'])<10) || !(preg_match('/^[a-zA-Z ]+$/', $_POST['entity_name']))) {
+  if ((strlen($_POST['entity_address'])<10) || !(preg_match('/^[a-zA-Z0-9 ]+$/', $_POST['entity_name']))) {
     $_SESSION['error_messages'][]="Entity address should contain more than 10 characters";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));

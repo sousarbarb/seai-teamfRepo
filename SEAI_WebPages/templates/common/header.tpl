@@ -35,6 +35,9 @@
     <!-- Login Form -->
     <script src="{$BASE_URL}js/login_form.js" type="text/javascript"></script>
 
+    <!-- Register -->
+    <script src="{$BASE_URL}js/register.js" type="text/javascript"></script>
+
     <!-- NavBar -->
     <script src="{$BASE_URL}js/menu_dropdown.js" type="text/javascript"></script>
 

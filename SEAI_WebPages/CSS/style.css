@@ -160,6 +160,16 @@ width: 100%;
 }
 .button4 {border-radius: 12px;}
 
+.button4left {
+  border-top-left-radius: 12px;
+  border-right-color: white;
+  border-right-style: solid;
+}
+
+.button4right {
+  border-top-right-radius: 12px;
+}
+
 button:hover {
 opacity: 0.8;
 }
@@ -246,6 +256,9 @@ footer {
   bottom: 0px;
   width: 100%;
   /*background: url(images/footer/footer.png);*/
+  border-style: solid;
+  border-color: white;
+  border-width: thin;
 }
 
 .rodapes{
@@ -303,16 +316,13 @@ footer {
   position: absolute;
   margin-top: 30px;
   margin-left: 600px;
-  font-family: Arial Nova Light Black;
   font-size: 40px;
   color: black;
 }
 
 .service {
-position: absolute;
-margin-left: 420px;
-margin-top: 80px;
-font-family: Arial Nova Light Black;
+margin-left: 26%;
+margin-top: 0px;
 font-size: 30px;
 color: black;
 }
@@ -328,14 +338,17 @@ position: absolute;
 margin-top: 20px;
 margin-left: 420px;
 padding: 6px 12px;
-border-radius: 4px;  
+border-radius: 4px;
 text-align: center;
-vertical-align: middle;    
+vertical-align: middle;
 }
 .btn-info {
-background-color: white;
-border-color: white;
-color: black;
+background-color: #31ACF7;
+color: white;
+border: none;
+cursor: pointer;
+width:auto;
+text-decoration:none;
 }
 .btn-info:hover, .btn-info:focus, .btn-info:acitive {
 background-color: white;
@@ -343,55 +356,68 @@ border-color: white;
 color: #fff;
 }
 
+.buttonsRegSelect {
+  background-color: #31ACF7;
+  color: white;
+  font-weight: bold;
+  padding: 14px 30px;
+  margin: 4px 0px;
+  cursor: pointer;
+  display:inline-block;
+  float:left;
+  width:300px;
+  text-decoration:none;
+  outline: 0;
+}
+
+.buttonsRegSelect:hover {
+opacity: 0.8;
+}
+
+.buttonsRegSelected {
+  -background-color: #dae0e5!important;
+  background-color: #268cc9;
+}
+
 .formulario {
 width: 800px;
-margin-left: 500px;
-margin-top: 165px;
-position: absolute;
-font-family: Arial Nova Light Black;
+margin-left: 28%;
+margin-top: 12%;
 font-size: 22px;
-font-weight: bold;
+color:white;
+}
+.formulario form {
+  display: none;
 }
 .tab {
-position: absolute; 
+position: absolute;
 border-spacing: 0 10px;
+}
+.tab tr.space_under>td {
+  padding-bottom: 1em;
 }
 
 .gg {
 width: 250px;
 }
 
-.register input[type=text]{
+.register input[type=text], .register input[type=password]{
 border-radius:4px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
 box-shadow: 1px 1px 2px #333333;
 -moz-box-shadow: 1px 1px 2px #333333;
 -webkit-box-shadow: 1px 1px 2px #333333;
-background: #cccccc; 
+-background: #cccccc;
 border:1px solid #000000;
-width:250px;
-height: 20px;
-}
-
-.register input[type=password]{
-border-radius:4px;
--moz-border-radius:4px; 
--webkit-border-radius:4px;
-box-shadow: 1px 1px 2px #333333;
--moz-box-shadow: 1px 1px 2px #333333;
--webkit-box-shadow: 1px 1px 2px #333333;
-background: #cccccc; 
-border:1px solid #000000;
-width:250px;
-height: 20px;
+width:300px;
+height: 30px;
 }
 
 .exemplo {
 position: absolute;
 margin-left: 20px;
 margin-top: 100px;
-font-family: Arial Nova Light Black;
 font-size: 20px;
 color: black;
 }
@@ -415,6 +441,11 @@ color: white;
   border: none;
   cursor: pointer;
   width: 100%;
+  outline: 0;
+}
+
+.submitAsBtn:hover {
+  opacity: 0.8;
 }
 
 /*------------------- Menus ----------------*/
@@ -501,6 +532,10 @@ a.menu-highlight:hover {
   cursor: pointer;
   width:auto;
   text-decoration:none;
+}
+
+.buttonsAcc:hover {
+opacity: 0.8;
 }
 
 .msg_success {
@@ -694,7 +729,7 @@ a.menu-highlight:hover {
 
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
-  from {opacity: 0;} 
+  from {opacity: 0;}
   to {opacity: 1;}
 }
 
@@ -741,7 +776,7 @@ a.menu-highlight:hover {
 }
 .info {
   display: none;
-  
+
 }
 
 .show {

@@ -7,16 +7,16 @@
           <img src="https://www.elegantthemes.com/blog/wp-content/uploads/2017/01/shutterstock_534491617-600.jpg" alt="Avatar" class="avatar">
         </div>
       <div class="container">
-        <input type="text" placeholder="Enter Username" name="name" required>
+        <input type="text" placeholder="Enter Username" name="user" required>
         <input type="password" placeholder="Enter Password" name="password" required>
-        <button type="submit"> Confirm </button>
+        <button type="submit" class="button4 submitAsBtn"> Confirm </button>
         <label>
           <input type="checkbox" checked="checked" name="remember"> Remember me
         </label>
       </div>
-      <div class="container" style="background-color:#f1f1f1"><!-- box color on the forget pass button-->
-        <span class="psw"> <a href="#">Forgot password?</a></span>
-        <p class="psw"><a href="{$BASE_URL}actions/register.php" class="createAccountNow">Sign-Up Here </a></p>
+      <div class="container">
+        <span class="psw"> <a href="#" class="button4 submitAsBtn" style="text-decoration:none;color:white;">Forgot password?</a></span>
+        <p class="psw"><a href="{$BASE_URL}pages/register.php" class="button4 submitAsBtn" style="text-decoration:none;color:white;">Sign-Up Here </a></p>
       </div>
       </form>
     </div>

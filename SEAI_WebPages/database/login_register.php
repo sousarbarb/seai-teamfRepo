@@ -1,23 +1,23 @@
 <?php
 
-  function createUser_client($name, $password, $email, $number) {
+  function createUser_client($user, $password, $name, $email, $number) {
     global $conn;
     $stmt = $conn->prepare("INSERT INTO users VALUES (?, ?, ?, ?)");
-    $stmt->execute(array($name, sha1($password), $email, $number));
+    $stmt->execute(array($user, sha1($password), $name, $email, $number));
   }
 
-  function createUser_provider($name, $password, $email, $number, $entity_name, $entity_address, $entity_email, $entity_number) {
+  function createUser_provider($user, $password, $name, $email, $number, $entity_name, $entity_address, $entity_email, $entity_number) {
     global $conn;
     $stmt = $conn->prepare("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute(array($name, sha1($password), $email, $number, $entity_name, $entity_address, $entity_email, $entity_number));
+    $stmt->execute(array($user, sha1($password), $name, $email, $number, $entity_name, $entity_address, $entity_email, $entity_number));
   }
 
-  function isLoginCorrect($name, $password) {
+  function isLoginCorrect($user, $password) {
     global $conn;
     $stmt = $conn->prepare("SELECT *
                             FROM users
-                            WHERE name = ? AND password = ?");
-    $stmt->execute(array($name, sha1($password)));
+                            WHERE user = ? AND password = ?");
+    $stmt->execute(array($user, sha1($password)));
     return $stmt->fetch() == true;
   }
 ?>

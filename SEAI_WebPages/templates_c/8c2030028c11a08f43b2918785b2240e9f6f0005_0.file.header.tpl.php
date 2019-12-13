@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-11 19:32:18
+/* Smarty version 3.1.33, created on 2019-12-12 12:57:30
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\common\header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df1363252cbb2_92402730',
+  'unifunc' => 'content_5df22b2ae9d514_09242721',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8c2030028c11a08f43b2918785b2240e9f6f0005' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\common\\header.tpl',
-      1 => 1576088465,
+      1 => 1576151632,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5df1363252cbb2_92402730 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5df22b2ae9d514_09242721 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <!                                 HEADER                                      >
@@ -81,6 +81,12 @@ function content_5df1363252cbb2_92402730 (Smarty_Internal_Template $_smarty_tpl)
     <?php echo '<script'; ?>
  src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 js/login_form.js" type="text/javascript"><?php echo '</script'; ?>
+>
+
+    <!-- Register -->
+    <?php echo '<script'; ?>
+ src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+js/register.js" type="text/javascript"><?php echo '</script'; ?>
 >
 
     <!-- NavBar -->
