@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-13 05:07:46
+/* Smarty version 3.1.33, created on 2019-12-13 13:39:15
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\inicial\register.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df30e9278bc14_22299878',
+  'unifunc' => 'content_5df3867340c326_74414098',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '12dbc83b78f6205f29bfbcef3f82ced2f7d20498' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\inicial\\register.tpl',
-      1 => 1576210065,
+      1 => 1576240616,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5df30e9278bc14_22299878 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5df3867340c326_74414098 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
@@ -68,46 +68,46 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 <form class="form_register" id="form_provider" method="post" action="../actions/register_action.php">
 <table class="tab">
 <tr><td class="gg">
-Entity Name: </td><td class="register"><input type="text" name="entity"
+Entity Name: </td><td class="register"><input type="text" name="entity_name"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'provider'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['entity'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['entity_name'];
 }?>">
 </tr>
 <tr><td>
-Address: </td><td class="register"><input type="text" name="address"
+Address: </td><td class="register"><input type="text" name="entity_address"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'provider'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['address'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['entity_address'];
 }?>">
 </tr>
 <tr><td>
-E-mail: </td><td class="register"><input type="text" name="mail1"
+E-mail: </td><td class="register"><input type="text" name="entity_email"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'provider'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['mail1'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['entity_email'];
 }?>">
 </tr>
 <tr class="space_under"><td>
-Phone Number: </td><td class="register"><input type="text" name="phone"
+Phone Number: </td><td class="register"><input type="text" name="entity_number"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'provider'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['phone'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['entity_number'];
 }?>">
 </tr>
 
 <tr><td>
-Official Representative: </td><td class="register"><input type="text" name="official"
+Official Representative: </td><td class="register"><input type="text" name="name"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'provider'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['official'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['name'];
 }?>">
 </tr>
 <tr><td>
-E-mail: </td><td class="register"><input type="text" name="mail2"
+E-mail: </td><td class="register"><input type="text" name="email"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'provider'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['mail2'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['email'];
 }?>">
 </tr>
 <tr class="space_under"><td>
-Phone Number: </td><td class="register"><input type="text" name="phone2"
+Phone Number: </td><td class="register"><input type="text" name="number"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'provider'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['phone2'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['number'];
 }?>">
 </tr>
 
@@ -140,15 +140,15 @@ echo $_smarty_tpl->tpl_vars['form_values']->value['name'];
 }?>">
 </tr>
 <tr><td>
-E-mail: </td><td class="register"><input type="text" name="mail"
+E-mail: </td><td class="register"><input type="text" name="email"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'client'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['mail'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['email'];
 }?>">
 </tr>
 <tr class="space_under"><td>
-Phone Number: </td><td class="register"><input type="text" name="phone"
+Phone Number: </td><td class="register"><input type="text" name="number"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'client'))) {
-echo $_smarty_tpl->tpl_vars['form_values']->value['phone'];
+echo $_smarty_tpl->tpl_vars['form_values']->value['number'];
 }?>">
 </tr>
 

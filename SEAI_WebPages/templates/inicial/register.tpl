@@ -25,33 +25,33 @@
 <form class="form_register" id="form_provider" method="post" action="../actions/register_action.php">
 <table class="tab">
 <tr><td class="gg">
-Entity Name: </td><td class="register"><input type="text" name="entity"
-          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.entity}{/if}">
+Entity Name: </td><td class="register"><input type="text" name="entity_name"
+          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.entity_name}{/if}">
 </tr>
 <tr><td>
-Address: </td><td class="register"><input type="text" name="address"
-          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.address}{/if}">
+Address: </td><td class="register"><input type="text" name="entity_address"
+          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.entity_address}{/if}">
 </tr>
 <tr><td>
-E-mail: </td><td class="register"><input type="text" name="mail1"
-          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.mail1}{/if}">
+E-mail: </td><td class="register"><input type="text" name="entity_email"
+          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.entity_email}{/if}">
 </tr>
 <tr class="space_under"><td>
-Phone Number: </td><td class="register"><input type="text" name="phone"
-          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.phone}{/if}">
+Phone Number: </td><td class="register"><input type="text" name="entity_number"
+          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.entity_number}{/if}">
 </tr>
 
 <tr><td>
-Official Representative: </td><td class="register"><input type="text" name="official"
-          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.official}{/if}">
+Official Representative: </td><td class="register"><input type="text" name="name"
+          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.name}{/if}">
 </tr>
 <tr><td>
-E-mail: </td><td class="register"><input type="text" name="mail2"
-          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.mail2}{/if}">
+E-mail: </td><td class="register"><input type="text" name="email"
+          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.email}{/if}">
 </tr>
 <tr class="space_under"><td>
-Phone Number: </td><td class="register"><input type="text" name="phone2"
-          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.phone2}{/if}">
+Phone Number: </td><td class="register"><input type="text" name="number"
+          value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.number}{/if}">
 </tr>
 
 <tr><td>
@@ -79,12 +79,12 @@ Name: </td><td class="register"><input type="text" name="name"
           value="{if (isset($form_values) && ($form_values.selectform=='client'))}{$form_values.name}{/if}">
 </tr>
 <tr><td>
-E-mail: </td><td class="register"><input type="text" name="mail"
-          value="{if (isset($form_values) && ($form_values.selectform=='client'))}{$form_values.mail}{/if}">
+E-mail: </td><td class="register"><input type="text" name="email"
+          value="{if (isset($form_values) && ($form_values.selectform=='client'))}{$form_values.email}{/if}">
 </tr>
 <tr class="space_under"><td>
-Phone Number: </td><td class="register"><input type="text" name="phone"
-          value="{if (isset($form_values) && ($form_values.selectform=='client'))}{$form_values.phone}{/if}">
+Phone Number: </td><td class="register"><input type="text" name="number"
+          value="{if (isset($form_values) && ($form_values.selectform=='client'))}{$form_values.number}{/if}">
 </tr>
 
 <tr><td>
