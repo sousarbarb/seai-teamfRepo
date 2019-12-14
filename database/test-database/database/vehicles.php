@@ -152,4 +152,18 @@
     $stmt->execute( array($id_vehicle) );
     return $stmt->fetchAll();
   }
+
+  function createVehicle ($provider_id, $vehicle_name, $localization, $comments)
+        global $conn;
+            
+        $stm = $conn->prepare("
+            INSERT INTO vehicle (vehicle_name, 
+                service_provider_id,
+                localization, 
+                comments)
+            VALUES (?, ?, SRID=4326;POINT(?),?) 
+            RETURNING * ");
+
+        $stm->execute(array($vehicle_name), is_integer($provider_id), array($localization), array($comments));   
+        return $stm->fetchAll();    
 ?>
