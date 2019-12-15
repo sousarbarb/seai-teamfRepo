@@ -161,9 +161,8 @@
                 service_provider_id,
                 localization, 
                 comments)
-            VALUES (?, ?, SRID=4326;POINT(?),?) 
-            RETURNING * ");
+            VALUES (?, ?, SRID=4326; POINT( ? ), ?) ");
 
-        $stm->execute(array($vehicle_name), is_integer($provider_id), array($localization), array($comments));   
-        return $stm->fetchAll();    
+        $stm->execute(array($vehicle_name, is_integer($provider_id), $localization, $comments));   
+        return $stm->fetch() == true;    
 ?>
