@@ -16,8 +16,11 @@ if (isset($_POST['back'])) {
 	}
    //header("Location: $BASE_URL" .'/pages/users/user_management.php');
     }
+	elseif (isset($_POST['Plan'])) {
+			header("Location:  $BASE_URL" . '/pages/plan_new_mission.php');
+	}
 
 else{
 	header("Location:  $BASE_URL" . '/pages/show_previous_data.php');
-}	
+}
 ?>

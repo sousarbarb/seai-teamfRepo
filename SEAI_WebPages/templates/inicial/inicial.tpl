@@ -49,4 +49,5 @@
 
   </div>
 
-{include file='../common/footer.tpl'}
+<!--{include file='../common/footer.tpl'}-->
+{include file='../common/footer-short.tpl'}
