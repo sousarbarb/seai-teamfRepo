@@ -4,7 +4,7 @@
 <div class="menusLogin p-5">
 	<h2 class="display-4 text-white">New Request - Existent Data</h2>
 	<br>
-	<form action="{$BASE_URL}/Actions/buy_request.php" method="post">
+	<form action="{$BASE_URL}actions/buy_request.php" method="post">
 
 	<table class='table_pd' id="foo">
 	<tr>
@@ -12,7 +12,7 @@
 	</tr>
 	<!-- {foreach $requests as $request}{
 		<tr>
-		<td>{$request.area}</td><td>{$request.sp}</td><td>{$request.date}</td><td>{$request.price}</td><td><input type="checkbox" name="check" value="{$request.id}"></td> 
+		<td>{$request.area}</td><td>{$request.sp}</td><td>{$request.date}</td><td>{$request.price}</td><td><input type="checkbox" name="check" value="{$request.id}"></td>
 		</tr>
 		<tr>
 	    <td div class="info" colspan="6" ></td>
@@ -41,5 +41,3 @@
 <br>
 </div>
 </div>
-
-

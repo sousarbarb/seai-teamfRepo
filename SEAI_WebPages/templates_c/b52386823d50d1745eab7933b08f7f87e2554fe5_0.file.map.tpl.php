@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-12 00:36:30
+/* Smarty version 3.1.33, created on 2019-12-18 00:15:26
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\requests\map.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df17d7eb03020_83112270',
+  'unifunc' => 'content_5df9618e8f8508_17879941',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b52386823d50d1745eab7933b08f7f87e2554fe5' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\requests\\map.tpl',
-      1 => 1576088465,
+      1 => 1576624521,
       2 => 'file',
     ),
   ),
@@ -23,14 +23,14 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/logout.tpl' => 1,
   ),
 ),false)) {
-function content_5df17d7eb03020_83112270 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5df9618e8f8508_17879941 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 <div class="menusLogin p-5">
 <form action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-/pages/show_previous_data.php" method="get">
+pages/show_previous_data.php" method="get">
    	<h2 class="display-4 text-white">New Request - Area Selection</h2>
 	<div class="grid">
 	<div id="mapid" style="width: 100%; height: 48em; grid-column-start: 1;  grid-column-end: 2; grid-row-start: 1; grid-row-end: 3;"></div>
@@ -44,13 +44,14 @@ $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cach
 	<?php echo '</script'; ?>
 >
 	<div class="filters"></div>
-	<div class="infotext">	
+	<div class="infotext">
 	<p id="info"></p>
-	
+
 	<div class="popup" onclick="myFunction()"> Help
 	  <span class="popuptext" id="myPopup">Instruction on how to use the interactive map: <br> -Double click the end point to finnish the area edition, <br> -Double click on an already created polygon to edit it,</span>
 	</div>
 	<input type="submit" name="Confirm" class="popup" value="Confirm Selection" style="width: 10em;">
 	</form>
-</div><?php }
+</div>
+<?php }
 }

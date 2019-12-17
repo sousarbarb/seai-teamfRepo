@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-12 12:57:30
+/* Smarty version 3.1.33, created on 2019-12-18 00:13:57
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\common\header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df22b2ae9d514_09242721',
+  'unifunc' => 'content_5df961354e2634_15117594',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8c2030028c11a08f43b2918785b2240e9f6f0005' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\common\\header.tpl',
-      1 => 1576151632,
+      1 => 1576624433,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5df22b2ae9d514_09242721 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5df961354e2634_15117594 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <!                                 HEADER                                      >
@@ -31,6 +31,8 @@ function content_5df22b2ae9d514_09242721 (Smarty_Internal_Template $_smarty_tpl)
     <link rel="stylesheet" href="../CSS/style.css"></link>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></link>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+
     <?php echo '<script'; ?>
  type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"><?php echo '</script'; ?>
 >
@@ -46,6 +48,13 @@ function content_5df22b2ae9d514_09242721 (Smarty_Internal_Template $_smarty_tpl)
     <?php echo '<script'; ?>
  src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"><?php echo '</script'; ?>
 >
+    <?php echo '<script'; ?>
+ src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
+
 	<link rel="stylesheet"
 			href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 			integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="

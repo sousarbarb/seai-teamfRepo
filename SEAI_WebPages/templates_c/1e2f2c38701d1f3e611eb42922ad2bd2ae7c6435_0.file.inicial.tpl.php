@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-11 19:32:23
+/* Smarty version 3.1.33, created on 2019-12-18 00:13:57
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\inicial\inicial.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df13637c60ba0_44562117',
+  'unifunc' => 'content_5df961354b5fa1_53507189',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1e2f2c38701d1f3e611eb42922ad2bd2ae7c6435' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\inicial\\inicial.tpl',
-      1 => 1576088851,
+      1 => 1576624404,
       2 => 'file',
     ),
   ),
@@ -20,10 +20,12 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
     'file:../common/header.tpl' => 1,
     'file:../common/login_form.tpl' => 1,
+    'file:../common/slideshow.tpl' => 1,
     'file:../common/footer.tpl' => 1,
+    'file:../common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5df13637c60ba0_44562117 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5df961354b5fa1_53507189 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/login_form.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
@@ -92,6 +94,10 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
   </div>
 
-<?php $_smarty_tpl->_subTemplateRender('file:../common/footer.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
-}
+<?php $_smarty_tpl->_subTemplateRender('file:../common/slideshow.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+$_smarty_tpl->_subTemplateRender('file:../common/footer.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
+<!--<?php $_smarty_tpl->_subTemplateRender('file:../common/footer-short.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>-->
+<?php }
 }

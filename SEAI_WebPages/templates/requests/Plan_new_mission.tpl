@@ -63,7 +63,7 @@
 	<h2 class="display-4 text-white">New Request</h2>
 	<p class="lead text-white mb-0">Request New Mission Plan</p>
 	<div class="separator"></div>
-	<form action="{$BASE_URL}/Actions/plan_new_mission.php" method="post">
+	<form action="{$BASE_URL}actions/plan_new_mission.php" method="post">
 		<table class="table table-light table-bordered" >
 		  <thead>
 		    <tr>
