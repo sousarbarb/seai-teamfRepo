@@ -9,13 +9,8 @@
         global $conn;
        
         $stm = $conn->prepare("
-            SELECT users.id AS users_id, 
-                users.username, 
-       	        users.password, 
-       	        users.active, 
-       	        admin.id            AS admin_id,
-       	        service_provider.id AS service_provider_id,
-       	        service_client.id   AS service_client_id
+            SELECT username,
+                   password
             FROM users
             FULL OUTER JOIN admin            ON users.id = admin.user_id
             FULL OUTER JOIN service_provider ON users.id = service_provider.user_id
@@ -23,34 +18,45 @@
             WHERE username = ?");
         $stm->execute(array($username));
         
-        return $stm->fetch();    
+        return $stm->fetchAll();
     }
 
-    //createAdmin('ex_admin@example.com','ex_admin', '123456', true)
-        //INSERT 0 1
-    function createAdmin($e_mail, $username, $password, $active){
+
+    function createServiceProvider($entity_name, $address,  $phone_number, $official_representative,  $mail_representative,
+    $phone_number_representative, $logo_path, $password, $username, $e_mail){
         global $conn;
+        $stm = $conn->prepare("
+            INSERT INTO users (
+                username,
+                e_mail,
+                password,
+                status,
+                id_crypt
+            )
+            VALUES (?, ?, ?, ?, ?)");
+        $stm->execute(array($username, $mail, sha1($password), "Waiting e-mail confirmation", sha1($username)));
+        /*status:
+         * - Active
+         * - Inactive
+         * - Waiting e-mail confirmation
+         */
+        $user_id = $stm->fetchAll();
         
         $stm = $conn->prepare("
-        INSERT INTO users (e_mail, 
-            username,
-            password, 
-            active)
-        VALUES (?, ?, ?, ?) 
-        RETURNING id");
-        
-        $stm->execute(array($mail, $username, sha1($password), boolval($active)));
-        
-        $user_id = $stm->fetch(); 
-        
-        $stm = $conn->prepare("
-            INSERT INTO admin (user_id)
-            VALUES (?)");
-       
-        $stm->execute(array ($user_id['id'])));
+            INSERT INTO service_provider (entity_name, 
+                address, 
+                phone_number, 
+                official_representative,  
+                mail_representative,
+                phone_number_representative, 
+                logo_path, 
+                user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
+            RETURNING id, user_id");
+        $stm->execute(array($entity_name), array($address), array($phone_number), array($official_representative),
+            array($mail_representative), array ($phone_number_representative), array($logo_path), $user_id['id']));
 
-        return $stm->fetch() == true;    
-
+        return $stm->fetchAll();
     }
 
     function createServiceClient($e_mail, $username, $password, $address, $phone_number, $client_name, $active){
@@ -80,6 +86,42 @@
         return $stm->fetch() == true;    
     }
 
+
+
+
+
+
+
+
+
+    function createAdmin($e_mail, $username, $password, $active){
+        global $conn;
+        
+        $stm = $conn->prepare("
+            INSERT INTO users (e_mail, 
+                username,
+                password, 
+                active)
+            VALUES (?, ?, ?, ?) 
+            RETURNING id");
+        
+        $stm->execute(array($mail), array($username), sha1($password), boolval($active));
+        
+        $user_id = $stm->fetchAll(); 
+        
+        $stm = $conn->prepare("
+            INSERT INTO admin (user_id)
+            VALUES (?) 
+            RETURNING id, user_id");
+       
+            $stm->execute($user_id['id']));
+
+        return $stm->fetchAll();    
+
+    }
+
+
+
     function updateServiceClient($address, $phone_number, $client_name){
         global $conn;
         
@@ -97,34 +139,7 @@
 
     
 
-    function createServiceProvider($entity_name, $address,  $phone_number, $official_representative,  $mail_representative,
-    $phone_number_representative, $logo_path, $password, $username, $e_mail){
-        global $conn;
-        $stm = $conn->prepare("
-            INSERT INTO users (e_mail, 
-                username, 
-                password
-                active)
-            VALUES (?, ?, ?, ?)
-            RETURNING id");
-        $stm->execute(array($mail, $username, sha1($password), boolval($active)));
-        $user_id = $stm->fetch();
-        
-        $stm = $conn->prepare("
-            INSERT INTO service_provider (entity_name, 
-                address, 
-                phone_number, 
-                official_representative,  
-                mail_representative,
-                phone_number_representative, 
-                logo_path, 
-                user_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
-        $stm->execute(array($entity_name, $address, $phone_number, $official_representative,
-            $mail_representative, $phone_number_representative, $logo_path, array ($user_id['id'])));
 
-        return $stm->fetch() == true;
-    }
 
     function updateServiceProvider($entity_name, $address,  $phone_number, $official_representative,  $mail_representative,
         $phone_number_representative, $logo_path){
