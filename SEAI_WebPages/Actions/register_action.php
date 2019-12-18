@@ -24,7 +24,8 @@ Password: '.$password.'
 Entity: '.$entity.'
 ------------------------
 
-Enjoy our app!
+Please click this link to verify your email: 
+ http://'. $BASE_URL'pages/verifyemail.php?token=' . $token';
 
 '; // Our message
 
@@ -48,7 +49,9 @@ Username: '.$username.'
 Password: '.$password.'
 ------------------------
 
-Enjoy our app!
+Please click this link to verify your email: 
+ http://'. $BASE_URL'pages/verifyemail.php?token=' . $token';
+
 
 '; // Our message
 
@@ -254,10 +257,20 @@ $_SESSION['success_messages'][]="Your registration request was successfully subm
 if ($_POST["selectform"]=='provider') {
 //enviar tudo $entity_name, $entity_address, $entity_email, ... para a base de dados
 //...
-send_mail_provider($entity_email,$name ,$password,$entity_name);
+	date_default_timezone_set('America/New_York');
+	$registration_date = date('Y-m-d H:i:s');
+	$verified = 0;
+	$salt = uniqid(mt_rand() , true);
+	$token = msha1(registration_date . md5($salt));
+send_mail_provider($entity_email,$name ,$password,$entity_name,$token);
 } else {
   //enviar apenas dados do client para a base de dados
-	send_mail_client($mail,$name ,$password);
+  	date_default_timezone_set('America/New_York');
+	$registration_date = date('Y-m-d H:i:s');
+	$verified = 0;
+	$salt = uniqid(mt_rand() , true);
+	$token = msha1(registration_date . md5($salt));
+	send_mail_client($mail,$name ,$password,$token);
 }
 
 $_SESSION['form_values']=$_POST;
