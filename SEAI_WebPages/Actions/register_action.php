@@ -24,10 +24,10 @@ Password: '.$password.'
 Entity: '.$entity.'
 ------------------------
 
-Please click this link to verify your email: 
- http://'. $BASE_URL'pages/verifyemail.php?token=' . $token';
+Please click this link to verify your email:
+ http://'. $BASE_URL .'pages/verifyemail.php?token=' . $token ;
 
-'; // Our message
+// Our message
 
 $headers = 'From:noreply@seaiteamf.com' . "\r\n"; // Set from headers
 mail($to, $subject, $message, $headers); // Send our email
@@ -49,11 +49,10 @@ Username: '.$username.'
 Password: '.$password.'
 ------------------------
 
-Please click this link to verify your email: 
- http://'. $BASE_URL'pages/verifyemail.php?token=' . $token';
+Please click this link to verify your email:
+ http://'. $BASE_URL .'pages/verifyemail.php?token=' . $token ;
 
-
-'; // Our message
+// Our message
 
 $headers = 'From:noreply@seaiteamf.com' . "\r\n"; // Set from headers
 mail($to, $subject, $message, $headers); // Send our email
@@ -110,6 +109,24 @@ if ($_POST["selectform"]=='provider') {
     $entity_number = test_input($_POST["entity_number"]);
     if ((!is_numeric ($entity_number)) || (!(preg_match('/^\+\d+$/', $entity_number)))  || (strlen($entity_number)<5)) {
       $_SESSION['error_messages'][]="Entity phone number should be valid and contain a country calling code<br>following the pattern +[code][number]";
+      $_SESSION['form_values']=$_POST;
+      die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+    }
+  }
+
+  if (($_FILES['entity_image']['size'] == 0) && ($_FILES['entity_image']['error'] == 0)) {
+    $_SESSION['error_messages'][]="Entity image required";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  } else {
+
+    $target_dir = "../images/logo/";
+    $target_file = $target_dir . basename($_FILES["entity_image"]["name"]);
+
+    if (move_uploaded_file($_FILES["entity_image"]["tmp_name"], $target_file)) {
+      $entity_image_path=$target_file;
+    } else {
+      $_SESSION['error_messages'][]="There was an error uploading your file";
       $_SESSION['form_values']=$_POST;
       die(header('Location: ' . $_SERVER['HTTP_REFERER']));
     }
@@ -255,13 +272,13 @@ $_SESSION['success_messages'][]="Your registration request was successfully subm
 <br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
 
 if ($_POST["selectform"]=='provider') {
-//enviar tudo $entity_name, $entity_address, $entity_email, ... para a base de dados
+//enviar tudo $entity_name, $entity_address, $entity_email, $entity_number, $entity_image_path ... para a base de dados
 //...
 	date_default_timezone_set('America/New_York');
 	$registration_date = date('Y-m-d H:i:s');
 	$verified = 0;
 	$salt = uniqid(mt_rand() , true);
-	$token = msha1(registration_date . md5($salt));
+	$token = sha1(registration_date . md5($salt));
 send_mail_provider($entity_email,$name ,$password,$entity_name,$token);
 } else {
   //enviar apenas dados do client para a base de dados
@@ -269,7 +286,7 @@ send_mail_provider($entity_email,$name ,$password,$entity_name,$token);
 	$registration_date = date('Y-m-d H:i:s');
 	$verified = 0;
 	$salt = uniqid(mt_rand() , true);
-	$token = msha1(registration_date . md5($salt));
+	$token = sha1(registration_date . md5($salt));
 	send_mail_client($mail,$name ,$password,$token);
 }
 

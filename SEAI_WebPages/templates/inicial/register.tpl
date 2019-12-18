@@ -22,7 +22,7 @@
       <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
     {/foreach}
   {/if}
-<form class="form_register" id="form_provider" method="post" action="../actions/register_action.php">
+<form class="form_register" id="form_provider" method="post" action="../actions/register_action.php" enctype="multipart/form-data">
 <table class="tab">
 <tr><td class="gg">
 Entity Name: </td><td class="register"><input type="text" name="entity_name"
@@ -36,9 +36,12 @@ Address: </td><td class="register"><input type="text" name="entity_address"
 E-mail: </td><td class="register"><input type="text" name="entity_email"
           value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.entity_email}{/if}">
 </tr>
-<tr class="space_under"><td>
+<tr><td>
 Phone Number: </td><td class="register"><input type="text" name="entity_number"
           value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.entity_number}{/if}">
+</tr>
+<tr class="space_under"><td>
+Image: </td><td class="register"><input type="file" name="entity_image" id="entity_image" required></td>
 </tr>
 
 <tr><td>
@@ -107,7 +110,7 @@ Confirm Password: </td><td class="register"><input type='password' name="passwor
 
 
 </div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
 

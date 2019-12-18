@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-13 13:39:15
+/* Smarty version 3.1.33, created on 2019-12-18 18:25:33
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\inicial\register.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df3867340c326_74414098',
+  'unifunc' => 'content_5dfa610d20c265_84277856',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '12dbc83b78f6205f29bfbcef3f82ced2f7d20498' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\inicial\\register.tpl',
-      1 => 1576240616,
+      1 => 1576689929,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5df3867340c326_74414098 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5dfa610d20c265_84277856 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
@@ -65,7 +65,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['error']->value) {
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
   <?php }?>
-<form class="form_register" id="form_provider" method="post" action="../actions/register_action.php">
+<form class="form_register" id="form_provider" method="post" action="../actions/register_action.php" enctype="multipart/form-data">
 <table class="tab">
 <tr><td class="gg">
 Entity Name: </td><td class="register"><input type="text" name="entity_name"
@@ -85,11 +85,14 @@ E-mail: </td><td class="register"><input type="text" name="entity_email"
 echo $_smarty_tpl->tpl_vars['form_values']->value['entity_email'];
 }?>">
 </tr>
-<tr class="space_under"><td>
+<tr><td>
 Phone Number: </td><td class="register"><input type="text" name="entity_number"
           value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'provider'))) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['entity_number'];
 }?>">
+</tr>
+<tr class="space_under"><td>
+Image: </td><td class="register"><input type="file" name="entity_image" id="entity_image" required></td>
 </tr>
 
 <tr><td>
@@ -174,7 +177,7 @@ Confirm Password: </td><td class="register"><input type='password' name="passwor
 
 
 </div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
 
