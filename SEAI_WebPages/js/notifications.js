@@ -1,8 +1,8 @@
 $(document).ready(function() {
-  initMessageClosers();
+  initNotificationRead();
 });
 
-function initMessageClosers() {
+function initNotificationRead() {
   $('.notification_mark_read').click(function() {
     $(this).hide();
     //mudar de cor
