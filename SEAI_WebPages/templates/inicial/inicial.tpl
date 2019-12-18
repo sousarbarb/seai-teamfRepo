@@ -51,4 +51,4 @@
 
 {include file='../common/slideshow.tpl'}
 {include file='../common/footer.tpl'}
-<!--{include file='../common/footer-short.tpl'}-->
+{*include file='../common/footer-short.tpl'*}
