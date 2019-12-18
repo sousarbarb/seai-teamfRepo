@@ -9,8 +9,10 @@
 
   {*get notifications from database*}
   {$notifications = [
-                      ["not_read","notificação nao lidaaaaaaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa asaksln adoakldnao dkl adoakd alkd "],
-                      ["read","notificação lida"]
+                      ["not_read","notificação 1 aaaaaaaaaaaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa asaksln adoakldnao dkl adoakd alkd "],
+                      ["not_read","apodamdkapdmada"],
+                      ["read","notificação 2"],
+                      ["read","notificação 3"]
                     ]}
 
   {foreach $notifications as $n => $notification}
@@ -21,17 +23,6 @@
     {/if}
   {/foreach}
 
-
-  {if (isset($success_messages))}
-    {foreach $success_messages as $success}
-      <div class="msg_success">{$success} <a class="msg_close" href="#"  style="text-decoration:none;">&#215;</a></div>
-    {/foreach}
-  {/if}
-  {if (isset($error_messages))}
-    {foreach $error_messages as $error}
-      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
-    {/foreach}
-  {/if}
 </div>
 
 {include file='../common/footer-short.tpl'}
