@@ -52,5 +52,8 @@
     <!-- Vehicles Filter Auto Submit -->
     <script src="{$BASE_URL}js/vehicles_filter.js" type="text/javascript"></script>
 
+    <!-- Notifications -->
+    <script src="{$BASE_URL}js/notifications.js" type="text/javascript"></script>
+
   </head>
 </html>

@@ -61,7 +61,7 @@
           </div>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic menu-highlight {if $menu=="5"} menu-highlight-active {/if}">
+          <a href="{$BASE_URL}pages/menu_notifications.php" class="nav-link text-dark font-italic menu-highlight {if $menu=="5"} menu-highlight-active {/if}">
                     <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-notification.png"></i>
                     Notifications
                 </a>

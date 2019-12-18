@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-18 00:13:57
+/* Smarty version 3.1.33, created on 2019-12-18 04:15:42
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\common\header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df961354e2634_15117594',
+  'unifunc' => 'content_5df999ded6a5b9_89214688',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8c2030028c11a08f43b2918785b2240e9f6f0005' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\common\\header.tpl',
-      1 => 1576624433,
+      1 => 1576638933,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5df961354e2634_15117594 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5df999ded6a5b9_89214688 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <!                                 HEADER                                      >
@@ -114,6 +114,12 @@ js/msg_close.js" type="text/javascript"><?php echo '</script'; ?>
     <?php echo '<script'; ?>
  src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 js/vehicles_filter.js" type="text/javascript"><?php echo '</script'; ?>
+>
+
+    <!-- Notifications -->
+    <?php echo '<script'; ?>
+ src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+js/notifications.js" type="text/javascript"><?php echo '</script'; ?>
 >
 
   </head>

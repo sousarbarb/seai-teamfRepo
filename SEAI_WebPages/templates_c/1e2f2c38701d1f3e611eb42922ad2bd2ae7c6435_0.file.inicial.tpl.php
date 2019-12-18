@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-18 01:12:46
+/* Smarty version 3.1.33, created on 2019-12-18 12:51:56
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\inicial\inicial.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df96efe258731_63009646',
+  'unifunc' => 'content_5dfa12dc770a95_87706283',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1e2f2c38701d1f3e611eb42922ad2bd2ae7c6435' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\inicial\\inicial.tpl',
-      1 => 1576627965,
+      1 => 1576627992,
       2 => 'file',
     ),
   ),
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5df96efe258731_63009646 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5dfa12dc770a95_87706283 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/login_form.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>

@@ -64,7 +64,7 @@
 	<p class="lead text-white mb-0">Request New Mission Plan</p>
 	<div class="separator"></div>
 	<form action="{$BASE_URL}actions/plan_new_mission.php" method="post">
-		<table class="table table-light table-bordered" >
+		<table class="table table-light table-bordered table_plan_new_mission" >
 		  <thead>
 		    <tr>
 		      <th style="text-align: center"> Data Specifications Intended</th>
