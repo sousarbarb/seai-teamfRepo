@@ -11,6 +11,8 @@ function test_input($data) {
 }
 
 function send_mail_provider($email,$username,$password,$entity,$token){
+global $BASE_URL;
+
 $to      = $email; // Send email to our user
 $subject = 'App Signup'; // Give the email a subject
 $message = '
@@ -26,7 +28,7 @@ Entity: '.$entity.'
 ------------------------
 
 Please click this link to verify your email:
- http://'. $BASE_URL .'pages/verifyemail.php?token=' . $token ;
+'. $BASE_URL .'pages/verifyemail.php?token=' . $token ;
 
 // Our message
 
@@ -37,6 +39,8 @@ mail($to, $subject, $message, $headers); // Send our email
 
 
 function send_mail_client($email,$username,$password,$token){
+global $BASE_URL;
+
 $to      = $email; // Send email to our user
 $subject = 'App Signup'; // Give the email a subject
 $message = '
@@ -51,7 +55,7 @@ Password: '.$password.'
 ------------------------
 
 Please click this link to verify your email:
- http://'. $BASE_URL .'pages/verifyemail.php?token=' . $token ;
+'. $BASE_URL .'pages/verifyemail.php?token=' . $token ;
 
 // Our message
 
@@ -343,7 +347,7 @@ if ($_POST["selectform"]=='provider') {
 
   $verified = 0;
   $token = sha1($user);
-  send_mail_client($mail,$user ,$password,$token);
+  send_mail_client($email,$user ,$password,$token);
   $_SESSION['success_messages'][]="Your registration request was successfully submited and you will soon receive an e-mail to confirm it.
   <br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
 }
