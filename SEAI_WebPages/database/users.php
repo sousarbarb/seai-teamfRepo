@@ -312,4 +312,28 @@
     // Return the number of affected rows in this query (!! it works !!)
     return $stm->rowCount();
   }
+  
+  /****************************************************************************************************
+   ***** emailVerificationValidation
+   ****************************************************************************************************
+   * This function has the main goal returning the information of the user based on its crypt key
+   ****************************************************************************************************/
+  
+  function emailVerificationValidation($id_crypt) {
+	  global $conn;
+		  $stm = $conn->prepare('
+			SELECT *
+			FROM   users
+			WHERE  id_crypt = ?
+			RETURNING username
+		  ');
+		  $stm->execute(array($id_crypt));
+		  $nresults = $stm->rowCount;
+		if($nresults == 0)
+		  return -1;
+		else
+			return $stm->fetch();
+}
+  
+  
 ?>
