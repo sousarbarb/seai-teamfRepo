@@ -4,8 +4,16 @@ session_start();
 $BASE_DIR = dirname(__DIR__) . "/" ;
 $BASE_URL = 'http://localhost/seai-teamfRepo/SEAI_WebPages/';
 
+//********************SMARTY*********************
 include_once($BASE_DIR . 'lib/smarty/Smarty.class.php');
 
+$smarty = new Smarty;
+$smarty->assign('BASE_URL', $BASE_URL);
+$smarty->template_dir = $BASE_DIR . 'templates/';
+$smarty->compile_dir = $BASE_DIR . 'templates_c/';
+
+
+//*************DATABSE CONNECTION****************
 /*
 $conn = new PDO('pgsql:host=db.example.com;dbname=db', 'user', 'pass');
 $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -14,10 +22,8 @@ $stmt=$conn->prepare("set schema 'schema_example';");
 $stmt->execute();
 */
 
-$smarty = new Smarty;
-$smarty->assign('BASE_URL', $BASE_URL);
-$smarty->template_dir = $BASE_DIR . 'templates/';
-$smarty->compile_dir = $BASE_DIR . 'templates_c/';
+//**************DATABASE FUNCTIONS***************
+include_once($BASE_DIR . 'database/users.php');
 
 
 
@@ -26,9 +32,10 @@ $smarty->compile_dir = $BASE_DIR . 'templates_c/';
 //unset($_SESSION['login']);  //teste sem login
 //$_SESSION['acc_type']="provider";         //provider ou client
 //$_SESSION['entity_name']="lsts";
-//**************VARIAVEIS TESTE******************
 
 
+
+//**************SESSION VARIABLES SMARTY******************
 if (isset($_SESSION['login'])) {
   $smarty->assign('login', $_SESSION['login']);
 }
@@ -37,8 +44,12 @@ if (isset($_SESSION['acc_type'])) {
   $smarty->assign('acc_type', $_SESSION['acc_type']);
 }
 
-if (isset($_SESSION['entity_name'])) {
+/*if (isset($_SESSION['entity_name'])) {
   $smarty->assign('entity_name', $_SESSION['entity_name']);
+}*/
+
+if (isset($_SESSION['user_id'])) {
+  $smarty->assign('user_id', $_SESSION['user_id']);
 }
 
 if (isset($_SESSION['form_values'])) {

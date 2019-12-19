@@ -24,6 +24,22 @@ $(document).ready(function() {
       r[i].childNodes[0].readOnly = true;
     }
   }
+
+  const realFileBtn = document.getElementById("entity_image");
+  const customBtn = document.getElementById("entity_image_button");
+  const customTxt = document.getElementById("entity_image_txt");
+
+  customBtn.addEventListener("click", function(){
+      realFileBtn.click();
+  });
+
+  realFileBtn.addEventListener("change",function(){
+      if (realFileBtn.value){
+          customTxt.innerHTML=realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+      } else {
+          customTxt.innerHTML="No file chosen,yet";
+      }
+  });
 });
 
 function auto_click_provider() {

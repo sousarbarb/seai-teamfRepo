@@ -6,6 +6,7 @@ function test_input($data) {
   $data = trim($data);
   $data = stripslashes  ($data);
   $data = htmlspecialchars($data);
+  $data = strip_tags($data);
   return $data;
 }
 
@@ -268,26 +269,78 @@ if ($_POST["password"] != $_POST["password2"]) {
 //verificar se username não existe na base de dados
 //...
 
-$_SESSION['success_messages'][]="Your registration request was successfully submited and you<br> will soon receive an e-mail with the final approval.
-<br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
-
 if ($_POST["selectform"]=='provider') {
-//enviar tudo $entity_name, $entity_address, $entity_email, $entity_number, $entity_image_path ... para a base de dados
-//...
+  //email de veriicação
 	date_default_timezone_set('America/New_York');
 	$registration_date = date('Y-m-d H:i:s');
 	$verified = 0;
 	$salt = uniqid(mt_rand() , true);
 	$token = sha1(registration_date . md5($salt));
-send_mail_provider($entity_email,$name ,$password,$entity_name,$token);
+  send_mail_provider($entity_email,$name ,$password,$entity_name,$token);
+
+  //guardar na DB todos os dados (provider)
+  //$result = createServiceProvider($user, $password,
+  //                              $entity_name, $entity_email, $entity_address, $entity_number, $entity_image,
+  //                              $name, $email, $number);
+
+  $result = 0;
+
+  switch ($result) {
+    case -1:
+      $_SESSION['error_messages'][] = 'Username already exists in the platform';
+      break;
+    case -2:
+      $_SESSION['error_messages'][] = 'Entity e-mail already registered in the platform';
+      break;
+    case -3:
+      $_SESSION['error_messages'][] = 'Entity name already defined in the database';
+      break;
+    case -4:
+      $_SESSION['error_messages'][] = 'Insertion in the database was not possible';
+      break;
+  }
+  if( $result !== 0 ){
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
+
+  $_SESSION['success_messages'][]="Your registration request was successfully submited and you will soon receive an e-mail to confirm it.
+  <br>Since it is a Service Provider account, it needs to be verified and you will be contacted with the final approval.
+  <br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
 } else {
-  //enviar apenas dados do client para a base de dados
-  	date_default_timezone_set('America/New_York');
+  //email de verificação
+  date_default_timezone_set('America/New_York');
 	$registration_date = date('Y-m-d H:i:s');
 	$verified = 0;
 	$salt = uniqid(mt_rand() , true);
 	$token = sha1(registration_date . md5($salt));
 	send_mail_client($mail,$name ,$password,$token);
+
+  //enviar apenas dados do client para a base de dados
+  //$result = createServiceClient($user, $password,
+  //                            $name, $email, $number);
+
+  switch ($result) {
+    case -1:
+      $_SESSION['error_messages'][] = 'Username already exists in the platform';
+      break;
+    case -2:
+      $_SESSION['error_messages'][] = 'E-mail already registered in the platform';
+      break;
+    case -3:
+      $_SESSION['error_messages'][] = 'Name already defined in the database';
+      break;
+    case -4:
+      $_SESSION['error_messages'][] = 'Insertion in the database was not possible';
+      break;
+  }
+  if( $result !== 0 ){
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
+
+  $_SESSION['success_messages'][]="Your registration request was successfully submited and you will soon receive an e-mail to confirm it.
+  <br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
 }
 
 $_SESSION['form_values']=$_POST;
