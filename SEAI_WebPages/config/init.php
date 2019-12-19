@@ -14,10 +14,10 @@ $smarty->compile_dir = $BASE_DIR . 'templates_c/';
 
 
 //*************DATABSE CONNECTION****************
+$conn = new PDO('pgsql:host=128.199.59.162;dbname=seai', 'sousa', 'sousa');
+$conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);  // Enables by default the associative fetch mode from queries
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);       // Enables the exception handling mechanism
 /*
-$conn = new PDO('pgsql:host=db.example.com;dbname=db', 'user', 'pass');
-$conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $stmt=$conn->prepare("set schema 'schema_example';");
 $stmt->execute();
 */

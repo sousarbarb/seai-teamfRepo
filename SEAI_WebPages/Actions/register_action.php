@@ -109,7 +109,7 @@ if ($_POST["selectform"]=='provider') {
   } else {
     $entity_number = test_input($_POST["entity_number"]);
     if ((!is_numeric ($entity_number)) || (!(preg_match('/^\+\d+$/', $entity_number)))  || (strlen($entity_number)<5)) {
-      $_SESSION['error_messages'][]="Entity phone number should be valid and contain a country calling code<br>following the pattern +[code][number]";
+      $_SESSION['error_messages'][]="Entity phone number should be valid and contain a country calling code following the pattern +[code][number]";
       $_SESSION['form_values']=$_POST;
       die(header('Location: ' . $_SERVER['HTTP_REFERER']));
     }
@@ -125,7 +125,7 @@ if ($_POST["selectform"]=='provider') {
     $target_file = $target_dir . basename($_FILES["entity_image"]["name"]);
 
     if (move_uploaded_file($_FILES["entity_image"]["tmp_name"], $target_file)) {
-      $entity_image_path=$target_file;
+      $entity_image_path = "images/logo/" . basename($_FILES["entity_image"]["name"]);
     } else {
       $_SESSION['error_messages'][]="There was an error uploading your file";
       $_SESSION['form_values']=$_POST;
@@ -168,7 +168,7 @@ if ($_POST["selectform"]=='provider') {
   } else {
     $number = test_input($_POST["number"]);
     if ((!is_numeric ($number)) || (!(preg_match('/^\+\d+$/', $number))) || (strlen($number)<5)) {
-      $_SESSION['error_messages'][]="Representative phone number should be valid and contain a country calling code<br>following the pattern +[code][number]";
+      $_SESSION['error_messages'][]="Representative phone number should be valid and contain a country calling code following the pattern +[code][number]";
       $_SESSION['form_values']=$_POST;
       die(header('Location: ' . $_SERVER['HTTP_REFERER']));
     }
@@ -185,6 +185,19 @@ if ($_POST["selectform"]=='provider') {
     $name = test_input($_POST["name"]);
     if ((strlen($name)<3) || !(preg_match('/^[a-zA-Z ]+$/', $name))) {
       $_SESSION['error_messages'][]="Name should contain more than 3 characters and should only contain letters";
+      $_SESSION['form_values']=$_POST;
+      die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+    }
+  }
+
+  if ((empty($_POST["address"])) || (ctype_space($_POST['address']))) {
+    $_SESSION['error_messages'][]="Address required";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  } else {
+    $address = test_input($_POST["address"]);
+    if (strlen($address)<10) {
+      $_SESSION['error_messages'][]="Address should contain more than 10 characters";
       $_SESSION['form_values']=$_POST;
       die(header('Location: ' . $_SERVER['HTTP_REFERER']));
     }
@@ -213,7 +226,7 @@ if ($_POST["selectform"]=='provider') {
   else {
       $number = test_input($_POST["number"]);
     if ((!is_numeric ($number)) || (!(preg_match('/^\+\d+$/', $number))) || (strlen($number)<5)) {
-      $_SESSION['error_messages'][]="Representative phone number should be valid and contain a country calling code<br>following the pattern +[code][number]";
+      $_SESSION['error_messages'][]="Representative phone number should be valid and contain a country calling code following the pattern +[code][number]";
       $_SESSION['form_values']=$_POST;
       die(header('Location: ' . $_SERVER['HTTP_REFERER']));
     }
@@ -266,18 +279,14 @@ if ($_POST["password"] != $_POST["password2"]) {
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
 
-//verificar se username não existe na base de dados
-//...
-
 if ($_POST["selectform"]=='provider') {
 
-
   //guardar na DB todos os dados (provider)
-  //$result = createServiceProvider($user, $password,
-  //                              $entity_name, $entity_email, $entity_address, $entity_number, $entity_image,
-  //                              $name, $email, $number);
+  $result = createServiceProvider($user, $password,
+                                $entity_name, $entity_email, $entity_address, $entity_number, $entity_image_path,
+                                $name, $email, $number);
 
-  $result = 0;
+  //$result = 0; //teste sem DB
 
   switch ($result) {
     case -1:
@@ -299,17 +308,18 @@ if ($_POST["selectform"]=='provider') {
   }
 	 //email de veriicação
   $verified = 0;
-  $token = sha1($name);
-  send_mail_provider($entity_email,$name ,$password,$entity_name,$token);
+  $token = sha1($user);
+  send_mail_provider($entity_email,$user ,$password,$entity_name,$token);
   $_SESSION['success_messages'][]="Your registration request was successfully submited and you will soon receive an e-mail to confirm it.
   <br>Since it is a Service Provider account, it needs to be verified and you will be contacted with the final approval.
   <br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
 } else {
 
-
   //enviar apenas dados do client para a base de dados
-  //$result = createServiceClient($user, $password,
-  //                            $name, $email, $number);
+  $result = createServiceClient($user, $password,
+                              $name, $email, $address, $number);
+
+  //$result = 0; //teste sem DB
 
   switch ($result) {
     case -1:
@@ -330,10 +340,10 @@ if ($_POST["selectform"]=='provider') {
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
   //email de verificação
-  
+
   $verified = 0;
-  $token = sha1($name);
-  send_mail_client($mail,$name ,$password,$token);
+  $token = sha1($user);
+  send_mail_client($mail,$user ,$password,$token);
   $_SESSION['success_messages'][]="Your registration request was successfully submited and you will soon receive an e-mail to confirm it.
   <br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
 }

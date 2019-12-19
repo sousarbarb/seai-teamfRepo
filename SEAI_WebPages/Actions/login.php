@@ -20,9 +20,9 @@
 
 
 try {
-  //$check_login = loginValidation($user);
+  $login_data = loginValidation($user);
 
-  $login_data = [
+  /*$login_data = [ //teste return DB
     "username"=>$user,
     "password"=>sha1($password),
     "status"=>"Active",
@@ -30,9 +30,9 @@ try {
     "service_provider_id"=>"1",
     "service_provider_admin_perm"=>TRUE,
     "service_client_id"=>""
-  ];
+  ];*/
 
-  //$login_data=[];
+  //$login_data=[]; //teste return DB vazio
 
   if (empty($login_data)) {
     $_SESSION['error_messages'][] = 'Username Not Registered in the Platform';
@@ -80,7 +80,7 @@ try {
       break;
   }
 
-  /* //old
+  /* //old teste
   $_SESSION['login'] = $user;
   $_SESSION['acc_type'] = $acc_type; //----deve vir da base de dados-----
   if ($acc_type=='provider') {

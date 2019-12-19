@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-19 14:57:06
+/* Smarty version 3.1.33, created on 2019-12-19 20:17:01
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\inicial\register.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5dfb81b2ecc185_93678171',
+  'unifunc' => 'content_5dfbccad9d9005_10566610',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '12dbc83b78f6205f29bfbcef3f82ced2f7d20498' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\inicial\\register.tpl',
-      1 => 1576763826,
+      1 => 1576782092,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5dfb81b2ecc185_93678171 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5dfbccad9d9005_10566610 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
@@ -143,6 +143,12 @@ echo $_smarty_tpl->tpl_vars['form_values']->value['user'];
     Name: </td><td class="register"><input type="text" name="name"
               value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'client'))) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['name'];
+}?>">
+    </tr>
+    <tr><td>
+    Address: </td><td class="register"><input type="text" name="address"
+              value="<?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['selectform'] == 'client'))) {
+echo $_smarty_tpl->tpl_vars['form_values']->value['address'];
 }?>">
     </tr>
     <tr><td>

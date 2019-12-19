@@ -10,7 +10,7 @@ function test_input($data) {
 
 // Required field names
 if ($acc_type=="client") {
-  $required=array('name','email','number');
+  $required=array('name','address','email','number');
 } else {
   $required=array('name','email','number','entity_name','entity_address',
                 'entity_email','entity_number');
@@ -31,6 +31,14 @@ if ((strlen($_POST['name'])<3) || !(preg_match('/^[a-zA-Z ]+$/', $_POST['name'])
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
 
+if ($acc_type=='client') {
+  if (strlen($_POST['address'])<10) {
+    $_SESSION['error_messages'][]="Address should contain more than 10 characters";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
+}
+
 if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
   $_SESSION['error_messages'][] = "Invalid email format";
   $_SESSION['form_values']=$_POST;
@@ -43,7 +51,7 @@ if (!(preg_match('/^\+\d+$/', $_POST['number'])) || (strlen($_POST['number'])<5)
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
 
-if ($acc_type!="client") {
+if ($acc_type=="provider") {
   if (strlen($_POST['entity_name'])<3) {
     $_SESSION['error_messages'][]="Entity name should contain more than 3 characters";
     $_SESSION['form_values']=$_POST;

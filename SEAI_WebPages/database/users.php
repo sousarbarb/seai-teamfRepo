@@ -2,11 +2,11 @@
   /****************************************************************************************************
    ***** LOGINVALIDATION
    ****************************************************************************************************
-   * Validates the login by retrieving all the camps necessary to verify if the credentials entered 
+   * Validates the login by retrieving all the camps necessary to verify if the credentials entered
    * in the login form are correct.
-   * In addition to this, this function also retireves the possible user type in order to identity 
+   * In addition to this, this function also retireves the possible user type in order to identity
    * immediately the user type to generate the different menus associated with each.
-   * 
+   *
    * Output example without the WHERE constrain (the result with WHERE should be 1 or 0 rows!):
    *      username     |                 password                 |           status            | admin_id | service_provider_id | service_provider_admin_perm | service_client_id
    * ------------------+------------------------------------------+-----------------------------+----------+---------------------+-----------------------------+-------------------
@@ -27,14 +27,14 @@
              admin.id                   AS admin_id,
              service_provider.id        AS service_provider_id,
              service_provider.approval  AS service_provider_admin_perm,
-             service_client.id          AS service_client_id 
+             service_client.id          AS service_client_id
       FROM users
       FULL OUTER JOIN admin             ON users.username = admin.user_id
       FULL OUTER JOIN service_provider  ON users.username = service_provider.user_id
       FULL OUTER JOIN service_client    ON users.username = service_client.user_id
       WHERE username = ?");
     $stm->execute(array($username));
-    
+
     return $stm->fetch();
   }
 
@@ -42,24 +42,24 @@
    ****** CREATESERVICEPROVIDER
    ****************************************************************************************************
    * Creates a new service provider accordlyng with informatios passed in function arguments. Also,
-   * it is checked the credentials searching if there is already an entity with some of these 
+   * it is checked the credentials searching if there is already an entity with some of these
    * informations registered in the platform.
-   * 
+   *
    * NOTE: possible values for user status:
-   * - Waiting e-mail confirmation : after registing the user into the platform, he must confirm, in 
+   * - Waiting e-mail confirmation : after registing the user into the platform, he must confirm, in
    *                                 his e-mail, the credentials inserted;
-   * - Active                      : in this state, the service_provider has all the capabilities to 
+   * - Active                      : in this state, the service_provider has all the capabilities to
    *                                 acces the plataform;
-   * - Inactive                    : after account removal, by the user itself or by an administrator, 
+   * - Inactive                    : after account removal, by the user itself or by an administrator,
    *                                 the account passes to inactive (to maintain the data coerency).
-   * 
+   *
    * ERRORS CONSIDERED:
    * -1: Username already exists in the platform;
    * -2: Entity e-mail already is registered in the platform;
    * -3: Entity name already is defined in the database;
    * -4: Insertion in the database was not possible.
    ****************************************************************************************************/
-  function createServiceProvider($username, $password, 
+  function createServiceProvider($username, $password,
                                  $entity_name, $entity_email, $entity_address, $entity_phone_number, $entity_logo_path,
                                  $represent_name, $represent_email, $represent_phone_number) {
     // Global variable: connection to the database
@@ -110,21 +110,21 @@
       VALUES ( ? , ? , ? , ? , ? )
     ");
     $stm->execute(array($username,
-                        $entity_email, 
-                        sha1($password), 
-                        "Waiting e-mail confirmation", 
+                        $entity_email,
+                        sha1($password),
+                        "Waiting e-mail confirmation",
                         sha1($username)));
 
     // 2: Insertion in the service_provider table
     $stm = $conn->prepare("
       INSERT INTO service_provider (
-        entity_name, 
-        address, 
-        phone_number, 
-        official_representative,  
+        entity_name,
+        address,
+        phone_number,
+        official_representative,
         mail_representative,
-        phone_number_representative, 
-        logo_path, 
+        phone_number_representative,
+        logo_path,
         user_id,
         approval
       )
@@ -150,7 +150,7 @@
       $stm->execute(array($username));
       return -4;    // Insertion was not completed successfully!
     }
-    
+
     // Return boolean to report a successful or insuccess user insertion into database
     return 0;
   }
@@ -159,24 +159,24 @@
    ***** CREATESERVICECLIENT
    ****************************************************************************************************
    * Creates a service client with the informations provided by the function arguments. Also, checks
-   * these informations searching in the database if there is any match to not allow duplicated 
+   * these informations searching in the database if there is any match to not allow duplicated
    * registration credentials.
-   * 
+   *
    * NOTE: possible values for user status:
-   * - Waiting e-mail confirmation : after registing the user into the platform, he must confirm, in 
+   * - Waiting e-mail confirmation : after registing the user into the platform, he must confirm, in
    *                                 his e-mail, the credentials inserted;
-   * - Active                      : in this state, the service_provider has all the capabilities to 
+   * - Active                      : in this state, the service_provider has all the capabilities to
    *                                 acces the plataform;
-   * - Inactive                    : after account removal, by the user itself or by an administrator, 
+   * - Inactive                    : after account removal, by the user itself or by an administrator,
    *                                 the account passes to inactive (to maintain the data coerency).
-   * 
+   *
    * ERRORS CONSIDERED:
    * -1: Username already exists in the platform;
    * -2: Client e-mail already is registered in the platform;
    * -3: Client name already is defined in the database;
    * -4: Insertion in the database was not possible.
    ****************************************************************************************************/
-  function createServiceClient($username, $password, 
+  function createServiceClient($username, $password,
                                $client_name, $client_email, $client_address, $client_phone) {
     // Global variable: connection to the database
     global $conn;
@@ -226,22 +226,22 @@
       VALUES ( ? , ? , ? , ? , ? )
     ");
     $stm->execute(array($username,
-                        $client_email, 
-                        sha1($password), 
-                        "Waiting e-mail confirmation", 
+                        $client_email,
+                        sha1($password),
+                        "Waiting e-mail confirmation",
                         sha1($username)));
 
     // 2: Insertion in the service_provider table
     $stm = $conn->prepare("
       INSERT INTO service_client (
-        client_name, 
-        address, 
+        client_name,
+        address,
         phone_number,
         user_id
       )
       VALUES ( ? , ? , ? , ? )
     ");
-    
+
     // If any error occours, it is deleted the user from users table
     try{
       $stm->execute(array($client_name,
@@ -256,7 +256,7 @@
       $stm->execute(array($username));
       return -4;    // Insertion was not completed successfully!
     }
-    
+
     // Return boolean to report a successful or insuccess user insertion into database
     return 0;
   }
@@ -264,21 +264,21 @@
   /****************************************************************************************************
    ***** EDITUSERSTATUS
    ****************************************************************************************************
-   * Given an unsername and a possible status for the specific user, his status is updated in the 
+   * Given an unsername and a possible status for the specific user, his status is updated in the
    * database.
-   * 
+   *
    * The possible status, for now available, are the following ones:
-   * - Waiting e-mail confirmation : after registing the user into the platform, he must confirm, in 
+   * - Waiting e-mail confirmation : after registing the user into the platform, he must confirm, in
    *                                 his e-mail, the credentials inserted;
-   * - Active                      : in this state, the service_provider has all the capabilities to 
+   * - Active                      : in this state, the service_provider has all the capabilities to
    *                                 acces the plataform;
-   * - Inactive                    : after account removal, by the user itself or by an administrator, 
+   * - Inactive                    : after account removal, by the user itself or by an administrator,
    *                                 the account passes to inactive (to maintain the data coerency).
    ****************************************************************************************************/
   function editUserStatus($username, $status){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Update status (assuming that the username is valid!)
     $stm = $conn->prepare("
         UPDATE users
@@ -301,7 +301,7 @@
   function editServiceProviderApproval($entity_name, $approval) {
     // Global variable: connection to the database
     global $conn;
-    
+
     // Update status (assuming that the entity_name is valid!)
     $stm = $conn->prepare("
         UPDATE service_provider
@@ -312,28 +312,27 @@
     // Return the number of affected rows in this query (!! it works !!)
     return $stm->rowCount();
   }
-  
+
   /****************************************************************************************************
    ***** emailVerificationValidation
    ****************************************************************************************************
    * This function has the main goal returning the information of the user based on its crypt key
    ****************************************************************************************************/
-  
+
   function emailVerificationValidation($id_crypt) {
 	  global $conn;
 		  $stm = $conn->prepare('
 			SELECT *
 			FROM   users
 			WHERE  id_crypt = ?
-			RETURNING username
 		  ');
 		  $stm->execute(array($id_crypt));
-		  $nresults = $stm->rowCount;
+		  $nresults = $stm->rowCount();
 		if($nresults == 0)
 		  return -1;
 		else
 			return $stm->fetch();
 }
-  
-  
+
+
 ?>

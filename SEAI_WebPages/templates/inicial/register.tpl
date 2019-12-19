@@ -85,6 +85,10 @@
               value="{if (isset($form_values) && ($form_values.selectform=='client'))}{$form_values.name}{/if}">
     </tr>
     <tr><td>
+    Address: </td><td class="register"><input type="text" name="address"
+              value="{if (isset($form_values) && ($form_values.selectform=='client'))}{$form_values.address}{/if}">
+    </tr>
+    <tr><td>
     E-mail: </td><td class="register"><input type="text" name="email"
               value="{if (isset($form_values) && ($form_values.selectform=='client'))}{$form_values.email}{/if}">
     </tr>

@@ -510,7 +510,7 @@ a.menu-highlight:hover {
 }
 
 .myaccountlabel {
-  width: 10rem;
+  width: 15rem;
   font-size:1.25rem;
   font-weight:300;
 }
@@ -546,6 +546,7 @@ opacity: 0.8;
   padding-bottom: 1em;
   margin-top: 1em;
   border-radius: 2em;
+  text-align: center;
 }
 
 .msg_error {
@@ -554,6 +555,7 @@ opacity: 0.8;
   padding-bottom: 1em;
   margin-top: 1em;
   border-radius: 2em;
+  text-align: center;
 }
 
 .msg_close {
