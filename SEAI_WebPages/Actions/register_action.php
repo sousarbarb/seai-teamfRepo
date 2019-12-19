@@ -10,7 +10,7 @@ function test_input($data) {
   return $data;
 }
 
-function send_mail_provider($email,$username,$password,$entity){
+function send_mail_provider($email,$username,$password,$entity,$token){
 $to      = $email; // Send email to our user
 $subject = 'App Signup'; // Give the email a subject
 $message = '
@@ -36,7 +36,7 @@ mail($to, $subject, $message, $headers); // Send our email
 }
 
 
-function send_mail_client($email,$username,$password){
+function send_mail_client($email,$username,$password,$token){
 $to      = $email; // Send email to our user
 $subject = 'App Signup'; // Give the email a subject
 $message = '
@@ -270,13 +270,7 @@ if ($_POST["password"] != $_POST["password2"]) {
 //...
 
 if ($_POST["selectform"]=='provider') {
-  //email de veriicação
-	date_default_timezone_set('America/New_York');
-	$registration_date = date('Y-m-d H:i:s');
-	$verified = 0;
-	$salt = uniqid(mt_rand() , true);
-	$token = sha1(registration_date . md5($salt));
-  send_mail_provider($entity_email,$name ,$password,$entity_name,$token);
+
 
   //guardar na DB todos os dados (provider)
   //$result = createServiceProvider($user, $password,
@@ -303,18 +297,15 @@ if ($_POST["selectform"]=='provider') {
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
-
+	 //email de veriicação
+  $verified = 0;
+  $token = sha1($name);
+  send_mail_provider($entity_email,$name ,$password,$entity_name,$token);
   $_SESSION['success_messages'][]="Your registration request was successfully submited and you will soon receive an e-mail to confirm it.
   <br>Since it is a Service Provider account, it needs to be verified and you will be contacted with the final approval.
   <br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
 } else {
-  //email de verificação
-  date_default_timezone_set('America/New_York');
-	$registration_date = date('Y-m-d H:i:s');
-	$verified = 0;
-	$salt = uniqid(mt_rand() , true);
-	$token = sha1(registration_date . md5($salt));
-	send_mail_client($mail,$name ,$password,$token);
+
 
   //enviar apenas dados do client para a base de dados
   //$result = createServiceClient($user, $password,
@@ -338,7 +329,11 @@ if ($_POST["selectform"]=='provider') {
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
-
+  //email de verificação
+  
+  $verified = 0;
+  $token = sha1($name);
+  send_mail_client($mail,$name ,$password,$token);
   $_SESSION['success_messages'][]="Your registration request was successfully submited and you will soon receive an e-mail to confirm it.
   <br>Click <a href='{$BASE_URL}pages/index.php'>here</a> to go back";
 }
