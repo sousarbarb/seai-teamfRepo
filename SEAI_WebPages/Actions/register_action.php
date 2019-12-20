@@ -64,6 +64,7 @@ mail($to, $subject, $message, $headers); // Send our email
 
 }
 
+$send_image = '0';
 
 if ($_POST["selectform"]=='provider') {
   if ((empty($_POST['entity_name'])) || (ctype_space($_POST['entity_name']))) {
@@ -119,7 +120,7 @@ if ($_POST["selectform"]=='provider') {
     }
   }
 
-  if (($_FILES['entity_image']['size'] == 0) && ($_FILES['entity_image']['error'] == 0)) {
+  if ($_FILES['entity_image']['size'] == 0) {
     $_SESSION['error_messages'][]="Entity image required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -128,13 +129,20 @@ if ($_POST["selectform"]=='provider') {
     $target_dir = "../images/logo/";
     $target_file = $target_dir . basename($_FILES["entity_image"]["name"]);
 
-    if (move_uploaded_file($_FILES["entity_image"]["tmp_name"], $target_file)) {
-      $entity_image_path = "images/logo/" . basename($_FILES["entity_image"]["name"]);
-    } else {
-      $_SESSION['error_messages'][]="There was an error uploading your file";
+    if (file_exists($target_file)) {
+      $_SESSION['error_messages'][]="File already exists";
       $_SESSION['form_values']=$_POST;
       die(header('Location: ' . $_SERVER['HTTP_REFERER']));
     }
+
+    $check = getimagesize($_FILES["entity_image"]["tmp_name"]);
+    if($check === false) {
+      $_SESSION['error_messages']="File is not an image";
+      $_SESSION['form_values']=$_POST;
+      die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+    }
+
+    $send_image = '1';
   }
 
   if ((empty($_POST["name"])) || (ctype_space($_POST['name']))) {
@@ -282,6 +290,17 @@ if ($_POST["password"] != $_POST["password2"]) {
   $_SESSION['form_values']=$_POST;
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
+
+if ($send_image == '1') {
+  if (move_uploaded_file($_FILES["entity_image"]["tmp_name"], $target_file)) {
+    $entity_image_path = "images/logo/" . basename($_FILES["entity_image"]["name"]);
+  } else {
+    $_SESSION['error_messages'][]="There was an error uploading your file";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
+}
+
 
 if ($_POST["selectform"]=='provider') {
 

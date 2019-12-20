@@ -42,7 +42,7 @@
               value="{if (isset($form_values) && ($form_values.selectform=='provider'))}{$form_values.entity_number}{/if}">
     </tr>
     <tr class="space_under"><td>
-    Image: </td><td class="register"><input type="file" name="entity_image" id="entity_image" hidden="hidden" required/>
+    Image: </td><td class="register"><input type="file" name="entity_image" id="entity_image" hidden="hidden" />
     <button type="button" id="entity_image_button" class="button4 button_provider_hist">Choose a File</button>
     <span id="entity_image_txt" class="custom-txt">No file chosen, yet</span></td>
     </tr>

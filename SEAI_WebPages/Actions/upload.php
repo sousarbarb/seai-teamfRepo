@@ -17,7 +17,7 @@ if (($_FILES['real-file']['size'] == 0) && ($_FILES['real-file']['error'] == 0))
 
 
     if (move_uploaded_file($_FILES["real-file"]["tmp_name"], $target_file)) {
-      $entity_image_path=$target_file;
+      $entity_image_path = "files/" . basename($_FILES["real-file"]["name"]);;
     } else {
       $_SESSION['error_messages'][]="There was an error uploading your file";
       $_SESSION['form_values']=$_POST;
