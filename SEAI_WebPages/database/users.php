@@ -283,9 +283,10 @@
 
     // Update status (assuming that the username is valid!)
     $stm = $conn->prepare("
-        UPDATE users
-        SET    status   = ?
-        WHERE  username = ?");
+      UPDATE users
+      SET    status   = ?
+      WHERE  username = ?
+    ");
     $stm->execute(array($status, $username));
 
     // Return the number of affected rows in this query (!! it works !!)
@@ -306,9 +307,10 @@
 
     // Update status (assuming that the entity_name is valid!)
     $stm = $conn->prepare("
-        UPDATE service_provider
-        SET    approval = ?
-        WHERE  entity_name = ?");
+      UPDATE service_provider
+      SET    approval = ?
+      WHERE  entity_name = ?
+    ");
     $stm->execute(array($approval? 'TRUE':'FALSE', $entity_name));
 
     // Return the number of affected rows in this query (!! it works !!)
@@ -316,21 +318,25 @@
   }
 
   /****************************************************************************************************
-   ***** emailVerificationValidation
+   ***** EMAILVERIFICATIONVALIDATION
    ****************************************************************************************************
-   * This function has the main goal returning the information of the user based on its crypt key
+   * This function has the main goal OF returning the user information based on username encription.
    ****************************************************************************************************/
-
   function emailVerificationValidation($id_crypt) {
+    // Global variable: connection to the database
 	  global $conn;
-		  $stm = $conn->prepare('
+		
+    // Get user information by username sha1 encryption
+    $stm = $conn->prepare("
 			SELECT *
 			FROM   users
 			WHERE  id_crypt = ?
-		  ');
-		  $stm->execute(array($id_crypt));
-		  $nresults = $stm->rowCount();
-		if($nresults == 0)
+		");
+		$stm->execute(array($id_crypt));
+		$nresults = $stm->rowCount();
+		
+    // Returns the row with user informations or an error identifying the case where user or doesn't exist or e-mail isn't validated
+    if($nresults == 0)
 		  return -1;
 		else
 			return $stm->fetch();
