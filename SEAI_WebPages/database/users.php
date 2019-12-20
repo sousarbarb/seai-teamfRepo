@@ -27,13 +27,12 @@
              admin.id                   AS admin_id,
              service_provider.id        AS service_provider_id,
              service_provider.approval  AS service_provider_admin_perm,
-             service_client.id          AS service_client_id
+             service_client.id          AS service_client_id 
       FROM users
       FULL OUTER JOIN admin             ON users.username = admin.user_id
-      FULL OUTER JOIN service_provider  ON users.username = service_provider.user_id AND service_provider.approval = TRUE
+      FULL OUTER JOIN service_provider  ON users.username = service_provider.user_id
       FULL OUTER JOIN service_client    ON users.username = service_client.user_id
-      WHERE username = ?        AND
-            status   = 'Active'
+      WHERE username = ?
     ");
     $stm->execute(array($username));
 
