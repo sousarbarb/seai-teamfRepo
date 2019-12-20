@@ -67,7 +67,7 @@ try {
   $_SESSION['login'] = $user;
 
   // Check User status
-  switch ($user['status']) {
+  switch ($login_data['status']) {
     case 'Inactive':
       $_SESSION['error_messages'][] = 'Account inactive. Please contact the administrators in order to obtain more informations';
       $_SESSION['form_values'] = $_POST;
