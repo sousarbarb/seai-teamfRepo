@@ -30,9 +30,11 @@
              service_client.id          AS service_client_id
       FROM users
       FULL OUTER JOIN admin             ON users.username = admin.user_id
-      FULL OUTER JOIN service_provider  ON users.username = service_provider.user_id
+      FULL OUTER JOIN service_provider  ON users.username = service_provider.user_id AND service_provider.approval = TRUE
       FULL OUTER JOIN service_client    ON users.username = service_client.user_id
-      WHERE username = ?");
+      WHERE username = ?        AND
+            status   = 'Active'
+    ");
     $stm->execute(array($username));
 
     return $stm->fetch();
