@@ -339,7 +339,212 @@
 		  return -1;
 		else
 			return $stm->fetch();
-}
+  }
 
+  /****************************************************************************************************
+   ***** GETSPECIFICSERVICEPROVIDERINFO
+   ****************************************************************************************************
+   * This function returns the information saved in the database relative to a specific service 
+   * provider. 
+   * The column names in the fetched row are the following ones:
+   * - username          : user's username;
+   * - entity_email      : email to contact the entity / service provider;
+   * - entity_name       : entity name;
+   * - entity_address    : entity address;
+   * - entity_phonenumber: entity phonenumber to contact directly the service provider;
+   * - repres_name       : representative name of the service provicer;
+   * - repres_email      : representative email of the service provicer;
+   * - repres_phonenumber: representative phone number of the service provicer;
+   * - entity_logopath   : path in the web server of entity logo.
+   ****************************************************************************************************/
+  function getSpecificServiceProviderInfo($username) {
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get service provider information
+    $stm = $conn->prepare("
+      SELECT username                    AS username,
+             e_mail                      AS entity_email,
+             entity_name                 AS entity_name,
+             address                     AS entity_address,
+             phone_number                AS entity_phonenumber,
+             official_representative     AS repres_name,
+             mail_representative         AS repres_email,
+             phone_number_representative AS repres_phonenumber,
+             logo_path                   AS entity_logopath
+      FROM   users, service_provider
+      WHERE  users.username = service_provider.user_id AND
+             users.username = ?
+    ");
+    $stm->execute(array($username));
+    
+    // Return user information
+    return $stm->fetch();
+  }
+
+  /****************************************************************************************************
+   ***** GETSPECIFICSERVICECLIENTINFO
+   ****************************************************************************************************
+   * This function returns the information saved in the database relative to a specific service 
+   * client. 
+   * The column names in the fetched row are the following ones:
+   * - username          : user's username;
+   * - client_email      : email to contact the service client;
+   * - client_name       : client name;
+   * - client_address    : client address;
+   * - client_phonenumber: client phonenumber.
+   ****************************************************************************************************/
+  function getSpecificServiceClientInfo($username) {
+    // Global variable: connection to the database
+	  global $conn;
+    
+    // Get service client information
+    $stm = $conn->prepare("
+      SELECT username     AS username,
+             e_mail       AS client_email,
+             client_name  AS client_name,
+             address      AS client_address,
+             phone_number AS client_phonenumber
+      FROM   users, service_client
+      WHERE  users.username = service_client.user_id AND
+             users.username = ?
+    ");
+    $stm->execute(array($username));
+    
+    // Return user information
+    return $stm->fetch();
+  }
+
+  /****************************************************************************************************
+   ***** GETSPECIFICADMINISTRATORINFO
+   ****************************************************************************************************
+   * This function returns all the information saved relative to a specific platform administrator.
+   ****************************************************************************************************/
+  function getSpecificAdministratorInfo($username) {
+    // Global variable: connection to the database
+	  global $conn;
+    
+    // Get administrator information
+    $stm = $conn->prepare("
+      SELECT username     AS username,
+             e_mail       AS admin_email
+      FROM   users, admin
+      WHERE  users.username = admin.user_id AND
+             users.username = ?
+    ");
+    $stm->execute(array($username));
+    
+    // Return user information
+    return $stm->fetch();
+  }
+
+  /****************************************************************************************************
+   ***** EDITSPECIFICSERVICEPROVIDERINFO
+   ****************************************************************************************************
+   * This function has the main goal to allow the user editing his personnal informations. In this
+   * case, the type of user considerer is a service provider.
+   ****************************************************************************************************/
+  function editSpecificServiceProviderInfo($username, $entity_name, $entity_email, $entity_address, $entity_phone_number, $entity_logo_path,
+                                           $represent_name, $represent_email, $represent_phone_number) {
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Update service provider information
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    email    = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array($entity_email, $username));
+
+    $stm = $conn->prepare("
+      UPDATE service_provider
+      SET    entity_name                 = ?,
+             address                     = ?,
+             phone_number                = ?,
+             official_representative     = ?,
+             mail_representative         = ?,
+             phone_number_representative = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array($entity_name, $entity_address, $entity_phone_number, $represent_name, $represent_email, $represent_phone_number, $username));
+
+    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
+    return $stm->rowCount();
+  }
+
+  /****************************************************************************************************
+   ***** EDITSPECIFICSERVICECLIENTINFO
+   ****************************************************************************************************
+   * This function has the main goal to allow the user editing his personnal informations. In this
+   * case, the type of user considerer is a service client.
+   ****************************************************************************************************/
+  function editSpecificServiceClientInfo($username, $client_name, $client_email, $client_address, $client_phone) {
+    // Global variable: connection to the database
+	  global $conn;
+    
+    // Update service client information
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    email    = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array($client_email, $username));
+
+    $stm = $conn->prepare("
+      UPDATE service_client
+      SET    client_name  = ?,
+             address      = ?,
+             phone_number = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array($client_name, $client_address, $client_phone, $username));
+
+    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
+    return $stm->rowCount();
+  }
+
+  /****************************************************************************************************
+   ***** EDITSPECIFICADMINISTRATORINFO
+   ****************************************************************************************************
+   * This function has the main goal to allow the user editing his personnal informations. In this
+   * case, the type of user considerer is a administrator.
+   ****************************************************************************************************/
+  function editSpecificAdministratorInfo($username, $admin_email) {
+    // Global variable: connection to the database
+	  global $conn;
+
+    // Update administrator information
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    email    = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array($admin_email, $username));
+
+    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
+    return $stm->rowCount();
+  }
+
+  /****************************************************************************************************
+   ***** EDITSPECIFICUSERPASS
+   ****************************************************************************************************
+   * Edit the password of a specific user given his username.
+   ****************************************************************************************************/
+  function editSpecificUserPass($username, $password) {
+    // Global variable: connection to the database
+	  global $conn;
+
+    // Update administrator information
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    password = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array(sha1($password), $username));
+
+    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
+    return $stm->rowCount();
+  }
 
 ?>
