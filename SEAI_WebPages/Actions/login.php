@@ -64,7 +64,6 @@ try {
     $_SESSION['error_messages'][] = 'Unexpected Error Occurred';
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
-  $_SESSION['login'] = $user;
 
   // Check User status
   switch ($login_data['status']) {
@@ -86,7 +85,7 @@ try {
   if ($acc_type=='provider') {
     $_SESSION['entity_name'] = "lsts"; //----deve vir da base de dados-----
   }*/
-
+  $_SESSION['login'] = $user;
   $_SESSION['success_messages'][] = 'Login Successful';
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 } catch (PDOException $e) {
