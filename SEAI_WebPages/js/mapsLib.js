@@ -9,6 +9,38 @@ var allAreas = {
 };
 
 
+
+
+function post(path, params, method='post') {
+
+//esta função dava para ser mais pequena mas ela explode misteriosamente quando a tento encortar
+//o ajax post nao dava visto que implicava ou request assincronos ou uma pagina que estivesse permanentemente a actulizar 
+//mais tarde fasso uma para o get
+  const form = document.createElement('form');
+  form.method = method;
+  form.action = path;
+
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      const hiddenField = document.createElement('input');
+      hiddenField.type = 'hidden';
+      hiddenField.name = key;
+      hiddenField.value = params[key];
+
+      form.appendChild(hiddenField);
+    }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+
+
+
+
+
+
 /***********************************************************************************************
  ***** MAPCONFIGURATION(  )
  ***********************************************************************************************
@@ -65,7 +97,7 @@ function mapConfiguration() {
   // Creating new controls for the menu
   var controlPath = false, 
       controlRect = true,
-      controlCirc = true,
+      controlCirc = false,
       controlMark = false,
       controlPoly = true,
       controlDelA = true,
@@ -410,15 +442,40 @@ function getAllAreasInfo(_mymap, _debugElementId) {
   // Return of informations
   // -- DEBUG
   if( j>0 ){
-    console.log(stringAllPoints);
-    document.getElementById(_debugElementId).innerHTML = stringAllPointsHTML;
+	
+	
+	//$.post("https://paginas.fe.up.pt/~up201503216/seai_git/actions/action_get_area.php", stringAllPointsHTML);
+   // document.getElementById(_debugElementId).innerHTML = stringAllPointsHTML;
   }
   else {
     console.log("!!!No areas were found in the current map!!!");
     document.getElementById(_debugElementId).innerHTML = "!!!No areas were found in the current map!!!";
   }
-  console.log(allAreas);
+ // console.log(allAreas);
+	postVar = JSON.stringify(allAreas);
+    console.log(postVar);
+    post('https://paginas.fe.up.pt/~up201503216/seai_git/actions/action_get_area.php',{parea: postVar});
+
+
+/*  $.ajax({
+                method: 'POST',
+                url: 'https://paginas.fe.up.pt/~up201503216/seai_git/actions/action_get_area.php',
+                data: {postVar},
+                success: function(data){
+                    alert(data);
+                },
+                error: function(xhr, desc, err){
+                    console.log(err);
+                }
+            });
+//window.location = 'https://paginas.fe.up.pt/~up201503216/seai_git/actions/action_get_area.php';
+			
+  /*$.post("https://paginas.fe.up.pt/~up201503216/seai_git/actions/action_get_area.php",{json: postVar},function(response){}).fail(function(xhr, status, error) {
+    alert( "error" );
+	$("#message").html("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText);
+  });*/
   // -- data return
+ // $.post(".../.../actions/action_get_area.php", allAreas);
   return allAreas;
 }
 
@@ -440,3 +497,5 @@ function clearMap() {
     }
   }
 }
+
+
