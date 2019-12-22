@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-07 13:41:47
+/* Smarty version 3.1.33, created on 2019-12-22 16:29:34
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_requests_history\client_history.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5deb9e0bc06b91_35198864',
+  'unifunc' => 'content_5dff8bde775819_58417407',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1d3bcad55416dbe12308bfc676e946a441fba183' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_requests_history\\client_history.tpl',
-      1 => 1575719586,
+      1 => 1577026549,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/logout.tpl' => 1,
   ),
 ),false)) {
-function content_5deb9e0bc06b91_35198864 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5dff8bde775819_58417407 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -39,32 +39,45 @@ $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cach
     </tr>
 
 
-    <!-- <?php
+    
+    <?php $_smarty_tpl->_assignInScope('requests', array(array("area"=>"100","date"=>"13","specs"=>"x","price"=>"13","file"=>"files/teste.txt"),array("area"=>"100","date"=>"13","specs"=>"x","price"=>"13","file"=>"files/teste.txt"),array("area"=>"100","date"=>"13","specs"=>"x","price"=>"13","file"=>"files/teste.txt")));?>
+
+
+
+    <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['requests']->value, 'request');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['request']->value) {
-?>{
+?>
         <tr>
         <td><?php echo $_smarty_tpl->tpl_vars['request']->value['area'];?>
 </td><td><?php echo $_smarty_tpl->tpl_vars['request']->value['sp'];?>
 </td><td><?php echo $_smarty_tpl->tpl_vars['request']->value['date'];?>
 </td><td><?php echo $_smarty_tpl->tpl_vars['request']->value['specs'];?>
-</td><td><a href="pdf.pdf" download><img src ="images/pdf.png" widht=20px height=20px></td>
+</td><td><?php echo $_smarty_tpl->tpl_vars['request']->value['price'];?>
+</td>
+        <td>
+        <form method="POST" action="../actions/upload.php" enctype="multipart/form-data">
+        <input type="file" name="real-file" id="real-file" hidden="hidden"/>
+        <button type="button" id="custom-button" class="button4 button_provider_hist">Choose a File</button>
+        <span id="custom-text" class="custom-txt">No file chosen, yet</span>
+        <input type="submit" value="Confirmar" name="submit" class="button4 submitAsBtn button_provider_hist">
+        </form>
 
 
+        </td>
         </tr>
     <?php
 }
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
-     -->
 
     </table>
     <br>
 
-    </form>
 <br>
 
 </div>
-</div><?php }
+</div>
+<?php }
 }

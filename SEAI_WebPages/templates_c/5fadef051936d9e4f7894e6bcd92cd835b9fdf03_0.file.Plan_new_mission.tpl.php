@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-18 12:59:03
+/* Smarty version 3.1.33, created on 2019-12-22 17:44:09
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\requests\Plan_new_mission.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5dfa1487c66bb7_64170170',
+  'unifunc' => 'content_5dff9d590e8f27_28113456',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5fadef051936d9e4f7894e6bcd92cd835b9fdf03' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\requests\\Plan_new_mission.tpl',
-      1 => 1576670296,
+      1 => 1577033046,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/logout.tpl' => 1,
   ),
 ),false)) {
-function content_5dfa1487c66bb7_64170170 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5dff9d590e8f27_28113456 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -95,8 +95,8 @@ actions/plan_new_mission.php" method="post">
 		<table class="table table-light table-bordered table_plan_new_mission" >
 		  <thead>
 		    <tr>
-		      <th style="text-align: center"> Data Specifications Intended</th>
 		      <th style="text-align: center"> Mission Restrictions</th>
+		      <th style="text-align: center"> Intended Value</th>
 		    </tr>
 				<tr style="text-align: center" >
 					<td colspan="2">
@@ -108,23 +108,25 @@ actions/plan_new_mission.php" method="post">
 		  <tbody id="dataTable" >
 				<tr >
 					<td><input type="checkbox" name="chk" />
-						<SELECT>
-							<OPTION >Specification 1</OPTION>
-							<OPTION >Specification 2</OPTION>
-							<OPTION >Specification 3</OPTION>
-							<OPTION >Specification 4</OPTION>
-							<OPTION >None</OPTION>
-						</SELECT>
+						<input list="specifications">
+						  <datalist id="specifications">
+							<option value="Specification 1">
+							<option value="Specification 2">
+							<option value="Specification 3">
+							<option value="Specification 4">
+							<option value="Specification 5">
+						  </datalist>
 					</td>
 					<td>
-						<input type="checkbox" name="chk"/>
-						<SELECT >
-							<OPTION >Restriction 1</OPTION>
-							<OPTION >Restriction 2</OPTION>
-							<OPTION >Restriction 3</OPTION>
-							<OPTION >Restriction 4</OPTION>
-							<OPTION >None</OPTION>
-						</SELECT>
+						Value:
+						<input list="values">
+						  <datalist id="values">
+							<option value="value 1">
+							<option value="value 2">
+							<option value="value 3">
+							<option value="value 4">
+							<option value="value 5">
+						  </datalist>
 					</td>
 				</tr>
 		 </tbody>
