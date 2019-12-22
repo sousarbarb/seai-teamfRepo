@@ -17,6 +17,7 @@
                     My Account
                 </a>
         </li>
+        {if $acc_type=="client" || $acc_type=="provider"}
         <li class="nav-item dropdown">
           <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight {if $menu=="2"} menu-highlight-active {/if}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
@@ -27,7 +28,7 @@
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_data.php">Full List</a>
           </div>
         </li>
-        {*if 1*}
+        {/if}
         {if $acc_type=="client"}
         <li class="nav-item">
           <a href="{$BASE_URL}pages/menu_vehicles.php" class="nav-link text-dark font-italic menu-highlight {if $menu=="3"} menu-highlight-active {/if}">
@@ -35,8 +36,7 @@
                     Vehicles
                 </a>
         </li>
-        {*elseif 0*}
-        {elseif $acc_type="provider"}
+        {elseif $acc_type=="provider"}
         <li class="nav-item dropdown">
           <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight {if $menu=="3"} menu-highlight-active {/if}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-submarine.png"></i>
@@ -48,18 +48,41 @@
           </div>
         </li>
         {/if}
+        {if $acc_type=="client" || $acc_type=="provider"}
         <li class="nav-item dropdown">
           <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight {if $menu=="4"} menu-highlight-active {/if}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Requests
           </a>
+          {if $acc_type=="client"}
           <div class="dropdown-container" aria-labelledby="navbarDropdown">
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_history.php">History</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_waiting.php">Waiting Offers</a>
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_progress.php">In Progess</a>
             <!--<div class="dropdown-divider"></div>-->
             <a class="dropdown-in" href="{$BASE_URL}pages/map.php">New</a>
           </div>
+          {elseif $acc_type=="provider"}
+          <div class="dropdown-container" aria-labelledby="navbarDropdown">
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_pendingoffers.php">Pending Offers</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_waiting.php">Waiting Offers</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_progress.php">In Progess</a>
+          </div>
+          {/if}
         </li>
+        {/if}
+        {if $acc_type=="admin"}
+        <li class="nav-item dropdown">
+          <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight {if $menu=="3"} menu-highlight-active {/if}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-admin.png"></i>
+            Consult
+          </a>
+          <div class="dropdown-container" aria-labelledby="navbarDropdown">
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_consult_accounts.php">Manage Accounts</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_consult_vehicles.php">Manage Vehicles</a>
+          </div>
+        </li>
+        {/if}
         <li class="nav-item">
           <a href="{$BASE_URL}pages/menu_notifications.php" class="nav-link text-dark font-italic menu-highlight {if $menu=="5"} menu-highlight-active {/if}">
                     <i class="fa mr-3 text-primary fa-fw"><image class="icon-side" src="../icon/icon-notification.png"></i>
