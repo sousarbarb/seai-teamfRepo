@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', 'Droid Sans', Arial, sans-serif;
+  display: grid;
+  grid-template-columns: [left] auto [middle] 1fr [right];
+  grid-template-rows: [top] auto [header-end content-start] auto
+                      [menu-sep] 1fr [footer-start] auto [bottom];
+  grid-template-areas: "header header"
+                       "menu1  content"
+                       "menu2  content"
+                       "menu2  footer";
+  background-color: #d9d9d9;
+}
+
+body > header {
+  grid-area: header;
+  display: grid;
+  grid-template-columns: [header-left] 1fr [header-right];
+  grid-template-rows: [header-title-top] auto
+                      [header-title-end header-messages-top] auto
+                      [header-messages-end header-topnav-top] auto [header-topnav-end];
+  grid-template-areas: "title"
+                       "messages"
+                       "topnav";
+  background-color: #353535;
+  color: #ffffff;
+}
+
+body > header > header {  /***** Title *****/
+  grid-area: title;
+  float: left;
+  font-size: 2em;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0.5em;
+}
+
+body > header > nav { /***** Top navigation bar *****/
+  grid-area: topnav;
+  overflow: hidden;
+}
+body > header > nav > a {
+  color: #ffffff;
+  float: left;
+  text-align: center;
+  padding: 0.2em 2em 0.2em 2em;
+  text-decoration: none;
+  font-size: 1em;
+}
+body > header > nav > a:hover {
+  background-color: #6d6d6d;
+}
+body > header > nav > a.active {
+  background-color: #d9d9d9;
+  color: #353535;
+}
+
+body > header > section { /***** Success and Error Messages *****/
+  width: 60em;
+  margin: 0 auto;
+}
+body > header > section > article {
+  padding: 0.5em;
+  margin-top: 0.5em;
+  border-radius: 1em;
+}
+body > header > section .error{
+  background-color: #F99;
+  color: #333;
+}
+body > header > section .success{
+  background-color: #9F9;
+  color: #333;
+}
+body > header > section .close{
+  float: right;
+  text-decoration: none;
+  color: #333;
+}
