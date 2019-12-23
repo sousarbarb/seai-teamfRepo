@@ -67,8 +67,8 @@
 		<table class="table table-light table-bordered table_plan_new_mission" >
 		  <thead>
 		    <tr>
-		      <th style="text-align: center"> Data Specifications Intended</th>
 		      <th style="text-align: center"> Mission Restrictions</th>
+		      <th style="text-align: center"> Intended Value</th>
 		    </tr>
 				<tr style="text-align: center" >
 					<td colspan="2">
@@ -80,23 +80,25 @@
 		  <tbody id="dataTable" >
 				<tr >
 					<td><input type="checkbox" name="chk" />
-						<SELECT>
-							<OPTION >Specification 1</OPTION>
-							<OPTION >Specification 2</OPTION>
-							<OPTION >Specification 3</OPTION>
-							<OPTION >Specification 4</OPTION>
-							<OPTION >None</OPTION>
-						</SELECT>
+						<input list="specifications">
+						  <datalist id="specifications">
+							<option value="Specification 1">
+							<option value="Specification 2">
+							<option value="Specification 3">
+							<option value="Specification 4">
+							<option value="Specification 5">
+						  </datalist>
 					</td>
 					<td>
-						<input type="checkbox" name="chk"/>
-						<SELECT >
-							<OPTION >Restriction 1</OPTION>
-							<OPTION >Restriction 2</OPTION>
-							<OPTION >Restriction 3</OPTION>
-							<OPTION >Restriction 4</OPTION>
-							<OPTION >None</OPTION>
-						</SELECT>
+						Value:
+						<input list="values">
+						  <datalist id="values">
+							<option value="value 1">
+							<option value="value 2">
+							<option value="value 3">
+							<option value="value 4">
+							<option value="value 5">
+						  </datalist>
 					</td>
 				</tr>
 		 </tbody>
