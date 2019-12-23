@@ -79,3 +79,36 @@ body > header > section .close{
   text-decoration: none;
   color: #333;
 }
+
+#new {
+  grid-area: content;
+}
+#new > article {
+  margin: 2em 1em;
+}
+#new > article > header {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+#new > article > form > p {
+  margin-block-start: 1em;
+  margin-block-end: 0.125em;
+}
+#new > article > form > input[type="text"] {
+  width: 20em;
+  padding: 0.25em;
+}
+#new > article > form > textarea {
+  width: 20em;
+  padding: 0.25em;
+}
+#new > article > form > input[type="submit"] {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding: 0.2em 0.75em;
+}
+#new > article > form > input[type="reset"] {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding: 0.2em 0.75em;
+}
