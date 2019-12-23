@@ -53,6 +53,11 @@ if (isset($_SESSION['user_id'])) {
   $smarty->assign('user_id', $_SESSION['user_id']);
 }
 
+if (isset($_SESSION['acc_info'])) {
+  $smarty->assign('acc_info', $_SESSION['acc_info']);
+  unset($_SESSION['acc_info']);
+}
+
 if (isset($_SESSION['form_values'])) {
   $smarty->assign('form_values', $_SESSION['form_values']);
   unset($_SESSION['form_values']);

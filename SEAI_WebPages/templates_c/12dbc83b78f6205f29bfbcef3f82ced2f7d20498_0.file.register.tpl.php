@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-20 01:00:50
+/* Smarty version 3.1.33, created on 2019-12-23 03:32:00
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\inicial\register.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5dfc0f329c49f7_07440601',
+  'unifunc' => 'content_5e002720dfc671_79326898',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '12dbc83b78f6205f29bfbcef3f82ced2f7d20498' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\inicial\\register.tpl',
-      1 => 1576800047,
+      1 => 1577068319,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5dfc0f329c49f7_07440601 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e002720dfc671_79326898 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
@@ -34,38 +34,39 @@ pages/index.php' style="width:auto;text-decoration:none;color:white;"> Go Back <
   <p class="lead text-white mb-0">Select the type of user and fill the form to register on this platform</p>
   <div class="separator"></div>
 
+  <?php if ((isset($_smarty_tpl->tpl_vars['success_messages']->value))) {?>
+    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['success_messages']->value, 'success');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['success']->value) {
+?>
+      <div class="msg_success"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a><?php echo $_smarty_tpl->tpl_vars['success']->value;?>
+</div>
+    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+  <?php }?>
+  <?php if ((isset($_smarty_tpl->tpl_vars['error_messages']->value))) {?>
+    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['error_messages']->value, 'error');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['error']->value) {
+?>
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a><?php echo $_smarty_tpl->tpl_vars['error']->value;?>
+</div>
+    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+  <?php }?>
+
   <div class="formulario">
     <div class="acc_type_select">
       <a href="#form_provider" onclick="return false;" class="button4left buttonsRegSelect" style="text-decoration:none;color:white"> Service Provider </a>
       <a href="#form_client" onclick="return false;" class="button4right buttonsRegSelect" style="text-decoration:none;color:white"> Service Client </a>
     </div>
 
-    <?php if ((isset($_smarty_tpl->tpl_vars['success_messages']->value))) {?>
-      <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['success_messages']->value, 'success');
-if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['success']->value) {
-?>
-        <div class="msg_success"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a><?php echo $_smarty_tpl->tpl_vars['success']->value;?>
-</div>
-      <?php
-}
-}
-$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
-    <?php }?>
-    <?php if ((isset($_smarty_tpl->tpl_vars['error_messages']->value))) {?>
-      <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['error_messages']->value, 'error');
-if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['error']->value) {
-?>
-        <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a><?php echo $_smarty_tpl->tpl_vars['error']->value;?>
-</div>
-      <?php
-}
-}
-$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
-    <?php }?>
     <form class="form_register" id="form_provider" method="post" action="../actions/register_action.php" enctype="multipart/form-data">
     <table class="tab">
     <tr><td class="gg">

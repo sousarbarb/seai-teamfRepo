@@ -7,22 +7,23 @@
   <p class="lead text-white mb-0">Select the type of user and fill the form to register on this platform</p>
   <div class="separator"></div>
 
+  {if (isset($success_messages))}
+    {foreach $success_messages as $success}
+      <div class="msg_success"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$success}</div>
+    {/foreach}
+  {/if}
+  {if (isset($error_messages))}
+    {foreach $error_messages as $error}
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+    {/foreach}
+  {/if}
+
   <div class="formulario">
     <div class="acc_type_select">
       <a href="#form_provider" onclick="return false;" class="button4left buttonsRegSelect" style="text-decoration:none;color:white"> Service Provider </a>
       <a href="#form_client" onclick="return false;" class="button4right buttonsRegSelect" style="text-decoration:none;color:white"> Service Client </a>
     </div>
 
-    {if (isset($success_messages))}
-      {foreach $success_messages as $success}
-        <div class="msg_success"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$success}</div>
-      {/foreach}
-    {/if}
-    {if (isset($error_messages))}
-      {foreach $error_messages as $error}
-        <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
-      {/foreach}
-    {/if}
     <form class="form_register" id="form_provider" method="post" action="../actions/register_action.php" enctype="multipart/form-data">
     <table class="tab">
     <tr><td class="gg">
