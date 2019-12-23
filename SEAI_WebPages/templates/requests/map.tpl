@@ -11,6 +11,8 @@
 	<script>
 	  var map, tooltip, deleteShape;
 	  mapConfiguration();
+	  
+	 getinicialdata('../actions/action_send_area.php');
 	</script>
 	<div class="filters"></div>
 	<div class="infotext">
