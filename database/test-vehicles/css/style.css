@@ -112,3 +112,36 @@ body > header > section .close{
   margin-block-end: 1em;
   padding: 0.2em 0.75em;
 }
+
+body > aside {
+  grid-area: menu1;
+  width: 20em;
+  margin: 2em;
+  color: #ffffff;
+  background-color: #9d9d9d;
+}
+body > aside > header {
+  background-color: #353535;
+  font-weight: bold;
+  font-size: 1.25em;
+  padding: 0.4em 0.8em;
+}
+body > aside > form > h1 {
+  font-weight: normal;
+  font-size: 1em;
+  padding: 0em 0.5em;
+  margin-block-start: 1em;
+  margin-block-end: 0.25em;
+}
+body > aside > form > input[type="submit"] {
+  margin: 0em 1em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding: 0.2em 0.75em;
+}
+body > aside > form > input[type="reset"] {
+  margin: 0em 1em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding: 0.2em 0.75em;
+}

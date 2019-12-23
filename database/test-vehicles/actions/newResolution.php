@@ -6,10 +6,9 @@
   // Checks if all fields where filled in the registration form
   if( !$_POST['res_sensorid'] || !$_POST['res_resolution'] || 
       !$_POST['res_velocity'] || !$_POST['res_consumption'] || 
-      !$_POST['res_swath'] || !$_POST['res_cost'] || 
-      !$_POST['res_comments'] ) {
+      !$_POST['res_swath'] || !$_POST['res_cost']) {
     // Assign to a session variable dedicated to error messages the error message
-    $_SESSION['error_messages'][] = 'All fields are mandatory';
+    $_SESSION['error_messages'][] = 'All fields are mandatory (except comments)';
 
     // Retrieves all the camps filled in the form (to be user friendly)
     $_SESSION['form_values'] = $_POST;

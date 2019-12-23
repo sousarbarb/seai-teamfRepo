@@ -5,10 +5,9 @@
 
   // Checks if all fields where filled in the registration form
   if( !$_POST['vehicle_service_username'] || !$_POST['vehicle_name'] || 
-      !$_POST['vehicle_localization'] || !$_POST['vehicle_comments'] || 
       !$_POST['vehicle_public']) {
     // Assign to a session variable dedicated to error messages the error message
-    $_SESSION['error_messages'][] = 'All fields are mandatory';
+    $_SESSION['error_messages'][] = 'All fields are mandatory (except localization and comments)';
 
     // Retrieves all the camps filled in the form (to be user friendly)
     $_SESSION['form_values'] = $_POST;

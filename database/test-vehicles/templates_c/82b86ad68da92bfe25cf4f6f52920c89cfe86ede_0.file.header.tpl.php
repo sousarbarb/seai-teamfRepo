@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2019-12-22 13:57:54
+/* Smarty version 3.1.30, created on 2019-12-23 10:44:46
   from "C:\xampp\htdocs\seai\test-vehicles\templates\common\header.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5dff685299bf61_70716102',
+  'unifunc' => 'content_5e008c8e50f359_31890427',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '82b86ad68da92bfe25cf4f6f52920c89cfe86ede' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai\\test-vehicles\\templates\\common\\header.tpl',
-      1 => 1577019076,
+      1 => 1577094269,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5dff685299bf61_70716102 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e008c8e50f359_31890427 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <!DOCTYPE html>
 <html>
@@ -93,6 +93,11 @@ pages/create.php">New</a><?php }?>
 pages/search.php" class="active">Search</a>
     <?php } else { ?>                  <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 pages/search.php">Search</a><?php }?>
+    <!-- See vehicle personnal page -->
+    <?php if ($_smarty_tpl->tpl_vars['PAGE']->value == 'show') {?>  <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+pages/show.php" class="active">Show</a>
+    <?php } else { ?>                  <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+pages/show.php">Show</a><?php }?>
     <!-- Delete vehicles, sensors, etc -->
     <?php if ($_smarty_tpl->tpl_vars['PAGE']->value == 'delete') {?>  <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 pages/delete.php" class="active">Delete</a>

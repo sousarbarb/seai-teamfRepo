@@ -5,10 +5,9 @@
 
   // Checks if all fields where filled in the registration form
   if (!$_POST['spec_vehiclename'] || !$_POST['spec_spectype'] || 
-      !$_POST['spec_minvalue'] || !$_POST['spec_maxvalue'] || 
-      !$_POST['spec_comments']) {
+      !$_POST['spec_minvalue'] || !$_POST['spec_maxvalue']) {
     // Assign to a session variable dedicated to error messages the error message
-    $_SESSION['error_messages'][] = 'All fields are mandatory';
+    $_SESSION['error_messages'][] = 'All fields are mandatory (except comments)';
 
     // Retrieves all the camps filled in the form (to be user friendly)
     $_SESSION['form_values'] = $_POST;

@@ -186,8 +186,8 @@
     $stm = $conn->prepare("
       SELECT *
       FROM   specification
-      WHERE  specification_id = ? AND
-             vehicle_id       = ?
+      WHERE  specification_type = ? AND
+             vehicle_id         = ?
     ");
     $stm->execute(array($type, $vehicle_id));
 
@@ -472,10 +472,10 @@
       $stm->execute(array($value,
                           $vel_sampling,
                           $consumption,
-                          $swath,
+                          floatval($swath),
                           'TRUE',
                           $sensor_id,
-                          $cost,
+                          floatval($cost),
                           $comments
       ));
     } catch(PDOexception $e) {
@@ -592,15 +592,6 @@
     // SUCCESS INSERTION: inserting a new communication was completed successfully
     return 2;
   }
-
-
-
-
-
-
-
-
-
 
   /****************************************************************************************************
    ***** GETALLVEHICLESSERVICEPROVIDERS
@@ -721,6 +712,89 @@
     $stm->execute();
 
     // Return all distinct communication types
+    return $stm->fetchAll();
+  }
+
+
+
+
+
+  function getAllApprovalServiceProviders() {
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all approved service providers identified by its names
+    $stm = $conn->prepare("
+      SELECT entity_name
+      FROM   service_provider
+      WHERE  approval='TRUE'
+    ");
+    $stm->execute();
+
+    // Return all service providers
+    return $stm->fetchAll();
+  }
+
+  function getAllActiveDistinctSpecifications() {
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all distinct and active specifications
+    $stm = $conn->prepare("
+      SELECT DISTINCT specification_type
+      FROM            specification
+      WHERE           active='TRUE'
+    ");
+    $stm->execute();
+
+    // Return all specifications
+    return $stm->fetchAll();
+  }
+
+  function getAllCommunicationTypes() {
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all communications
+    $stm = $conn->prepare("
+      SELECT communication_type
+      FROM   communication
+    ");
+    $stm->execute();
+
+    // Return all communications
+    return $stm->fetchAll();
+  }
+
+  function getAllActiveDistinctSensorTypes() {
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all distinct and active sensors
+    $stm = $conn->prepare("
+      SELECT DISTINCT sensor_type
+      FROM            sensor
+      WHERE           active='TRUE'
+    ");
+    $stm->execute();
+
+    // Return all sensors
+    return $stm->fetchAll();
+  }
+
+  function getAllActiveDistinctResolutionValues() {
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all distinct and active resolution values
+    $stm = $conn->prepare("
+      SELECT DISTINCT value
+      FROM            resolution
+      WHERE           active='TRUE'
+    ");
+    $stm->execute();
+
+    // Return all resolution values
     return $stm->fetchAll();
   }
 ?>

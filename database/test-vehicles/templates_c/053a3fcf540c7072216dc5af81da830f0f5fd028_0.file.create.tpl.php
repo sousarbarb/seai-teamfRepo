@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2019-12-23 00:48:47
+/* Smarty version 3.1.30, created on 2019-12-23 13:43:37
   from "C:\xampp\htdocs\seai\test-vehicles\templates\create.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5e0000dfbe61c8_68490704',
+  'unifunc' => 'content_5e00b679536409_05160410',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '053a3fcf540c7072216dc5af81da830f0f5fd028' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai\\test-vehicles\\templates\\create.tpl',
-      1 => 1577058490,
+      1 => 1577105009,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5e0000dfbe61c8_68490704 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e00b679536409_05160410 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:common/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
@@ -404,31 +404,31 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
       <?php }?>
       <br>
 
-      <p>Sensor swath range (DISTANCE):</p>
+      <p>Sensor swath range (meters):</p>
       <?php if (isset($_smarty_tpl->tpl_vars['FORM_VALUES']->value['res_swath'])) {?>
         <input  type="text"
                 name="res_swath"
-                placeholder="VALUE (UNITS)..."
+                placeholder="12312.41231..."
                 value="<?php echo $_smarty_tpl->tpl_vars['FORM_VALUES']->value['res_swath'];?>
 ">
       <?php } else { ?>
         <input  type="text"
                 name="res_swath"
-                placeholder="VALUE (UNITS)...">
+                placeholder="12312.41231...">
       <?php }?>
       <br>
 
-      <p>Cost (MONETARY / TIME):</p>
+      <p>Cost (€/h):</p>
       <?php if (isset($_smarty_tpl->tpl_vars['FORM_VALUES']->value['res_cost'])) {?>
         <input  type="text"
                 name="res_cost"
-                placeholder="VALUE (UNITS)..."
+                placeholder="12341.4142..."
                 value="<?php echo $_smarty_tpl->tpl_vars['FORM_VALUES']->value['res_cost'];?>
 ">
       <?php } else { ?>
         <input  type="text"
                 name="res_cost"
-                placeholder="VALUE (UNITS)...">
+                placeholder="12341.4142...">
       <?php }?>
       <br>
 
@@ -518,7 +518,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
       <br>
 
       <input type="submit" value="Submit">
-      <input type="reset"  value="Reset">
     </form>
   </article>
 </section>

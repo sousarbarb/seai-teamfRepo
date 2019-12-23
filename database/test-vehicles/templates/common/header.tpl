@@ -39,6 +39,9 @@
     <!-- Search vehicles, sensors, etc -->
     {if $PAGE == 'search'}  <a href="{$BASE_URL}pages/search.php" class="active">Search</a>
     {else}                  <a href="{$BASE_URL}pages/search.php">Search</a>{/if}
+    <!-- See vehicle personnal page -->
+    {if $PAGE == 'show'}  <a href="{$BASE_URL}pages/show.php" class="active">Show</a>
+    {else}                  <a href="{$BASE_URL}pages/show.php">Show</a>{/if}
     <!-- Delete vehicles, sensors, etc -->
     {if $PAGE == 'delete'}  <a href="{$BASE_URL}pages/delete.php" class="active">Delete</a>
     {else}                  <a href="{$BASE_URL}pages/delete.php">Delete</a>{/if}

@@ -296,29 +296,29 @@
       {/if}
       <br>
 
-      <p>Sensor swath range (DISTANCE):</p>
+      <p>Sensor swath range (meters):</p>
       {if isset($FORM_VALUES['res_swath'])}
         <input  type="text"
                 name="res_swath"
-                placeholder="VALUE (UNITS)..."
+                placeholder="12312.41231..."
                 value="{$FORM_VALUES['res_swath']}">
       {else}
         <input  type="text"
                 name="res_swath"
-                placeholder="VALUE (UNITS)...">
+                placeholder="12312.41231...">
       {/if}
       <br>
 
-      <p>Cost (MONETARY / TIME):</p>
+      <p>Cost (€/h):</p>
       {if isset($FORM_VALUES['res_cost'])}
         <input  type="text"
                 name="res_cost"
-                placeholder="VALUE (UNITS)..."
+                placeholder="12341.4142..."
                 value="{$FORM_VALUES['res_cost']}">
       {else}
         <input  type="text"
                 name="res_cost"
-                placeholder="VALUE (UNITS)...">
+                placeholder="12341.4142...">
       {/if}
       <br>
 
