@@ -9,11 +9,18 @@ function test_input($data) {
 }
 
 // Required field names
+$acc_type=$smarty->getTemplateVars('acc_type');
 if ($acc_type=="client") {
   $required=array('name','address','email','number');
-} else {
+} elseif ($acc_type=="provider") {
   $required=array('name','email','number','entity_name','entity_address',
                 'entity_email','entity_number');
+} elseif ($acc_type=="admin") {
+  $required=array('name','email','number');
+} else {
+  $_SESSION['error_messages'][]="Unexpected account type";
+  $_SESSION['form_values']=$_POST;
+  die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
 
 // Loop over field names, make sure each one exists and is not empty
