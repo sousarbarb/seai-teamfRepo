@@ -36,6 +36,39 @@ function post(path, params, method='post') {
 }
 
 
+function getinicialdata(path) {
+	$.ajax({
+					method: 'POST',
+					url: path,
+					data:{iarea:0},
+					success: function(data){
+					console.log(data);
+						if (data!="0") {
+							var parse=JSON.parse(data.substr(0));
+							console.log(parse);
+							//alert(parse["polygonsVertLatLng"]["0"]["vertices"].values());
+							var vertices= parse["polygonsVertLatLng"]["0"]["vertices"];
+							console.log(vertices);
+							var arry = [];
+							for (var i = 0; i < parse["polygonsVertLatLng"]["0"]["numberVertices"]; i++) {
+								  arry.push(Object.values(vertices[i]));
+								   // more statements
+								}
+								console.log(arry);
+							 var initpolygon = L.polygon([
+								arry
+							]).addTo(map);
+						}	
+						else{
+							alert(data);
+						}
+											
+					},
+					error: function(xhr, desc, err){
+						console.log(err);
+					}
+				});
+}
 
 
 
@@ -454,7 +487,7 @@ function getAllAreasInfo(_mymap, _debugElementId) {
  // console.log(allAreas);
 	postVar = JSON.stringify(allAreas);
     console.log(postVar);
-    post('https://paginas.fe.up.pt/~up201503216/seai_git/actions/action_get_area.php',{parea: postVar});
+    post('../actions/action_get_area.php',{parea: postVar});
 
 
 /*  $.ajax({
