@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-23 02:26:28
+/* Smarty version 3.1.33, created on 2019-12-24 16:34:39
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_account\menu_my_account_change.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5e0017c43a6485_50935512',
+  'unifunc' => 'content_5e02300f130205_07712295',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4eaaa7129222a3819ffd41e7e5f14868a4fff553' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_account\\menu_my_account_change.tpl',
-      1 => 1576790580,
+      1 => 1577161796,
       2 => 'file',
     ),
   ),
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5e0017c43a6485_50935512 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e02300f130205_07712295 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -55,59 +55,117 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
       <input type="text" name="entity_name" class="lead" placeholder="Enter the entity name"
             value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['entity_name'];
-} else { ?>Entity that I represent<?php }?>">
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['entity_name'];
+}?>">
       <br>
       <label class="myaccountlabel">Entity Address</label>
       <input type="text" name="entity_address" class="lead" placeholder="Enter the entity address"
             value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['entity_address'];
-} else { ?>Entity address<?php }?>">
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['entity_address'];
+}?>">
       <br>
       <label class="myaccountlabel">Entity E-mail</label>
       <input type="email" name="entity_email" class="lead" placeholder="Enter the entity e-mail"
             value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['entity_email'];
-} else { ?>entity_email@emailprovider.com<?php }?>">
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['entity_email'];
+}?>">
       <br>
       <label class="myaccountlabel">Entity Phone Number</label>
       <input type="text" name="entity_number" class="lead" placeholder="Enter the entity phone number"
             value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['entity_number'];
-} else { ?>+425745359078<?php }?>">
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['entity_phonenumber'];
+}?>">
       <br>
       <br>
+      <input type="hidden" name="logo_path" value="<?php echo $_smarty_tpl->tpl_vars['acc_info']->value['entity_logo_path'];?>
+">
       <?php }?>
-      <?php if ($_smarty_tpl->tpl_vars['acc_type']->value == "client" || $_smarty_tpl->tpl_vars['acc_type']->value == "admin") {?>
+      <?php if ($_smarty_tpl->tpl_vars['acc_type']->value == "client") {?>
       <label class="myaccountlabel">Name</label>
-      <?php } elseif ($_smarty_tpl->tpl_vars['acc_type']->value == "provider") {?>
-      <label class="myaccountlabel">Official Representative</label>
-      <?php }?>
       <input type="text" name="name" class="lead" placeholder="Enter a name"
             value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['name'];
-} else { ?>My name<?php }?>">
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['client_name'];
+}?>">
       <br>
+      <?php } elseif ($_smarty_tpl->tpl_vars['acc_type']->value == "provider") {?>
+      <label class="myaccountlabel">Official Representative</label>
+      <input type="text" name="name" class="lead" placeholder="Enter a name"
+            value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
+echo $_smarty_tpl->tpl_vars['form_values']->value['name'];
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['repres_name'];
+}?>">
+      <br>
+      <?php }?>
       <?php if ($_smarty_tpl->tpl_vars['acc_type']->value == "client") {?>
       <label class="myaccountlabel">Address</label>
       <input type="text" name="address" class="lead" placeholder="Enter an address"
             value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['address'];
-} else { ?>Address<?php }?>">
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['client_address'];
+}?>">
       <br>
-      <?php }?>
       <label class="myaccountlabel">E-mail</label>
       <input type="email" name="email" class="lead" placeholder="Enter an e-mail"
             value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['email'];
-} else { ?>user_email@emailprovider.com<?php }?>">
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['client_email'];
+}?>">
       <br>
       <label class="myaccountlabel">Phone Number</label>
       <input type="text" name="number" class="lead" placeholder="Enter your phone number"
             value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
 echo $_smarty_tpl->tpl_vars['form_values']->value['number'];
-} else { ?>+123453674980<?php }?>">
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['client_phonenumber'];
+}?>">
+      <br>
+      <?php } elseif ($_smarty_tpl->tpl_vars['acc_type']->value == "provider") {?>
+      <label class="myaccountlabel">E-mail</label>
+      <input type="email" name="email" class="lead" placeholder="Enter an e-mail"
+            value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
+echo $_smarty_tpl->tpl_vars['form_values']->value['email'];
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['repres_email'];
+}?>">
+      <br>
+      <label class="myaccountlabel">Phone Number</label>
+      <input type="text" name="number" class="lead" placeholder="Enter your phone number"
+            value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
+echo $_smarty_tpl->tpl_vars['form_values']->value['number'];
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['repres_phonenumber'];
+}?>">
+      <br>
+      <?php } elseif ($_smarty_tpl->tpl_vars['acc_type']->value == "admin") {?>
+      <label class="myaccountlabel">E-mail</label>
+      <input type="email" name="email" class="lead" placeholder="Enter an e-mail"
+            value="<?php if (isset($_smarty_tpl->tpl_vars['form_values']->value)) {
+echo $_smarty_tpl->tpl_vars['form_values']->value['email'];
+} else {
+echo $_smarty_tpl->tpl_vars['acc_info']->value['admin_email'];
+}?>">
+      <br>
+      <?php }?>
+      <br>
+      <label class="myaccountlabel">Username</label> <label class="lead"><?php echo $_smarty_tpl->tpl_vars['login']->value;?>
+</label>
       <br>
       <br>
+
+      <input type="hidden" name="username" value="<?php echo $_smarty_tpl->tpl_vars['login']->value;?>
+">
 
       <input type="submit" name="submit" class= "button4 buttonsAcc" value="Confirm Changes" />
       <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>

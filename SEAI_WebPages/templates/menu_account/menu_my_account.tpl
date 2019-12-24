@@ -25,18 +25,26 @@
       {/if}
       {if $acc_type=="client"}
       <label class="myaccountlabel">Name</label> <label class="lead">{$acc_info.client_name}</label>
+      <br>
       {elseif $acc_type=="provider"}
       <label class="myaccountlabel">Official Representative</label> <label class="lead">{$acc_info.repres_name}</label>
-      {/if}
       <br>
+      {/if}
       {if $acc_type=="client"}
-      <label class="myaccountlabel">Address</label> <label class="lead">Address</label>
+      <label class="myaccountlabel">Address</label> <label class="lead">{$acc_info.client_address}</label>
+      <br>
+      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info.client_email}</label>
+      <br>
+      <label class="myaccountlabel">Phone Number</label> <label class="lead">{$acc_info.client_phonenumber}</label>
       <br>
       {/if}
-      <label class="myaccountlabel">E-mail</label> <label class="lead">user_email@emailprovider.com</label>
+      {if $acc_type=="provider"}
+      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info.repres_email}</label>
       <br>
-      {if $acc_type=="client" || $acc_type=="provider"}
-      <label class="myaccountlabel">Phone Number</label> <label class="lead">+123453674980</label>
+      <label class="myaccountlabel">Phone Number</label> <label class="lead">{$acc_info.repres_phonenumber}</label>
+      <br>
+      {elseif $acc_type=="admin"}
+      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info.admin_email}</label>
       <br>
       {/if}
       <br>

@@ -27,7 +27,7 @@
              admin.id                   AS admin_id,
              service_provider.id        AS service_provider_id,
              service_provider.approval  AS service_provider_admin_perm,
-             service_client.id          AS service_client_id 
+             service_client.id          AS service_client_id
       FROM users
       FULL OUTER JOIN admin             ON users.username = admin.user_id
       FULL OUTER JOIN service_provider  ON users.username = service_provider.user_id
@@ -324,7 +324,7 @@
   function emailVerificationValidation($id_crypt) {
     // Global variable: connection to the database
 	  global $conn;
-		
+
     // Get user information by username sha1 encryption
     $stm = $conn->prepare("
 			SELECT *
@@ -333,7 +333,7 @@
 		");
 		$stm->execute(array($id_crypt));
 		$nresults = $stm->rowCount();
-		
+
     // Returns the row with user informations or an error identifying the case where user or doesn't exist or e-mail isn't validated
     if($nresults == 0)
 		  return -1;
@@ -344,8 +344,8 @@
   /****************************************************************************************************
    ***** GETSPECIFICSERVICEPROVIDERINFO
    ****************************************************************************************************
-   * This function returns the information saved in the database relative to a specific service 
-   * provider. 
+   * This function returns the information saved in the database relative to a specific service
+   * provider.
    * The column names in the fetched row are the following ones:
    * - username          : user's username;
    * - entity_email      : email to contact the entity / service provider;
@@ -360,7 +360,7 @@
   function getSpecificServiceProviderInfo($username) {
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get service provider information
     $stm = $conn->prepare("
       SELECT username                    AS username,
@@ -377,7 +377,7 @@
              users.username = ?
     ");
     $stm->execute(array($username));
-    
+
     // Return user information
     return $stm->fetch();
   }
@@ -385,8 +385,8 @@
   /****************************************************************************************************
    ***** GETSPECIFICSERVICECLIENTINFO
    ****************************************************************************************************
-   * This function returns the information saved in the database relative to a specific service 
-   * client. 
+   * This function returns the information saved in the database relative to a specific service
+   * client.
    * The column names in the fetched row are the following ones:
    * - username          : user's username;
    * - client_email      : email to contact the service client;
@@ -397,7 +397,7 @@
   function getSpecificServiceClientInfo($username) {
     // Global variable: connection to the database
 	  global $conn;
-    
+
     // Get service client information
     $stm = $conn->prepare("
       SELECT username     AS username,
@@ -410,7 +410,7 @@
              users.username = ?
     ");
     $stm->execute(array($username));
-    
+
     // Return user information
     return $stm->fetch();
   }
@@ -423,7 +423,7 @@
   function getSpecificAdministratorInfo($username) {
     // Global variable: connection to the database
 	  global $conn;
-    
+
     // Get administrator information
     $stm = $conn->prepare("
       SELECT username     AS username,
@@ -433,7 +433,7 @@
              users.username = ?
     ");
     $stm->execute(array($username));
-    
+
     // Return user information
     return $stm->fetch();
   }
@@ -448,11 +448,11 @@
                                            $represent_name, $represent_email, $represent_phone_number) {
     // Global variable: connection to the database
     global $conn;
-    
+
     // Update service provider information
     $stm = $conn->prepare("
       UPDATE users
-      SET    email    = ?
+      SET    e_mail    = ?
       WHERE  username = ?
     ");
     $stm->execute(array($entity_email, $username));
@@ -465,7 +465,7 @@
              official_representative     = ?,
              mail_representative         = ?,
              phone_number_representative = ?
-      WHERE  username = ?
+      WHERE  user_id = ?
     ");
     $stm->execute(array($entity_name, $entity_address, $entity_phone_number, $represent_name, $represent_email, $represent_phone_number, $username));
 
@@ -482,11 +482,11 @@
   function editSpecificServiceClientInfo($username, $client_name, $client_email, $client_address, $client_phone) {
     // Global variable: connection to the database
 	  global $conn;
-    
+
     // Update service client information
     $stm = $conn->prepare("
       UPDATE users
-      SET    email    = ?
+      SET    e_mail    = ?
       WHERE  username = ?
     ");
     $stm->execute(array($client_email, $username));
@@ -496,7 +496,7 @@
       SET    client_name  = ?,
              address      = ?,
              phone_number = ?
-      WHERE  username = ?
+      WHERE  user_id = ?
     ");
     $stm->execute(array($client_name, $client_address, $client_phone, $username));
 
@@ -517,8 +517,8 @@
     // Update administrator information
     $stm = $conn->prepare("
       UPDATE users
-      SET    email    = ?
-      WHERE  username = ?
+      SET    e_mail    = ?
+      WHERE  user_id = ?
     ");
     $stm->execute(array($admin_email, $username));
 
