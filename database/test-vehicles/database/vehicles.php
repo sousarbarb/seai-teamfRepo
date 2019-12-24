@@ -1337,6 +1337,56 @@ SELECT * FROM vehicle_sensor_resolution;
       return -1;
     }
     
+    // In case active = FALSE...
+    if($active == FALSE){
+      // If a vehicle is no longer active, loses the administrator approval
+      editVehicleApproval($id, FALSE);
+      
+      // Search active sensors
+      $stm = $conn->prepare("
+        SELECT  *
+        FROM    sensor
+        WHERE   vehicle_id = ? AND
+                active     = ?
+      ");
+      $stm->execute(array($id, 'TRUE'));
+      $results = $stm->fetchAll;
+      
+      // Executes the deactivation for each sensor (and, recursing, each active resolution)
+      foreach($results as $result) {
+        editSensorActive($result['id'], FALSE);
+      }
+
+      // Search active specifications
+      $stm = $conn->prepare("
+        SELECT  *
+        FROM    specification
+        WHERE   vehicle_id = ? AND
+                active     = ?
+      ");
+      $stm->execute(array($id, 'TRUE'));
+      $results = $stm->fetchAll;
+      
+      // Executes the deactivation for each active specification
+      foreach($results as $result) {
+        editSpecificationActive($result['id'], FALSE);
+      }
+      
+      // Delete all current communications protocols
+      $stm = $conn->prepare("
+        SELECT  *
+        FROM    vehicle_communication
+        WHERE   vehicle_id = ?
+      ");
+      $stm->execute(array($id));
+      $results = $stm->fetchAll;
+      
+      // Executes the elimination for each existing protocol communication of the vehicle
+      foreach($results as $result) {
+        deleteVehicleCommunication($result['vehicle_id'], $result['$communication_id']);
+      }
+    }
+    
     // Updating was successful
     return 0;
   }
@@ -1432,11 +1482,29 @@ SELECT * FROM vehicle_sensor_resolution;
         SET    active = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($active? TRUE:FALSE, 
+      $stm->execute(array($active? 'TRUE':'FALSE', 
                           $id)); 
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
+    }
+    
+    // In case active = FALSE...
+    if($active == FALSE){
+      // Search active resolutions
+      $stm = $conn->prepare("
+        SELECT  *
+        FROM    resolution
+        WHERE   sensor_id = ? AND
+                active    = ?
+      ");
+      $stm->execute(array($id, 'TRUE'));
+      $results = $stm->fetchAll;
+      
+      // Executes the deactivation for each active resolution associated with sensor
+      foreach($results as $result) {
+        editResolutionActive($result['id'], FALSE);
+      }        
     }
     
     // Updating was successful
@@ -1487,7 +1555,8 @@ SELECT * FROM vehicle_sensor_resolution;
         UPDATE resolution
         SET    active = ?
         WHERE  id = ?");
-    try{$stm->execute($active? TRUE:FALSE, array($id));
+    try{$stm->execute(array($active? 'TRUE':'FALSE', 
+                            $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
@@ -1495,5 +1564,22 @@ SELECT * FROM vehicle_sensor_resolution;
     
     // Updating was successful
     return 0;
+  }
+
+  /****************************************************************************************************
+   ***** DELETEVEHICLECOMMUNICATION
+   ****************************************************************************************************/
+  function deleteVehicleCommunication($vehicle_id, $communication_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Deletes vehicle communication (assuming that exists)
+    $stm = $conn->prepare("
+      DELETE
+      FROM  vehicle_communication
+      WHERE vehicle_id       = ? AND
+            communication_id = ?
+    ");
+    $stm->execute(array($vehicle_id, $communication_id));
   }
 ?>
