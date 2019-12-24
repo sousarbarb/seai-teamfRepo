@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2019-12-23 13:43:37
+/* Smarty version 3.1.30, created on 2019-12-23 18:38:01
   from "C:\xampp\htdocs\seai\test-vehicles\templates\create.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5e00b679536409_05160410',
+  'unifunc' => 'content_5e00fb7943dda4_36760160',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '053a3fcf540c7072216dc5af81da830f0f5fd028' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai\\test-vehicles\\templates\\create.tpl',
-      1 => 1577105009,
+      1 => 1577105026,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5e00b679536409_05160410 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e00fb7943dda4_36760160 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:common/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
@@ -518,6 +518,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
       <br>
 
       <input type="submit" value="Submit">
+      <input type="reset"  value="Reset">
     </form>
   </article>
 </section>

@@ -715,10 +715,12 @@
     return $stm->fetchAll();
   }
 
-
-
-
-
+  /****************************************************************************************************
+   ***** GETALLAPPROVALSERVICEPROVIDERS
+   ****************************************************************************************************
+   * Get all entity name of service providers that are approved by an administrator. Also, it orders
+   * alphabeticaly by entity_name.
+   ****************************************************************************************************/
   function getAllApprovalServiceProviders() {
     // Global variable: connection to the database
     global $conn;
@@ -728,6 +730,7 @@
       SELECT entity_name
       FROM   service_provider
       WHERE  approval='TRUE'
+      ORDER BY entity_name ASC
     ");
     $stm->execute();
 
@@ -735,6 +738,12 @@
     return $stm->fetchAll();
   }
 
+  /****************************************************************************************************
+   ***** GETALLACTIVEDISTINCTSPECIFICATIONS
+   ****************************************************************************************************
+   * Get all distinct vehicles specifications that are active at the moment. Also, it orders
+   * alphabeticaly by specification_type.
+   ****************************************************************************************************/
   function getAllActiveDistinctSpecifications() {
     // Global variable: connection to the database
     global $conn;
@@ -744,6 +753,7 @@
       SELECT DISTINCT specification_type
       FROM            specification
       WHERE           active='TRUE'
+      ORDER BY specification_type ASC
     ");
     $stm->execute();
 
@@ -751,6 +761,12 @@
     return $stm->fetchAll();
   }
 
+  /****************************************************************************************************
+   ***** GETALLCOMMUNICATIONTYPES
+   ****************************************************************************************************
+   * Get all communications defined in the database. Also, it orders alphabeticaly by 
+   * communication_type.
+   ****************************************************************************************************/
   function getAllCommunicationTypes() {
     // Global variable: connection to the database
     global $conn;
@@ -759,6 +775,7 @@
     $stm = $conn->prepare("
       SELECT communication_type
       FROM   communication
+      ORDER BY communication_type ASC
     ");
     $stm->execute();
 
@@ -766,6 +783,12 @@
     return $stm->fetchAll();
   }
 
+  /****************************************************************************************************
+   ***** GETALLACTIVEDISTINCTSENSORTYPES
+   ****************************************************************************************************
+   * Get all distinct sensor types and active declared in the database. Also, it orders alphabeticaly 
+   * by sensor_type.
+   ****************************************************************************************************/
   function getAllActiveDistinctSensorTypes() {
     // Global variable: connection to the database
     global $conn;
@@ -775,6 +798,7 @@
       SELECT DISTINCT sensor_type
       FROM            sensor
       WHERE           active='TRUE'
+      ORDER BY sensor_type ASC
     ");
     $stm->execute();
 
@@ -782,6 +806,12 @@
     return $stm->fetchAll();
   }
 
+  /****************************************************************************************************
+   ***** GETALLACTIVEDISTINCTRESOLUTIONVALUES
+   ****************************************************************************************************
+   * Get all distinct resolution values and active declared in the database. Also, it orders 
+   * alphabeticaly by value.
+   ****************************************************************************************************/
   function getAllActiveDistinctResolutionValues() {
     // Global variable: connection to the database
     global $conn;
@@ -791,10 +821,444 @@
       SELECT DISTINCT value
       FROM            resolution
       WHERE           active='TRUE'
+      ORDER BY value ASC
     ");
     $stm->execute();
 
     // Return all resolution values
+    return $stm->fetchAll();
+  }
+
+
+
+
+
+  /****************************************************************************************************
+   ***** SEARCHVEHICLESWITHFILTERS
+   ****************************************************************************************************
+   * QUERIES FOR DEBUGGING:
+   * --> processing sensors and resolutions selection:
+WITH vehicle_sensor_resolution AS (
+  SELECT vehicle.id          AS vehicle_id       ,
+        vehicle.vehicle_name AS vehicle_name     ,
+        vehicle.active       AS vehicle_active   ,
+        vehicle.approval     AS vehicle_approval ,
+        vehicle.public       AS vehicle_public   ,
+        sensor.id            AS sensor_id        ,
+        sensor.sensor_type   AS sensor_type      ,
+        sensor.active        AS sensor_active    ,
+        resolution.id        AS resolution_id    ,
+        resolution.value     AS resolution_value ,
+        resolution.active    AS resolution_active
+  FROM  vehicle, sensor, resolution
+  WHERE vehicle.id        = sensor.vehicle_id    AND
+        sensor.id         = resolution.sensor_id AND
+        sensor.active     = 'TRUE'               AND
+        resolution.active = 'TRUE'                    -- put here other restrictions
+  ORDER BY vehicle_name    ASC,
+          sensor_type      ASC,
+          resolution_value ASC
+) SELECT * FROM vehicle_sensor_resolution;        
+
+   * 
+   * --> processing communications:
+WITH vehicle_sensor_resolution AS (
+  SELECT vehicle.id                       AS vehicle_id        ,
+         vehicle.vehicle_name             AS vehicle_name      ,
+         vehicle.active                   AS vehicle_active    ,
+         vehicle.approval                 AS vehicle_approval  ,
+         vehicle.public                   AS vehicle_public    ,
+         communication.id                 AS communication_id  ,
+         communication.communication_type AS communication_type
+  FROM   vehicle, vehicle_communication, communication
+  WHERE  vehicle_communication.vehicle_id       = vehicle.id       AND
+         vehicle_communication.communication_id = communication.id      -- put here other restrictions
+  ORDER BY vehicle_name       ASC,
+           communication_type ASC
+)
+SELECT * FROM vehicle_sensor_resolution;
+
+   * --> processing specifications types:
+WITH vehicle_sensor_resolution AS (
+  SELECT vehicle.id                       AS vehicle_id          ,
+         vehicle.vehicle_name             AS vehicle_name        ,
+         vehicle.active                   AS vehicle_active      ,
+         vehicle.approval                 AS vehicle_approval    ,
+         vehicle.public                   AS vehicle_public      ,
+         specification.id                 AS specification_id    ,
+         specification.specification_type AS specification_type  ,
+         specification.active             AS specification_active
+  FROM   vehicle, specification
+  WHERE  specification.vehicle_id = vehicle.id AND
+         specification.active     = 'TRUE'
+  ORDER BY vehicle_name       ASC,
+           specification_type ASC
+)
+SELECT * FROM vehicle_sensor_resolution;
+   ****************************************************************************************************/
+  function searchVehiclesWithFilters($VEHICLE_ACTIVE, $VEHICLE_APPROVAL, $VEHICLE_PUBLIC, 
+                                    $service_providers_selected, $specifications_selected, $communications_selected, $sensors_selected, $resolutions_selected) {
+    // Global variable: connection to the database
+    global $conn;
+    
+    // --------------------------------------------------------------------------------
+    // PROCESSING FILTERS
+    $sql_prepare = [];
+    $sql = "
+      WITH vehicle_sensor_resolution_filter AS (
+        SELECT vehicle.id          AS vehicle_id       ,
+              vehicle.vehicle_name AS vehicle_name     ,
+              vehicle.active       AS vehicle_active   ,
+              vehicle.approval     AS vehicle_approval ,
+              vehicle.public       AS vehicle_public   ,
+              sensor.id            AS sensor_id        ,
+              sensor.sensor_type   AS sensor_type      ,
+              sensor.active        AS sensor_active    ,
+              resolution.id        AS resolution_id    ,
+              resolution.value     AS resolution_value ,
+              resolution.active    AS resolution_active
+        FROM  vehicle, sensor, resolution
+        WHERE vehicle.id        = sensor.vehicle_id    AND
+              sensor.id         = resolution.sensor_id AND
+              sensor.active     = 'TRUE'               AND
+              resolution.active = 'TRUE'               
+    ";
+    
+    // Sensors Types filtering
+    if(!empty($sensors_selected)){
+      $sql .= " AND (";
+      foreach($sensors_selected as $selected){
+        $select_stripTags = strip_tags( $selected );
+        $sql .= " sensor.sensor_type = ? OR ";
+        array_push( $sql_prepare , $select_stripTags );
+      }
+      $sql .= " 'FALSE' ) ";
+    }
+
+    // Resolutions Values filtering
+    if(!empty($resolutions_selected)){
+      $sql .= " AND (";
+      foreach($resolutions_selected as $selected){
+        $select_stripTags = strip_tags( $selected );
+        $sql .= " resolution.value = ? OR ";
+        array_push( $sql_prepare , $select_stripTags );
+      }
+      $sql .= " 'FALSE' ) ";
+    }
+
+    // Communication Types filtering
+    $sql .= "
+      ORDER BY vehicle_name    ASC,
+              sensor_type      ASC,
+              resolution_value ASC
+      ) , 
+      vehicle_communication_filter AS (
+        SELECT vehicle.id                      AS vehicle_id        ,
+              vehicle.vehicle_name             AS vehicle_name      ,
+              vehicle.active                   AS vehicle_active    ,
+              vehicle.approval                 AS vehicle_approval  ,
+              vehicle.public                   AS vehicle_public    ,
+              communication.id                 AS communication_id  ,
+              communication.communication_type AS communication_type
+        FROM  vehicle, vehicle_communication, communication
+        WHERE vehicle_communication.vehicle_id       = vehicle.id       AND
+              vehicle_communication.communication_id = communication.id    ";
+    
+    if(!empty($communications_selected)){
+      $sql .= " AND (";
+      foreach($communications_selected as $selected){
+        $select_stripTags = strip_tags( $selected );
+        $sql .= " communication.communication_type = ? OR ";
+        array_push( $sql_prepare , $select_stripTags );
+      }
+      $sql .= " 'FALSE' ) ";
+    }
+
+    // Specifications filtering
+    $sql .= "
+        ORDER BY vehicle_name      ASC,
+                communication_type ASC
+      ) , 
+      vehicle_specification_filter AS (
+        SELECT vehicle.id                      AS vehicle_id          ,
+              vehicle.vehicle_name             AS vehicle_name        ,
+              vehicle.active                   AS vehicle_active      ,
+              vehicle.approval                 AS vehicle_approval    ,
+              vehicle.public                   AS vehicle_public      ,
+              specification.id                 AS specification_id    ,
+              specification.specification_type AS specification_type  ,
+              specification.active             AS specification_active
+        FROM  vehicle, specification
+        WHERE specification.vehicle_id = vehicle.id AND
+              specification.active     = 'TRUE' 
+    ";
+    
+    if(!empty($specifications_selected)){
+      $sql .= " AND (";
+      foreach($specifications_selected as $selected){
+        $select_stripTags = strip_tags( $selected );
+        $sql .= " specification.specification_type = ? OR ";
+        array_push( $sql_prepare , $select_stripTags );
+      }
+      $sql .= " 'FALSE' ) ";
+    }
+    $sql .= "
+      ORDER BY vehicle_name      ASC,
+              specification_type ASC
+    )
+    ";
+
+    // --------------------------------------------------------------------------------
+    // INTERSECTING TABLES
+    // Information to obtain
+    $sql .= "
+      SELECT DISTINCT
+        service_provider.id          AS provider_id        ,
+        service_provider.entity_name AS provider_entityname,
+        service_provider.user_id     AS provider_username  ,
+        users.e_mail                 AS provider_email     ,
+        service_provider.official_representative AS provider_repres_name ,
+        service_provider.mail_representative     AS provider_repres_email,
+        users.status                 AS provider_status  ,
+        service_provider.approval    AS provider_approval,
+        vehicle.id           AS vehicle_id          ,
+        vehicle.vehicle_name AS vehicle_name        ,
+        vehicle.localization AS vehicle_localization,
+        vehicle.active       AS vehicle_active      ,
+        vehicle.approval     AS vehicle_approval    ,
+        vehicle.public       AS vehicle_public  
+      FROM users, service_provider, vehicle
+    ";
+    // Intersecting tables
+    if(!empty($sensors_selected) || !empty($resolutions_selected)){
+      $sql .= "
+        INNER JOIN vehicle_sensor_resolution_filter
+          ON vehicle_sensor_resolution_filter.vehicle_id = vehicle.id
+      ";
+    }
+    if(!empty($communications_selected)){
+      $sql .= "
+        INNER JOIN vehicle_communication_filter
+          ON vehicle_communication_filter.vehicle_id     = vehicle.id
+      ";
+    }
+    if(!empty($specifications_selected)){
+      $sql = "
+        INNER JOIN vehicle_specification_filter
+          ON vehicle_specification_filter.vehicle_id     = vehicle.id
+      ";
+    }
+
+    // --------------------------------------------------------------------------------
+    // OTHER RESTRICTIONS (service_providers, vehicles active, public, etc...)
+    $sql .= "
+      WHERE
+        service_provider.user_id = users.username              AND
+        service_provider.id      = vehicle.service_provider_id    
+    ";
+
+    // Process Service Providers
+    if(!empty($service_providers_selected)){
+      $sql .= " AND (";
+      foreach($service_providers_selected as $selected){
+        $select_stripTags = strip_tags( $selected );
+        $sql .= " service_provider.entity_name = ? OR ";
+        array_push( $sql_prepare , $select_stripTags );
+      }
+      $sql .= " 'FALSE' ) ";
+    }
+
+    // Restrictions on vehicles state
+    if(isset($VEHICLE_ACTIVE)){
+      // --> DEBUG
+      // echo '<p>VEHICLE_ACTIVE SET</p>';
+      $sql .= " AND ( vehicle.active = ? ) ";
+      array_push( $sql_prepare , $VEHICLE_ACTIVE? 'TRUE':'FALSE' );
+    }
+    if(isset($VEHICLE_APPROVAL)){
+      // --> DEBUG
+      // echo '<p>VEHICLE_APPROVAL SET</p>';
+      $sql .= " AND ( vehicle.approval = ? ) ";
+      array_push( $sql_prepare , $VEHICLE_APPROVAL? 'TRUE':'FALSE' );
+    }
+    if(isset($VEHICLE_PUBLIC)){
+      // --> DEBUG
+      // echo '<p>VEHICLE_PUBLIC SET</p>';
+      $sql .= " AND ( vehicle.public = ? ) ";
+      array_push( $sql_prepare , $VEHICLE_PUBLIC? 'TRUE':'FALSE' );
+    }
+    
+    // --------------------------------------------------------------------------------
+    // EXECUTING QUERIE
+    $stm = $conn->prepare($sql);
+    $stm->execute($sql_prepare);
+
+    // Return search results
+    return $stm->fetchAll();
+  }
+
+
+
+/****************************************************************************************************
+ ***** GETVEHICLEGENERALINFORMATION
+ ****************************************************************************************************/
+  function getVehicleGeneralInformation($vehicle_name){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all informations abou the vehicle stored in database
+    $stm = $conn->prepare("
+      SELECT  id                  AS vehicle_id          ,
+              vehicle_name        AS vehicle_name        ,
+              service_provider_id AS provider_id         ,
+              localization        AS vehicle_localization,
+              comments            AS vehicle_comments    ,
+              active              AS vehicle_active      ,
+              approval            AS vehicle_approval    ,
+              public              AS vehicle_public
+      FROM    vehicle
+      WHERE   vehicle_name = ?
+    ");
+    $stm->execute(array($vehicle_name));
+
+    // Return row with vehicle information
+    return $stm->fetch();
+  }
+
+  /****************************************************************************************************
+   ***** GETVEHICLESPECIFICATIONS
+   ****************************************************************************************************/
+  function getVehicleSpecifications($vehicle_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all specifications of an vehicle
+    $stm = $conn->prepare("
+      SELECT  id                 AS spec_id      ,
+              specification_type AS spec_type    ,
+              value_min          AS spec_valuemin,
+              value_max          AS spec_valuemax,
+              active             AS spec_active  ,
+              comments           AS spec_comments
+      FROM    specification
+      WHERE   vehicle_id = ?
+    ");
+    $stm->execute(array($vehicle_id));
+
+    // Return rows with vehicle specifications
+    return $stm->fetchAll();
+  }
+
+  /****************************************************************************************************
+   ***** GETVEHICLECOMMUNICATIONS
+   ****************************************************************************************************/
+  function getVehicleCommunications($vehicle_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all communications of an vehicle
+    $stm = $conn->prepare("
+      SELECT  communication.id                 AS communication_id  ,
+              communication.communication_type AS communication_type
+      FROM    communication, vehicle_communication
+      WHERE   vehicle_communication.vehicle_id       = ?                AND
+              vehicle_communication.communication_id = communication.id
+    ");
+    $stm->execute(array($vehicle_id));
+
+    // Return rows with vehicle communications
+    return $stm->fetchAll();
+  }
+
+  /****************************************************************************************************
+   ***** GETVEHICLESENSORSANDRESOLUTIONS
+   ****************************************************************************************************/
+  function getVehicleSensorsAndResolutions($vehicle_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all sensors and respective resolutions of a vehicle
+    $stm = $conn->prepare("
+      SELECT
+        sensor.id          AS sensor_id      ,
+        sensor.sensor_type AS sensor_type    ,
+        sensor.sensor_name AS sensor_name    ,
+        sensor.active      AS sensor_active  ,
+        sensor.comments    AS sensor_comments,
+        
+        resolution.id           AS res_id         ,
+        resolution.value        AS res_value      ,
+        resolution.consumption  AS res_consumption,
+        resolution.vel_sampling AS res_velocity   ,
+        resolution.cost         AS res_cost       ,
+        resolution.swath        AS res_swath      ,
+        resolution.active       AS res_active     ,
+        resolution.comments     AS res_comments
+      FROM sensor
+      FULL OUTER JOIN resolution
+        ON resolution.sensor_id = sensor.id
+      WHERE sensor.vehicle_id = ?
+      ORDER BY sensor_type ASC,
+              res_value   ASC
+    ");
+    $stm->execute(array($vehicle_id));
+
+    // Return rows with vehicle sensorial capabilities
+    return $stm->fetchAll();
+  }
+
+  /****************************************************************************************************
+   ***** GETVEHICLESENSORS
+   ****************************************************************************************************/
+  function getVehicleSensors($vehicle_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all sensors and respective resolutions of a vehicle
+    $stm = $conn->prepare("
+      SELECT
+        sensor.id          AS sensor_id      ,
+        sensor.sensor_type AS sensor_type    ,
+        sensor.sensor_name AS sensor_name    ,
+        sensor.active      AS sensor_active  ,
+        sensor.comments    AS sensor_comments
+      FROM  sensor
+      WHERE sensor.vehicle_id = ?
+      ORDER BY  sensor.sensor_type ASC,
+                sensor.sensor_name ASC
+    ");
+    $stm->execute(array($vehicle_id));
+
+    // Return rows with vehicle sensorial capabilities
+    return $stm->fetchAll();
+  }
+
+  /****************************************************************************************************
+   ***** GETSENSORRESOLUTIONS
+   ****************************************************************************************************/
+  function getSensorResolutions($sensor_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all sensors and respective resolutions of a vehicle
+    $stm = $conn->prepare("
+      SELECT
+        resolution.id           AS res_id         ,
+        resolution.sensor_id    AS res_sensorid   ,
+        resolution.value        AS res_value      ,
+        resolution.consumption  AS res_consumption,
+        resolution.vel_sampling AS res_velocity   ,
+        resolution.cost         AS res_cost       ,
+        resolution.swath        AS res_swath      ,
+        resolution.active       AS res_active     ,
+        resolution.comments     AS res_comments
+      FROM  resolution
+      WHERE resolution.sensor_id = ?
+      ORDER BY  resolution.value ASC
+    ");
+    $stm->execute(array($sensor_id));
+
+    // Return rows with vehicle sensorial capabilities
     return $stm->fetchAll();
   }
 ?>

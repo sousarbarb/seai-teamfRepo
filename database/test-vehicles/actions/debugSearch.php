@@ -46,30 +46,36 @@
   $resolutions = getAllActiveDistinctResolutionValues();
   $smarty->assign('resolutions', $resolutions);
 
+  // DEBUG PRINT_R VARIABLES
+  echo '<h2>SEE INSPET TO DEBUG PRINT_R VARIABLES</h2>';
+  if(!empty($service_providers_selected)){
+    echo '<p>';
+    print_r($service_providers_selected);
+    echo '</p>';
+  }
+  if(!empty($specifications_selected)){
+    echo '<p>';
+    print_r($specifications_selected);
+    echo '</p>';
+  }
+  if(!empty($communications_selected)){
+    echo '<p>';
+    print_r($communications_selected);
+    echo '</p>';
+  }
+  if(!empty($sensors_selected)){
+    echo '<p>';
+    print_r($sensors_selected);
+    echo '</p>';
+  }
+  if(!empty($resolutions_selected)){
+    echo '<p>';
+    print_r($resolutions_selected);
+    echo '</p>';
+  }
 
-
-  // SEARCHING FILTERS
-  $search_results = searchVehiclesWithFilters(
-    NULL,       // Vehicles Active: NULL (restriction not activated)
-                //                  FALSE (only show inactive vehicles)
-                //                  TRUE (only show active vehicles)
-    NULL,       // Vehicles APPROVED: NULL (restriction not activated)
-                //                    FALSE (only show unapproved vehicles)
-                //                    TRUE (only show approved vehicles)
-    NULL,       // Vehicles PUBLIC: NULL (restriction not activated)
-                //                  FALSE (only show private vehicles)
-                //                  TRUE (only show public vehicles)
-    isset($service_providers_selected)? $service_providers_selected : NULL,
-    isset($specifications_selected)?    $specifications_selected    : NULL,
-    isset($communications_selected)?    $communications_selected    : NULL,
-    isset($sensors_selected)?           $sensors_selected           : NULL,
-    isset($resolutions_selected)?       $resolutions_selected       : NULL
-  );
-  $smarty->assign('search_results', $search_results);
-
-
-
-  // Display template refered to contacts
-  $smarty->assign('PAGE', 'search');
-  $smarty->display('search.tpl');
+  echo '<h2>Debug SEARCHVEHICLESWITHFILTERS</h2>';
+  echo '<p>';
+  print_r(  );
+  echo '</p>';
 ?>

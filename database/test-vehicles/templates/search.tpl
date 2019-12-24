@@ -2,6 +2,8 @@
 
 <aside>
   <header>Search Filters</header>
+  <!-- DEBUG ACTION -->
+  <!-- <form action="{$BASE_URL}actions/debugSearch.php" method="post"> -->
   <form action="{$BASE_URL}pages/search.php" method="post">
 
     <h1>Service Providers:</h1>
@@ -102,5 +104,50 @@
     <input type="submit" value="Submit">
   </form>
 </aside>
+
+<section id="results">
+  <header>Search Results:</header>
+{if count($search_results) <= 0}
+  <p>No results founded<p>
+{else}
+  <p>Numbers of results founded: {count($search_results)}</p>
+  <table>
+    <tr>
+      <th>provider_id</th>
+      <th>provider_entityname</th>
+      <th>provider_username</th>
+      <th>provider_email</th>
+      <th>provider_repres_name</th>
+      <th>provider_repres_email</th>
+      <th>provider_status</th>
+      <th>provider_approval</th>
+      <th>vehicle_id</th>
+      <th>vehicle_name</th>
+      <th>vehicle_localization</th>
+      <th>vehicle_active</th>
+      <th>vehicle_approval</th>
+      <th>vehicle_public</th>
+    </tr>
+  {foreach $search_results as $result}
+    <tr>
+      <td>{$result['provider_id']}</td>
+      <td>{$result['provider_entityname']}</td>
+      <td>{$result['provider_username']}</td>
+      <td>{$result['provider_email']}</td>
+      <td>{$result['provider_repres_name']}</td>
+      <td>{$result['provider_repres_email']}</td>
+      <td>{$result['provider_status']}</td>
+      <td>{$result['provider_approval']}</td>
+      <td>{$result['vehicle_id']}</td>
+      <td>{$result['vehicle_name']}</td>
+      <td>{$result['vehicle_localization']}</td>
+      <td>{$result['vehicle_active']}</td>
+      <td>{$result['vehicle_approval']}</td>
+      <td>{$result['vehicle_public']}</td>
+    </tr>
+  {/foreach}
+  </table>
+{/if}
+</section>
 
 {include file= 'common/footer.tpl'}

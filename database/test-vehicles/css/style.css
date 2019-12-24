@@ -113,7 +113,7 @@ body > header > section .close{
   padding: 0.2em 0.75em;
 }
 
-body > aside {
+body > aside {    /***** Filter menu *****/
   grid-area: menu1;
   width: 20em;
   margin: 2em;
@@ -144,4 +144,133 @@ body > aside > form > input[type="reset"] {
   margin-block-start: 1em;
   margin-block-end: 1em;
   padding: 0.2em 0.75em;
+}
+
+#results {
+  grid-area: content;
+  margin: 2em;
+  color: black;
+}
+#results > header {
+  font-weight: bold;
+  font-size: 1.25em;
+  padding: 0.4em 0em;
+}
+#results > p {
+  margin-block-start: 0.25em;
+  margin-block-end: 1em;
+}
+#results > table {
+  border-collapse: collapse;
+  width: 1fr;
+  overflow: scroll;
+}
+#results > table td, #results > table th {
+  border: thin solid #353535;
+  padding: 0.5em;
+}
+#results > table tr:nth-child(even){
+  background-color: #c9c9c9;
+}
+#results > table tr:nth-child(odd){
+  background-color: #f1f1f1;
+}
+#results > table tr:hover {
+  background-color: rgb(94, 94, 94);
+  color: #ffffff;
+}
+#results > table th {
+  padding: 0.7em 1em 0.7em 1em;
+  background-color: #353535;
+  color: #ffffff;
+}
+
+#vehicle_selection {
+  grid-area: content;
+}
+#vehicle_selection > header {
+  font-weight: bold;
+  margin: 0em 0em 0.5em 0em;
+}
+#vehicle_selection input[type="text"]{
+  font-size: 1em;
+  padding: 0.25em;
+  width: 20em;
+}
+#vehicle_selection input[type="submit"]{
+  font-size: 1em;
+  margin: 0em 1em;
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+  padding: 0.25em 0.75em;
+}
+
+#show {
+  grid-area: content;
+  margin: 2em;
+}
+#vehicle_info > article > header {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 1em 0em 0.5em 0em;
+}
+#vehicle_info > article > p {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+  margin: 0.5em 2em;
+}
+#vehicle_info > article > table {
+  margin: 0.5em 2em;
+  border-collapse: collapse;
+  width: 1fr;
+  overflow: scroll;
+}
+#vehicle_info > article > table td, #vehicle_info > article > table th {
+  border: thin solid #353535;
+  padding: 0.5em;
+}
+#vehicle_info > article > table tr:nth-child(even){
+  background-color: #c9c9c9;
+}
+#vehicle_info > article > table tr:nth-child(odd){
+  background-color: #f1f1f1;
+}
+#vehicle_info > article > table tr:hover {
+  background-color: rgb(94, 94, 94);
+  color: #ffffff;
+}
+#vehicle_info > article > table th {
+  padding: 0.7em 1em 0.7em 1em;
+  background-color: #353535;
+  color: #ffffff;
+}
+#vehicle_info > article > div > p {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+  margin: 0.5em 4em;
+}
+#vehicle_info > article > div > table {
+  margin: 0.5em 6em;
+  border-collapse: collapse;
+  width: 1fr;
+  overflow: scroll;
+}
+#vehicle_info > article > div > table td, #vehicle_info > article > div > table th {
+  border: thin solid #353535;
+  padding: 0.5em;
+}
+#vehicle_info > article > div > table tr:nth-child(even){
+  background-color: #c9c9c9;
+}
+#vehicle_info > article > div > table tr:nth-child(odd){
+  background-color: #f1f1f1;
+}
+#vehicle_info > article > div > table tr:hover {
+  background-color: rgb(94, 94, 94);
+  color: #ffffff;
+}
+#vehicle_info > article > div > table th {
+  padding: 0.7em 1em 0.7em 1em;
+  background-color: #353535;
+  color: #ffffff;
 }
