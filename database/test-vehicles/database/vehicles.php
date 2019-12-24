@@ -1263,166 +1263,226 @@ SELECT * FROM vehicle_sensor_resolution;
     return $stm->fetchAll();
   }
 
+  /****************************************************************************************************
+   ***** EDITVEHICLE
+   ****************************************************************************************************/
   function editVehicle($id, $name, $localization, $comments, $public){
-       
+    // Global variable: connection to the database
     global $conn;
 
-    //check if new vehicle name already exists 
-    $stm = $conn->prepare("
-        SELECT *
-        FROM   vehicle
-        WHERE  vehicle_name = ?");
-    $stm->execute(array($name));
-
-    $results = $stm->fetch();
-
-    //check if existent name is from another vehicle
-    if($results != FALSE){
-      if($results['id'] != $id)
-        return -1; 
-    }
-       
+    // Updates vehicle information
     $stm = $conn->prepare("
         UPDATE vehicle
         SET    vehicle_name = ?,
                localization = ?,
-               comments = ?,
-               public = ?
+               comments     = ?,
+               public       = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($name, $localization, $comments, $public? TRUE:FALSE, $id));
+      $stm->execute(array($name, 
+                          $localization, 
+                          $comments, 
+                          $public? 'TRUE':'FALSE', 
+                          $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
-      return -2;
+      return -1;
     }
-    return $stm->rowCount();
+
+    // Updating was successful
+    return 0;
   }
 
+  /****************************************************************************************************
+   ***** EDITVEHICLEAPPROVAL
+   ****************************************************************************************************/
   function editVehicleApproval($id, $approval){
-        
+    // Global variable: connection to the database
     global $conn;
-        
+
+    // Updates vehicle approval
     $stm = $conn->prepare("
         UPDATE vehicle
         SET    approval = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($approval? TRUE:FALSE, $id));
+      $stm->execute(array($approval? 'TRUE':'FALSE', 
+                          $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
         return -1;
     }
-    return $stm->rowCount();
+    
+    // Updating was successful
+    return 0;
   }
 
+  /****************************************************************************************************
+   ***** EDITVEHICLEACTIVE
+   ****************************************************************************************************/
   function editVehicleActive($id, $active){
-      
+    // Global variable: connection to the database
     global $conn;
-     
+
+    // Updates vehicle active
     $stm = $conn->prepare("
         UPDATE vehicle
         SET    active = ?
         WHERE  id = ?");
-    try{$stm->execute(array($active? TRUE:FALSE, $id));
+    try{
+      $stm->execute(array($active? 'TRUE':'FALSE', 
+                          $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    return $stm->rowCount();
+    
+    // Updating was successful
+    return 0;
   }
 
-  function editSpecification($id, $value_min, $value_max, $comments){  
-
+  /****************************************************************************************************
+   ***** EDITSPECIFICATION
+   ****************************************************************************************************/
+  function editSpecification($id, $value_min, $value_max, $comments){
+    // Global variable: connection to the database
     global $conn;
-        
+
+    // Updates specification
     $stm = $conn->prepare("
         UPDATE specification
-        SET    comments = ?,
+        SET    comments  = ?,
                value_min = ?,
                value_max = ?
         WHERE  id = ?");
-    try{$stm->execute(array($comments, $value_min, $value_max, $id));
+    try{
+      $stm->execute(array($comments, 
+                          $value_min, 
+                          $value_max, 
+                          $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    return $stm->rowCount();
+    
+    // Updating was successful
+    return 0;
   }
 
+  /****************************************************************************************************
+   ***** EDITSPECIFICATIONACTIVE
+   ****************************************************************************************************/
   function editSpecificationActive($id, $active){
-        
+    // Global variable: connection to the database
     global $conn;
-             
+
+    // Updates specification active
     $stm = $conn->prepare("
         UPDATE specification
         SET    active = ?
         WHERE  id = ?");
-    try{$stm->execute($active? TRUE:FALSE, array($id)); 
+    try{
+      $stm->execute(array($active? 'TRUE':'FALSE', 
+                          $id)); 
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    return $stm->rowCount();
+    
+    // Updating was successful
+    return 0;
   }
 
-  function editSensor($id, $name, $comments){ 
-        
+  /****************************************************************************************************
+   ***** EDITSENSOR
+   ****************************************************************************************************/
+  function editSensor($id, $name, $comments){
+    // Global variable: connection to the database
     global $conn;
-        
+
+    // Updates sensor
     $stm = $conn->prepare("
         UPDATE sensor
-        SET    name = ?,
+        SET    name     = ?,
                comments = ?
         WHERE  id = ?");
-    try{$stm->execute(array($name, $comments, $id));
+    try{
+      $stm->execute(array($name, 
+                          $comments, 
+                          $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    return $stm->rowCount();
+    
+    // Updating was successful
+    return 0;
   }
 
+  /****************************************************************************************************
+   ***** EDITSENSORACTIVE
+   ****************************************************************************************************/
   function editSensorActive($id, $active){
-        
+    // Global variable: connection to the database
     global $conn;
-        
+
+    // Updates sensor active
     $stm = $conn->prepare("
         UPDATE sensor
         SET    active = ?
         WHERE  id = ?");
-    try{$stm->execute($active? TRUE:FALSE, array($id)); 
+    try{
+      $stm->execute(array($active? TRUE:FALSE, 
+                          $id)); 
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    return $stm->rowCount();
+    
+    // Updating was successful
+    return 0;
   }
 
-  function editResolution($id, $value, $vel_sampling, $consumption, $swath, $cost, $comments){ 
-        
+  /****************************************************************************************************
+   ***** EDITRESOLUTION
+   ****************************************************************************************************/
+  function editResolution($id, $vel_sampling, $consumption, $swath, $cost, $comments){
+    // Global variable: connection to the database
     global $conn;
-        
+
+    // Updates resolution
     $stm = $conn->prepare("
         UPDATE resolution
-        SET    value = ?,
-               vel_sampling = ?,
-               consumption = ?,
-               swath = ?,
-               cost = ?,
-               comments = ?
+        SET    vel_sampling = ?,
+               consumption  = ?,
+               swath        = ?,
+               cost         = ?,
+               comments     = ?
         WHERE  id = ?");
-    try{$stm->execute(array($value, $vel_sampling, $consumption, $swath, $cost, $comments, $id));
+    try{
+      $stm->execute(array($vel_sampling, 
+                          $consumption,
+                          $swath, 
+                          $cost, 
+                          $comments, 
+                          $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    return $stm->rowCount();
+    
+    // Updating was successful
+    return 0;
   }
-      
+
+  /****************************************************************************************************
+   ***** EDITRESOLUTIONACTIVE
+   ****************************************************************************************************/
   function editResolutionActive($id, $active){
-        
+    // Global variable: connection to the database
     global $conn;
-        
+
+    // Updates resolution active
     $stm = $conn->prepare("
         UPDATE resolution
         SET    active = ?
@@ -1432,6 +1492,8 @@ SELECT * FROM vehicle_sensor_resolution;
       // Updating was not completed successfully
       return -1;
     }
-    return $stm->rowCount();
+    
+    // Updating was successful
+    return 0;
   }
 ?>
