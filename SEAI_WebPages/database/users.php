@@ -547,4 +547,76 @@
     return $stm->rowCount();
   }
 
+  /****************************************************************************************************
+   ***** GETALLNOTINACTIVEUSERS
+   ****************************************************************************************************
+   * This function returns all users that are active or waiting e-mail confirmation by the admin. A 
+   * suggestion is to do a foreach that prints the different information depending which type of user.
+   * A table in the webpage could look like this:
+   * 
+   *   Username | E-mail | Status | Name | Admin Approval
+   * -----------|--------|--------|------|-----------------
+   *     ...    |   ...  |   ...  |  ... |        ...
+   * 
+   * To print the information, we could do the following (NOT TESTED):
+   * - no ficheiro php:
+   *     ...
+   *     $users_results = getAllNotInactiveUsers();
+   *     $smarty->assign( 'users_results' , $users_results );
+   *     ...
+   * - no ficheiro tpl:
+   *     ...
+   *     <table>
+   *       <tr>
+   *         <th>Username</th>
+   *         <th>E-mail</th>
+   *         <th>Status</th>
+   *         <th>Name</th>
+   *         <th>Admin Approval (Service PRovider)</th>
+   *       </tr>
+   *       {foreach $users_results as $user}
+   *       <tr>
+   *         <td>{$user['user_username']}</td>
+   *         <td>{$user['user_email']}</td>
+   *         <td>{$user['user_status']}</td>
+   *       {if $user['client_name'] == NULL}
+   *         <td>{$user['entity_name']}</td>
+   *         <td>{if $user['admin_approval']}Yes{else}No{/if}</td>
+   *       {else}
+   *         <td>{$user['client_name']}</td>
+   *         <td>&#8208;</td>    <!-- Hyphen code to indicate that colunm not valid in this case -->
+   *       {/if}
+   *       </tr>
+   *       {/foreach}
+   *     </table>
+   ****************************************************************************************************/
+  function getAllNotInactiveUsers(){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get all not inactive users
+    $stm = $conn->prepare("
+      SELECT
+        users.username               AS user_username ,
+        users.e_mail                 AS user_email    ,
+        users.status                 AS user_status   ,
+        service_client.client_name   AS client_name   ,
+        service_provider.entity_name AS entity_name   ,
+        service_provider.approval    AS admin_approval
+      FROM users
+      FULL OUTER JOIN service_provider
+        ON service_provider.user_id = users.username
+      FULL OUTER JOIN service_client
+        ON service_client.user_id   = users.username
+      WHERE users.status             <> 'Inactive'  AND
+        (service_client.client_name  IS NOT NULL    OR 
+        service_provider.entity_name IS NOT NULL  )
+      ORDER BY user_username ASC
+    ");
+    $stm->execute();
+
+    // Return all active ou waiting e-mail confirmation users
+    return $stm->fetchAll();
+  }
+
 ?>
