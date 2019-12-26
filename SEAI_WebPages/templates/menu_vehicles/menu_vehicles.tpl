@@ -6,8 +6,10 @@
   <h2 class="display-4 text-white">VEHICLES</h2>
   <p class="lead text-white mb-0">Infomation about public vehicles</p>
   <div class="separator"></div>
-    <div class="grid_vehicles">
-      <div class="text-white vehicles_table">
+    <div class="grid-vehicles">
+      <div class="text-white">
+        <table class="vehicles_table">
+        {* old test
         <div class="vehicles_row">
           <div class="vehicle">
             <div class="vehicle_frame">
@@ -15,51 +17,33 @@
             </div>
             <label>sup</label>
           </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-               <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-        </div>
-        <div class="vehicles_row">
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="{$BASE_URL}images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-        </div>
+        *}
+        <tr>
+          <th>Vehicle Name</th><th>Localization</th><th>Active</th><th>Approved</th><th>Visibility</th><th>Service Provider</th>
+        </tr>
+        <br>
+        {if (empty($search_results))}
+        <tr>
+          <td colspan="6">There are no vehicles to show</td>
+        </tr>
+        {/if}
+        {foreach $search_results as $result}
+        <tr>
+          <td>{$result['vehicle_name']}</td>
+          <td>{$result['vehicle_localization']}</td>
+          {if ($result['vehicle_active'])==TRUE}<td>YES</td>
+          {elseif ($result['vehicle_active'])==FALSE}<td>NO</td>
+          {/if}
+          {if ($result['vehicle_approval'])==TRUE}<td>YES</td>
+          {elseif ($result['vehicle_approval'])==FALSE}<td>NO</td>
+          {/if}
+          {if ($result['vehicle_public'])==TRUE}<td>Public</td>
+          {elseif ($result['vehicle_public'])==FALSE}<td>Private</td>
+          {/if}
+          <td>{$result['provider_entityname']}</td>
+        </tr>
+        {/foreach}
+        </table>
       </div>
       <div class="text-white vehicles_sideText">
         {if ($acc_type=="provider")}

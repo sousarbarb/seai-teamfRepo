@@ -24,6 +24,7 @@ $stmt->execute();
 
 //**************DATABASE FUNCTIONS***************
 include_once($BASE_DIR . 'database/users.php');
+include_once($BASE_DIR . 'database/vehicles.php');
 // include_once($BASE_DIR . 'database/resquest.php'); - will be used when database is ready
 
 
@@ -51,6 +52,10 @@ if (isset($_SESSION['acc_type'])) {
 
 if (isset($_SESSION['user_id'])) {
   $smarty->assign('user_id', $_SESSION['user_id']);
+}
+
+if (isset($_SESSION['entity_name'])) {
+  $smarty->assign('entity_name', $_SESSION['entity_name']);
 }
 
 if (isset($_SESSION['acc_info'])) {

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-11 17:06:25
+/* Smarty version 3.1.33, created on 2019-12-26 01:09:08
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_vehicles\menu_vehicles.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df1140139c595_12089821',
+  'unifunc' => 'content_5e03fa24354d85_88695103',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0afbdce37463a8d953e6fd18d1c38be186b1ac25' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_vehicles\\menu_vehicles.tpl',
-      1 => 1576080106,
+      1 => 1577318947,
       2 => 'file',
     ),
   ),
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5df1140139c595_12089821 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e03fa24354d85_88695103 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -34,68 +34,45 @@ $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cach
   <h2 class="display-4 text-white">VEHICLES</h2>
   <p class="lead text-white mb-0">Infomation about public vehicles</p>
   <div class="separator"></div>
-    <div class="grid_vehicles">
-      <div class="text-white vehicles_table">
-        <div class="vehicles_row">
-          <div class="vehicle">
-            <div class="vehicle_frame">
-               <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-               <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-        </div>
-        <div class="vehicles_row">
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-          <div class="vehicle">
-            <div class="vehicle_frame">
-              <span class="helper"></span><img src="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-images/vehicles/auv.png"></img>
-            </div>
-            <label>sup</label>
-          </div>
-        </div>
+    <div class="grid-vehicles">
+      <div class="text-white">
+        <table class="vehicles_table">
+                <tr>
+          <th>Vehicle Name</th><th>Localization</th><th>Active</th><th>Approved</th><th>Visibility</th><th>Service Provider</th>
+        </tr>
+        <br>
+        <?php if ((empty($_smarty_tpl->tpl_vars['search_results']->value))) {?>
+        <tr>
+          <td colspan="6">There are no vehicles to show</td>
+        </tr>
+        <?php }?>
+        <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['search_results']->value, 'result');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['result']->value) {
+?>
+        <tr>
+          <td><?php echo $_smarty_tpl->tpl_vars['result']->value['vehicle_name'];?>
+</td>
+          <td><?php echo $_smarty_tpl->tpl_vars['result']->value['vehicle_localization'];?>
+</td>
+          <?php if (($_smarty_tpl->tpl_vars['result']->value['vehicle_active']) == TRUE) {?><td>YES</td>
+          <?php } elseif (($_smarty_tpl->tpl_vars['result']->value['vehicle_active']) == FALSE) {?><td>NO</td>
+          <?php }?>
+          <?php if (($_smarty_tpl->tpl_vars['result']->value['vehicle_approval']) == TRUE) {?><td>YES</td>
+          <?php } elseif (($_smarty_tpl->tpl_vars['result']->value['vehicle_approval']) == FALSE) {?><td>NO</td>
+          <?php }?>
+          <?php if (($_smarty_tpl->tpl_vars['result']->value['vehicle_public']) == TRUE) {?><td>Public</td>
+          <?php } elseif (($_smarty_tpl->tpl_vars['result']->value['vehicle_public']) == FALSE) {?><td>Private</td>
+          <?php }?>
+          <td><?php echo $_smarty_tpl->tpl_vars['result']->value['provider_entityname'];?>
+</td>
+        </tr>
+        <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+        </table>
       </div>
       <div class="text-white vehicles_sideText">
         <?php if (($_smarty_tpl->tpl_vars['acc_type']->value == "provider")) {?>
