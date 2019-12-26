@@ -317,6 +317,115 @@
   }
 
   /****************************************************************************************************
+   ***** EDITSPECIFICSERVICEPROVIDERINFO
+   ****************************************************************************************************
+   * This function has the main goal to allow the user editing his personnal informations. In this
+   * case, the type of user considerer is a service provider.
+   ****************************************************************************************************/
+  function editSpecificServiceProviderInfo($username, $entity_name, $entity_email, $entity_address, $entity_phone_number, $entity_logo_path,
+                                           $represent_name, $represent_email, $represent_phone_number) {
+    // Global variable: connection to the database
+    global $conn;
+
+    // Update service provider information
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    e_mail    = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array($entity_email, $username));
+
+    $stm = $conn->prepare("
+      UPDATE service_provider
+      SET    entity_name                 = ?,
+             address                     = ?,
+             phone_number                = ?,
+             official_representative     = ?,
+             mail_representative         = ?,
+             phone_number_representative = ?
+      WHERE  user_id = ?
+    ");
+    $stm->execute(array($entity_name, $entity_address, $entity_phone_number, $represent_name, $represent_email, $represent_phone_number, $username));
+
+    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
+    return $stm->rowCount();
+  }
+
+  /****************************************************************************************************
+   ***** EDITSPECIFICSERVICECLIENTINFO
+   ****************************************************************************************************
+   * This function has the main goal to allow the user editing his personnal informations. In this
+   * case, the type of user considerer is a service client.
+   ****************************************************************************************************/
+  function editSpecificServiceClientInfo($username, $client_name, $client_email, $client_address, $client_phone) {
+    // Global variable: connection to the database
+	  global $conn;
+
+    // Update service client information
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    e_mail    = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array($client_email, $username));
+
+    $stm = $conn->prepare("
+      UPDATE service_client
+      SET    client_name  = ?,
+             address      = ?,
+             phone_number = ?
+      WHERE  user_id = ?
+    ");
+    $stm->execute(array($client_name, $client_address, $client_phone, $username));
+
+    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
+    return $stm->rowCount();
+  }
+
+  /****************************************************************************************************
+   ***** EDITSPECIFICADMINISTRATORINFO
+   ****************************************************************************************************
+   * This function has the main goal to allow the user editing his personnal informations. In this
+   * case, the type of user considerer is a administrator.
+   ****************************************************************************************************/
+  function editSpecificAdministratorInfo($username, $admin_email) {
+    // Global variable: connection to the database
+	  global $conn;
+
+    // Update administrator information
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    e_mail    = ?
+      WHERE  user_id = ?
+    ");
+    $stm->execute(array($admin_email, $username));
+
+    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
+    return $stm->rowCount();
+  }
+
+  /****************************************************************************************************
+   ***** EDITSPECIFICUSERPASS
+   ****************************************************************************************************
+   * Edit the password of a specific user given his username.
+   ****************************************************************************************************/
+  function editSpecificUserPass($username, $password) {
+    // Global variable: connection to the database
+	  global $conn;
+
+    // Update administrator information
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    password = ?
+      WHERE  username = ?
+    ");
+    $stm->execute(array(sha1($password), $username));
+
+    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
+    return $stm->rowCount();
+  }
+
+  /****************************************************************************************************
    ***** EMAILVERIFICATIONVALIDATION
    ****************************************************************************************************
    * This function has the main goal OF returning the user information based on username encription.
@@ -439,115 +548,6 @@
   }
 
   /****************************************************************************************************
-   ***** EDITSPECIFICSERVICEPROVIDERINFO
-   ****************************************************************************************************
-   * This function has the main goal to allow the user editing his personnal informations. In this
-   * case, the type of user considerer is a service provider.
-   ****************************************************************************************************/
-  function editSpecificServiceProviderInfo($username, $entity_name, $entity_email, $entity_address, $entity_phone_number, $entity_logo_path,
-                                           $represent_name, $represent_email, $represent_phone_number) {
-    // Global variable: connection to the database
-    global $conn;
-
-    // Update service provider information
-    $stm = $conn->prepare("
-      UPDATE users
-      SET    e_mail    = ?
-      WHERE  username = ?
-    ");
-    $stm->execute(array($entity_email, $username));
-
-    $stm = $conn->prepare("
-      UPDATE service_provider
-      SET    entity_name                 = ?,
-             address                     = ?,
-             phone_number                = ?,
-             official_representative     = ?,
-             mail_representative         = ?,
-             phone_number_representative = ?
-      WHERE  user_id = ?
-    ");
-    $stm->execute(array($entity_name, $entity_address, $entity_phone_number, $represent_name, $represent_email, $represent_phone_number, $username));
-
-    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
-    return $stm->rowCount();
-  }
-
-  /****************************************************************************************************
-   ***** EDITSPECIFICSERVICECLIENTINFO
-   ****************************************************************************************************
-   * This function has the main goal to allow the user editing his personnal informations. In this
-   * case, the type of user considerer is a service client.
-   ****************************************************************************************************/
-  function editSpecificServiceClientInfo($username, $client_name, $client_email, $client_address, $client_phone) {
-    // Global variable: connection to the database
-	  global $conn;
-
-    // Update service client information
-    $stm = $conn->prepare("
-      UPDATE users
-      SET    e_mail    = ?
-      WHERE  username = ?
-    ");
-    $stm->execute(array($client_email, $username));
-
-    $stm = $conn->prepare("
-      UPDATE service_client
-      SET    client_name  = ?,
-             address      = ?,
-             phone_number = ?
-      WHERE  user_id = ?
-    ");
-    $stm->execute(array($client_name, $client_address, $client_phone, $username));
-
-    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
-    return $stm->rowCount();
-  }
-
-  /****************************************************************************************************
-   ***** EDITSPECIFICADMINISTRATORINFO
-   ****************************************************************************************************
-   * This function has the main goal to allow the user editing his personnal informations. In this
-   * case, the type of user considerer is a administrator.
-   ****************************************************************************************************/
-  function editSpecificAdministratorInfo($username, $admin_email) {
-    // Global variable: connection to the database
-	  global $conn;
-
-    // Update administrator information
-    $stm = $conn->prepare("
-      UPDATE users
-      SET    e_mail    = ?
-      WHERE  user_id = ?
-    ");
-    $stm->execute(array($admin_email, $username));
-
-    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
-    return $stm->rowCount();
-  }
-
-  /****************************************************************************************************
-   ***** EDITSPECIFICUSERPASS
-   ****************************************************************************************************
-   * Edit the password of a specific user given his username.
-   ****************************************************************************************************/
-  function editSpecificUserPass($username, $password) {
-    // Global variable: connection to the database
-	  global $conn;
-
-    // Update administrator information
-    $stm = $conn->prepare("
-      UPDATE users
-      SET    password = ?
-      WHERE  username = ?
-    ");
-    $stm->execute(array(sha1($password), $username));
-
-    // Return in the function -> IF RETURN > 0 THEN QUERIE WAS A SUCCESS!
-    return $stm->rowCount();
-  }
-
-  /****************************************************************************************************
    ***** GETALLNOTINACTIVEUSERS
    ****************************************************************************************************
    * This function returns all users that are active or waiting e-mail confirmation by the admin. A 
@@ -619,4 +619,55 @@
     return $stm->fetchAll();
   }
 
+  /****************************************************************************************************
+   ***** GETSERVICEPROVIDERUSERNAME
+   ****************************************************************************************************
+   * This function returns the service provider username given an entity name.
+   * Returns NULL if not exists.
+   ****************************************************************************************************/
+  function getServiceProviderUsername($entity_name){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the service provider username
+    $stm = $conn->prepare("
+      SELECT  user_id 
+      FROM    service_provider
+      WHERE   entity_name = ?
+    ");
+    $stm->execute(array($entity_name));
+    $result = $stm->fetch();
+
+    // Returns username (user_id its the FK for the users table. It represents the username)
+    if($result != FALSE)
+      return $result['user_id'];
+    else
+      return NULL;
+  }
+
+  /****************************************************************************************************
+   ***** GETSERVICEPROVIDERENTITYNAME
+   ****************************************************************************************************
+   * This function returns the service provider entity name given an username.
+   * Returns NULL if not exists.
+   ****************************************************************************************************/
+  function getServiceProviderEntityName($username){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the service provider entity name
+    $stm = $conn->prepare("
+      SELECT  entity_name 
+      FROM    service_provider
+      WHERE   user_id = ?
+    ");
+    $stm->execute(array($username));
+    $result = $stm->fetch();
+
+    // Returns entity name (user_id its the FK for the users table. It represents the username)
+    if($result != FALSE)
+      return $result['entity_name'];
+    else
+      return NULL;
+  }
 ?>
