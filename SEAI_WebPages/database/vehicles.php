@@ -1609,4 +1609,50 @@ SELECT * FROM vehicle_sensor_resolution;
     ");
     $stm->execute(array($vehicle_id, $communication_id));
   }
+
+  /****************************************************************************************************
+   ***** GETVEHICLEID
+   ****************************************************************************************************/
+  function getVehicleId($vehicle_name){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the vehicle id
+    $stm = $conn->prepare("
+      SELECT  id
+      FROM    vehicle
+      WHERE   vehicle_name = ?
+    ");
+    $stm->execute(array($vehicle_name));
+    $result = $stm->fetch();
+
+    // Returns vehicle id
+    if($result != FALSE)
+      return $result['id'];
+    else
+      return NULL;
+  }
+
+  /****************************************************************************************************
+   ***** GETVEHICLENAME
+   ****************************************************************************************************/
+  function getVehicleName($vehicle_id){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the vehicle id
+    $stm = $conn->prepare("
+      SELECT  vehicle_name
+      FROM    vehicle
+      WHERE   id = ?
+    ");
+    $stm->execute(array($vehicle_id));
+    $result = $stm->fetch();
+
+    // Returns vehicle id
+    if($result != FALSE)
+      return $result['vehicle_name'];
+    else
+      return NULL;
+  }
 ?>
