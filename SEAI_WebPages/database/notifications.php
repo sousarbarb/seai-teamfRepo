@@ -1,50 +1,5 @@
 <?php
   /****************************************************************************************************
-   ***** NOTIFYPROVIDERAPPROVAL
-   ****************************************************************************************************
-   * This function notifies a specific service_provider of the administration approval, related to 
-   * its account in the platform.
-   * 
-   * PROCEDURE:
-   *  1: call editServiceProviderApproval($entity_name, TRUE) to alter the administration approval 
-   *    to true (only admin privileges can do this, of course);
-   *  2: call notifyProviderAccountApproval($provider_username).
-   * 
-   * RETURNS:
-   *  0: success in inserting a new notification relative to the service provider approval by an 
-   *     administrator;
-   * -1: error in inserting a new notification.
-   * 
-   * NOTE: attention to the input arguments for the function. If necessary, use the functions
-   * getServiceProviderUsername and getServiceProviderEntityName of file users.php.
-   ****************************************************************************************************/
-  function notifyProviderAccountApproval($provider_username){
-    // Global variable: connection to the database
-    global $conn;
-
-    // Notification text
-    $information = 'Service Provider Account approved by the administration';
-
-    // Send to specific service provider the notification about its administrator approval
-    $stm = $conn->prepare("
-      INSERT INTO notification( date , information , acknowledged , user_id )
-      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? )
-    ");
-    try{
-      $stm->execute(array($information,
-                          'FALSE',
-                          $provider_username
-      ));
-    } catch (PDOexception $e) {
-      // Error creating the new notification
-      return -1;
-    }
-
-    // Success creating the new notification
-    return 0;
-  }
-
-  /****************************************************************************************************
    ***** NOTIFYPROVIDERVEHICLEAPPROVAL
    ****************************************************************************************************
    * This function notifies the vehicle proprietary (a specific service provider defined by 

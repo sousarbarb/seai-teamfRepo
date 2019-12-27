@@ -130,6 +130,49 @@
     // SUCCESS INSERTION: inserting a new vehicle was completed successfully
     return 2;
   }
+  notifyAdminNewVehicle($provider_entityname, $provider_username, $vehicle_name){   // !!!!! NOTIFICATION !!!!!
+    // Global variable: connection to the database
+    global $conn;
+
+    // Gets all platform administrators
+    $stm = $conn->prepare("
+      SELECT  users.username
+      FROM    users
+      INNER JOIN admin
+        ON  admin.user_id = users.username
+      WHERE   users.status = 'Active'
+    ");
+    try{
+      $stm->execute();
+    } catch(PDOexception $e) {
+      return -1;                  // Error get all admins
+    }
+    $results = $stm->fetchAll();
+    if($results == FALSE){
+      return 0;                   // There aren't any administrators defined in the platform.
+    }
+
+    // Notifies each admin to validate a new vehicle
+    $notification_info = "New vehicle created ($vehicle_name) by $provider_entityname ($provider_username). Waiting administration approval.";
+    foreach ($results as $result) {
+      $stm = $conn->prepare("
+        INSERT INTO notification( date , information , acknowledged , user_id, vehicle_id )
+        VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+      ");
+      try{
+        $stm->execute(array($notification_info,         // inserts the string notification_info as the notification description
+                            'FALSE',                    // by default, the administrator $result['username'] didn't see the new notification
+                            $result['username'],        // sets FK for the specific administrator $result['username']
+                            getVehicleId($vehicle_name) // sets FK for vehicle created
+        ));
+      } catch(PDOexception $e) {
+        return -1;                // Error inserting new notification
+      }
+    }
+
+    // After notifying all administrators, return 0
+    return 0;
+  }
 
   /****************************************************************************************************
    ***** CREATENEWSPECIFICATIONASSOCIATEDWITHVEHICLE

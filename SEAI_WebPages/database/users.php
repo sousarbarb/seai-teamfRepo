@@ -383,7 +383,7 @@
     // Return the number of affected rows in this query (!! it works !!)
     return $stm->rowCount();
   }  
-  function notifyProviderAccountApproval($provider_username){
+  function notifyProviderAccountApproval($provider_username){             // !!!!! NOTIFICATION !!!!!
     // Global variable: connection to the database
     global $conn;
 
