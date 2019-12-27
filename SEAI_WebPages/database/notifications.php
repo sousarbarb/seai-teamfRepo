@@ -1,51 +1,5 @@
 <?php
   /****************************************************************************************************
-   ***** NOTIFYPROVIDERVEHICLEAPPROVAL
-   ****************************************************************************************************
-   * This function notifies the vehicle proprietary (a specific service provider defined by 
-   * $povider_username) that the vehicle was approved by the administration.
-   * 
-   * PROCEDURE:
-   *  1: call editVehicleApproval($id, 'TRUE') to approve a specific vehicle by an administrator
-   *     (only admin privileges can do this, of course);
-   *  2: call notifyProviderVehicleApproval($provider_username, $vehicle_name) to notify the service
-   *     provider about the administration approval of its specific vehicle.
-   * 
-   * RETURNS:
-   *  0: success in creating the new notification;
-   * -1: insuccess in this operation execution.
-   * 
-   * NOTE: keep attention to the input arguments and user the following functions if necessary:
-   * - getServiceProviderUsername (entity_name -> provider_username)
-   * - 
-   ****************************************************************************************************/
-  function notifyProviderVehicleApproval($provider_username, $vehicle_name){
-    // Global variable: connection to the database
-    global $conn;
-
-    // Notification text
-    $information = "$vehicle_name approved by the administration";
-
-    // Send to specific service provider the notification about a specific vehicle administrator approval
-    $stm = $conn->prepare("
-      INSERT INTO notification( date , information , acknowledged , user_id )
-      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? )
-    ");
-    try{
-      $stm->execute(array($information,
-                          'FALSE',
-                          $provider_username
-      ));
-    } catch (PDOexception $e) {
-      // Error creating the new notification
-      return -1;
-    }
-
-    // Success creating the new notification
-    return 0;
-  }
-
-  /****************************************************************************************************
    ***** NOTIFYPROVIDERNEWPOSSIBLEREQUESTTOAPPLY
    ****************************************************************************************************
    * Notifies a service provider of an new request that can apply to.
