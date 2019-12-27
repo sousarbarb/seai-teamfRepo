@@ -1044,7 +1044,7 @@ SELECT * FROM vehicle_sensor_resolution;
       ";
     }
     if(!empty($specifications_selected)){
-      $sql = "
+      $sql .= "
         INNER JOIN vehicle_specification_filter
           ON vehicle_specification_filter.vehicle_id     = vehicle.id
       ";
