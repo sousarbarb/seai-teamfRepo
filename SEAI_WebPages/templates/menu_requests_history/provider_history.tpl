@@ -4,11 +4,16 @@
 
 <div class="menusLogin p-5">
     <h2 class="display-4 text-white">New Request - Existent Data</h2>
-    <br>
+    <div class="separator"></div>
 
     <table class='table_pd'>
     <tr>
-    <th>Mission ID</th><th>Service Client</th><th>Vehicles</th><th>Starting Time</th><th>Finishing Time</th><th>Informations</th>
+    <th style="text-align: center" >Mission ID</th>
+    <th style="text-align: center" >Service Client</th>
+    <th style="text-align: center" >Vehicles</th>
+    <th style="text-align: center" >Starting Time</th>
+    <th style="text-align: center">Finishing Time</th>
+    <th style="text-align: center" >Informations</th>
     </tr>
 
     {*get requests from DB

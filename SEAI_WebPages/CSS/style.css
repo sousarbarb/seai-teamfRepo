@@ -575,7 +575,7 @@ opacity: 0.8;
   padding-left: 1em;
 }
 
-/*---------------------------- Vehicles ------------------------------------*/
+/*------------------------------ Vehicles ------------------------------------*/
 .grid-vehicles {
   width:100%;
   height:100%;
@@ -777,16 +777,41 @@ opacity: 0.8;
 }
 
 /***********************************End of Mapa***********************************************/
+/*-------------------------- table existent data -----------------------------*/
+
+.table_ed {
+  width: 70%;
+  margin: 0em auto;
+  table-layout: auto;
+  border-collapse: collapse;
+  Font-size:15px;
+
+}
+
+.table_ed th {
+  border:solid  0.1em;
+  border-color:#ffffff;
+  color: #ffffff;
+}
+.table_ed td{
+	text-align:center;
+	border:solid  0.1em;
+	border-color:#ffffff;
+	color: #ffffff;
+}
+
 /********************************************************************************************************************************************************************
 ****************************************** Table_previous_data *************************************************************************************************************
 ********************************************************************************************************************************************************************/
 
 .table_pd {
-  width: 100%;
+  width: 95%;
   margin: 1em auto;
   table-layout: auto;
   border-collapse: collapse;
   Font-size:20px;
+  margin-right:20em;
+  margin-bottom: 25em;
 }
 
 .table_pd th {
@@ -809,7 +834,7 @@ opacity: 0.8;
   background-color: #31ACF7;
   color: white;
   font-size: 20px;
-  margin-left:4em;
+  margin-left:5em;
   margin-top:1em;
 }
 .info {
