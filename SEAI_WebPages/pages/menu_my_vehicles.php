@@ -7,7 +7,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
   $info = getSpecificServiceProviderInfo($smarty->getTemplateVars('login'));
   $service_providers_selected = array($info['entity_name']);
   $search_results = searchVehiclesWithFilters(
-    NULL,       // Vehicles Active: NULL (restriction not activated)
+    TRUE,       // Vehicles Active: NULL (restriction not activated)
                 //                  FALSE (only show inactive vehicles)
                 //                  TRUE (only show active vehicles)
     NULL,       // Vehicles APPROVED: NULL (restriction not activated)
