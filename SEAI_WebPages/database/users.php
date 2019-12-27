@@ -288,10 +288,13 @@
     ");
     $stm->execute(array($status, $username));
 
+    // Checks if it's necessary to notify administrators
+    notifyAdminNewServiceProvider($username);
+
     // Return the number of affected rows in this query (!! it works !!)
     return $stm->rowCount();
   }
-  function notifyAdminNewServiceProvider($username){                      // NOTIFICATION
+  function notifyAdminNewServiceProvider($username){                      // !!!!! NOTIFICATION !!!!!
     // Global variable: connection to the database
     global $conn;
 
@@ -373,8 +376,37 @@
     ");
     $stm->execute(array($approval? 'TRUE':'FALSE', $entity_name));
 
+    // If approval it's TRUE, the service provider it's notified.
+    if($approval)
+      notifyProviderAccountApproval( getServiceProviderUsername($entity_name) );
+
     // Return the number of affected rows in this query (!! it works !!)
     return $stm->rowCount();
+  }  
+  function notifyProviderAccountApproval($provider_username){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Notification text
+    $information = 'Service Provider Account approved by the administration';
+
+    // Send to specific service provider the notification about its administrator approval
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($information,
+                          'FALSE',
+                          $provider_username
+      ));
+    } catch (PDOexception $e) {
+      // Error creating the new notification
+      return -1;
+    }
+
+    // Success creating the new notification
+    return 0;
   }
 
   /****************************************************************************************************
@@ -764,7 +796,7 @@
    * This function returns the service client username given its name.
    * Returns NULL if not exists.
    ****************************************************************************************************/
-  function getServiceProviderUsername($client_name){
+  function getServiceClientUsername($client_name){
     // Global variable: connection to the database
     global $conn;
     
