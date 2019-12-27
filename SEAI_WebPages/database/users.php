@@ -670,4 +670,108 @@
     else
       return NULL;
   }
+
+  /****************************************************************************************************
+   ***** GETSERVICEPROVIDERID
+   ****************************************************************************************************
+   * This function returns the service provider id given an username.
+   * Returns NULL if not exists.
+   ****************************************************************************************************/
+  function getServiceProviderId($username){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the service provider id
+    $stm = $conn->prepare("
+      SELECT  id 
+      FROM    service_provider
+      WHERE   user_id = ?
+    ");
+    $stm->execute(array($username));
+    $result = $stm->fetch();
+
+    // Returns service provider id (user_id its the FK for the users table. It represents the username)
+    if($result != FALSE)
+      return $result['id'];
+    else
+      return NULL;
+  }
+
+  /****************************************************************************************************
+   ***** GETSERVICECLIENTUSERNAME
+   ****************************************************************************************************
+   * This function returns the service client username given its name.
+   * Returns NULL if not exists.
+   ****************************************************************************************************/
+  function getServiceProviderUsername($client_name){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the service client username
+    $stm = $conn->prepare("
+      SELECT  user_id 
+      FROM    service_client
+      WHERE   client_name = ?
+    ");
+    $stm->execute(array($client_name));
+    $result = $stm->fetch();
+
+    // Returns username (user_id its the FK for the users table. It represents the username)
+    if($result != FALSE)
+      return $result['user_id'];
+    else
+      return NULL;
+  }
+
+  /****************************************************************************************************
+   ***** GETSERVICECLIENTNAME
+   ****************************************************************************************************
+   * This function returns the service client name given an username.
+   * Returns NULL if not exists.
+   ****************************************************************************************************/
+  function getServiceClientName($username){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the service client name
+    $stm = $conn->prepare("
+      SELECT  client_name 
+      FROM    service_client
+      WHERE   user_id = ?
+    ");
+    $stm->execute(array($username));
+    $result = $stm->fetch();
+
+    // Returns client name (user_id its the FK for the users table. It represents the username)
+    if($result != FALSE)
+      return $result['client_name'];
+    else
+      return NULL;
+  }
+
+  /****************************************************************************************************
+   ***** GETSERVICECLIENTID
+   ****************************************************************************************************
+   * This function returns the service client id given an username.
+   * Returns NULL if not exists.
+   ****************************************************************************************************/
+  function getServiceClientId($username){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the service client id
+    $stm = $conn->prepare("
+      SELECT  id 
+      FROM    service_client
+      WHERE   user_id = ?
+    ");
+    $stm->execute(array($username));
+    $result = $stm->fetch();
+
+    // Returns service client id (user_id its the FK for the users table. It represents the username)
+    if($result != FALSE)
+      return $result['id'];
+    else
+      return NULL;
+  }
 ?>
