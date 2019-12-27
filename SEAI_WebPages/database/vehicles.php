@@ -1364,8 +1364,42 @@ SELECT * FROM vehicle_sensor_resolution;
       // Updating was not completed successfully
         return -1;
     }
+
+    // If approval it's TRUE, the service provider it's notified.
+    if($approval)
+      notifyProviderVehicleApproval( $id );
     
     // Updating was successful
+    return 0;
+  }
+  function notifyProviderVehicleApproval($vehicle_id){                              // !!!!! NOTIFICATION !!!!!
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get service provider given a vehicle id
+    $provider_username = getVehicleServiceProvider($vehicle_id);
+    if( $provider_username )
+      return -1;                // Error because vehicle_id invalid
+
+    // Notification text
+    $notification_info = "Vehicle $vehicle_name approved by the administration";
+
+    // Send to specific service provider the notification about its new vehicle administrator approval
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id, vehicle_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($notification_info,         // inserts the string notification_info as the notification description
+                          'FALSE',                    // by default, the administrator $result['username'] didn't see the new notification
+                          $provider_username,         // sets FK for the specific administrator $result['username']
+                          $vehicle_id                 // sets FK for vehicle created
+      ));
+    } catch(PDOexception $e) {
+      return -1;                // Error inserting new notification
+    }
+
+    // Success creating the new notification
     return 0;
   }
 
@@ -1704,6 +1738,34 @@ SELECT * FROM vehicle_sensor_resolution;
     // Returns vehicle id
     if($result != FALSE)
       return $result['vehicle_name'];
+    else
+      return NULL;
+  }
+
+  /****************************************************************************************************
+   ***** GETVEHICLESERVICEPROVIDER
+   ****************************************************************************************************/
+  function getVehicleServiceProvider($vehicle_id){
+    // Global variable: connection to the database
+    global $conn;
+    
+    // Get the service provider username
+    $stm = $conn->prepare("
+      SELECT  vehicle.id                   AS vehicle_id       ,
+              vehicle.vehicle_name         AS vehicle_name     ,
+              service_provider.user_id     AS provider_username,
+              service_provider.entity_name AS provider_name
+      FROM vehicle
+      INNER JOIN service_provider
+        ON service_provider.id = vehicle.service_provider_id
+      WHERE vehicle.id = ?
+    ");
+    $stm->execute(array($vehicle_id));
+    $result = $stm->fetch();
+
+    // Returns service provider username
+    if($result != FALSE)
+      return $result['provider_username'];
     else
       return NULL;
   }
