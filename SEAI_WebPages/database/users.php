@@ -291,6 +291,67 @@
     // Return the number of affected rows in this query (!! it works !!)
     return $stm->rowCount();
   }
+  function notifyAdminNewServiceProvider($username){                      // NOTIFICATION
+    // Global variable: connection to the database
+    global $conn;
+
+    // See if $username is a service provider and isn't approved
+    $stm = $conn->prepare("
+      SELECT  entity_name
+      FROM    service_provider
+      WHERE   approval = 'FALSE' AND
+              user_id = ?
+    ");
+    try{
+      $stm->execute(array($username));
+    } catch(PDOexception $e) {
+      return;
+    }
+    $results = $stm->fetch();
+
+    // If the service provider is approved or the username does not exist in service_provider...
+    if( $results == FALSE )
+      return 0;                   // The administrators aren't notified because username isn't a service_provider.
+    
+    // Gets all platform administrators
+    $entity_name = $results['entity_name'];
+    $stm = $conn->prepare("
+      SELECT  users.username
+      FROM    users
+      INNER JOIN admin
+        ON  admin.user_id = users.username
+      WHERE   users.status = 'Active'
+    ");
+    try{
+      $stm->execute();
+    } catch(PDOexception $e) {
+      return -1;                  // Error get all admins
+    }
+    $results = $stm->fetchAll();
+    if($results == FALSE){
+      return 0;                   // There aren't any administrators defined in the platform.
+    }
+
+    // Notifies each admin to validate the new service provider
+    $notification_info = "New service provider ($entity_name - $username) registed in the platform. Waiting administration approval.";
+    foreach ($results as $result) {
+      $stm = $conn->prepare("
+        INSERT INTO notification( date , information , acknowledged , user_id )
+        VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? )
+      ");
+      try{
+        $stm->execute(array($notification_info,   // inserts the string notification_info as the notification description
+                            'FALSE',              // by default, the administrator $result['username'] didn't see the new notification
+                            $result['username']   // sets FK for the specific administrator $result['username']
+        ));
+      } catch(PDOexception $e) {
+        return -1;                // Error inserting new notification
+      }
+    }
+
+    // After notifying all administrators, return 0
+    return 0;
+  }
 
   /****************************************************************************************************
    ***** EDITSERVICEPROVIDERAPPROVAL
@@ -330,7 +391,7 @@
     // Update service provider information
     $stm = $conn->prepare("
       UPDATE users
-      SET    e_mail    = ?
+      SET    e_mail   = ?
       WHERE  username = ?
     ");
     $stm->execute(array($entity_email, $username));
