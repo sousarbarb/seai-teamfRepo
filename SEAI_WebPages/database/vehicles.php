@@ -48,8 +48,10 @@
     $results = $stm->fetch();
     if( $results != FALSE ){  // service_provider is registed in the platform
       // If service_provider is approved by an administrator...
-      if( $results['approval'] == TRUE )
+      if( $results['approval'] == TRUE ){
         $service_provider_id = $results['id'];
+        $service_provider_name = $results['entity_name'];
+      }
       // Else...
       else
         return -1;
@@ -96,6 +98,10 @@
           // Updating was not completed successfully
           return -5;
         }
+
+        // Notifies administrators of new vehicle creation
+        notifyAdminNewVehicle($service_provider_name, $service_provider, $name);
+
         // SUCCESS UPDATE: updating an existing vehicle but inactive was successfully
         return 1;
       }
@@ -127,10 +133,13 @@
       return -6;
     }
 
+    // Notifies administrators of new vehicle creation
+    notifyAdminNewVehicle($service_provider_name, $service_provider, $name);
+
     // SUCCESS INSERTION: inserting a new vehicle was completed successfully
     return 2;
   }
-  notifyAdminNewVehicle($provider_entityname, $provider_username, $vehicle_name){   // !!!!! NOTIFICATION !!!!!
+  function notifyAdminNewVehicle($provider_entityname, $provider_username, $vehicle_name){   // !!!!! NOTIFICATION !!!!!
     // Global variable: connection to the database
     global $conn;
 
