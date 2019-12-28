@@ -99,9 +99,10 @@
         area_id           ,
         client_id         ,
         agreement_provider,
-        agreement_client
+        agreement_client  ,
+        restricted
       )
-      VALUES ( ? , ? , ? , ? )
+      VALUES ( ? , ? , ? , ? , 'FALSE' )
       RETURNING id
     ");
     try{
@@ -157,7 +158,9 @@
    * resolution_value: one of the resolution values that are present in the platform;
    * deadline        : date in the following format -> 'DD/MM/AAAA'. This camp isn't always required
    *                   (just when the user wants to specify a date to obtain the data);
-   * comments        : comments if needed.
+   * comments        : comments if needed;
+   * restricted      : boolean variable that defines if the user wants to keep the data only to
+   *                   himself.
    * 
    * OUTPUT ARGUMENTS:
    *   0: operation concluded with success;
@@ -167,12 +170,13 @@
    *  -4: the resolution value specified isn't valid;
    *  -5: the combination between sensor_type and resolution_value isn't valid;
    *  -6: date format isn't valid. The correct one is 'DD/MM/AAAA';
-   *  -7: area variable is NULL;
-   *  -8: the area polygon must be defined by at least three vertices;
-   *  -9: inserting the new area was not possible;
-   * -10:
+   *  -7: deadline must be a date after today;
+   *  -8: area variable is NULL;
+   *  -9: the area polygon must be defined by at least three vertices;
+   * -10: inserting the new area was not possible;
+   * -11: inserting the new request was not possible.
    ****************************************************************************************************/
-  function newRequestForNewData($area, $client_username, $sensor_type, $resolution_value, $deadline, $comments){
+  function newRequestForNewData($area, $client_username, $sensor_type, $resolution_value, $deadline, $comments, $restricted){
     // Global variable: connection to the database
     global $conn;
 
@@ -253,6 +257,10 @@
     // (desired format: 'DD/MM/AAAA')
     if($deadline != NULL){
       $deadline_string_array = explode( '/' , $deadline , 3 );
+
+      if( count($deadline_string_array) != 3 )
+        return-6;
+
       // DAY
       $day = $deadline_string_array[0];
       // MONTH
@@ -269,14 +277,23 @@
         return -6;
       if( (intval($year) < 1) )
         return -6;
+      
+      $stm = $conn->prepare("
+        SELECT CURRENT_TIMESTAMP < ? AS deadline_validation;
+      ");
+      $stm     = $conn->execute(array( "TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')" ));
+      $results = $stm->fetch();
+
+      if( $results['deadline_validation'] == FALSE )
+        return -7;
     }
     
     // ----------------------------------------
     // Fomulation of string for area definition
     if($area == NULL)
-      return -7;
-    if($area['polygonsVertLatLng']['numerodevertices'] < 3)
       return -8;
+    if($area['polygonsVertLatLng']['numerodevertices'] < 3)
+      return -9;
     
     $polygon = "ST_GeographyFromText( 'POLYGON( ( ";
 
@@ -303,7 +320,7 @@
     try{
       $stm->execute(array($polygon));
     } catch(PDOexception $e) {
-      return -9;
+      return -10;
     }
 
     $results = $stm->fetch();
@@ -320,19 +337,21 @@
         sensor_type       ,
         resolution_type   ,
         agreement_provider,
-        agreement_client
+        agreement_client  ,
+        restricted
       )
-      VALUES ( ? , ? , ? , ? , ? , ? , ? , ? )
+      VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? )
     ");
     try{
-      $stm->execute(array($deadline==NULL? NULL:"TO_TIMESTAMP('$day $month $year' , 'DD MM YYYY HH24')",
+      $stm->execute(array($deadline==NULL? NULL:"TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')",
                           $area_id,
                           $client_id,
                           $comments,
                           $sensor_type,
                           $resolution_value,
                           'FALSE',
-                          'FALSE'
+                          'FALSE',
+                          $restricted? 'TRUE':'FALSE'
       ));
     } catch(PDOexception $e) {
       // Eliminates the area already created
@@ -341,10 +360,326 @@
         WHERE  id = ?
       ");
       $stm->execute(array($area_id));
-      return -10;
+      return -11;
     }
 
     // Returns 0 in case of success
     return 0;
   }
+  
+  /****************************************************************************************************
+   ****** CREATENEWMISSION
+   ****************************************************************************************************
+   * This function creates, from the service provider point of view, a new mission. This is relative 
+   * to a certain request that the provider has the capabilities to candidate.
+   * It should be noted that CREATENEWMISSION assumes that the vehicle, sensor and resolution belongs 
+   * to the service provider. However, it checks if the combination between this three variables is 
+   * valid.
+   *
+   * INPUT ARGUMENTS:
+   * :
+   * 
+   * OUTPUT ARGUMENTS:
+   *   0: operation concluded with success;
+   *  -1: the user is not registed in the platform or it isn't a service provider;
+   *  -2: the provider isn't an Active user;
+   *  -3: the service provider has yet to be approved by administration;
+   *  -4: date format isn't valid. The correct one is 'DD/MM/AAAA';
+   *  -5: estimate start and finish must be a date after today;
+   *  -6: estimated finish date must be after estimated start date;
+   *  -7: request id does not exist;
+   *  -8: the vehicle specified was not founded in the service provider list of vehicles;
+   *  -9: the vehicle isn't active;
+   * -10: the vehicle doesn't have administration approval;
+   * -11: the sensor_name doesn't belong to the vehicle or the type of sensor required to execute 
+   *      the mission isn't satisfied;
+   * -12: the sensor specified isn't active;
+   * -13: the resolution required for the request doesn't match with the selected one by provider;
+   * -14: the resolution doesn't math with sensor specified;
+   * -15: the resolution selected isn't active;
+   * -16: inserting the new mission was not possible;
+   * -17: relating the mission with the request was not possible.
+   ****************************************************************************************************/
+  function createNewMission($request_id, $est_starting_time, $est_finished_time, $price, $provider_username, $vehicle_name, $sensor_name, $resolution_value, $path_pdf){
+    // Global variable: connection to the database
+    global $conn;
+
+    // ----------------------------------------
+    // Checks variable $provider_username
+    $stm = $conn->prepare("
+      SELECT  users.username               AS provider_username,
+              users.status                 AS status           ,
+              service_provider.id          AS provider_id      ,
+              service_provider.entity_name AS provider_name    ,
+              service_provider.approval    AS provider_approval
+      FROM  users
+      INNER JOIN service_provider
+        ON service_provider.user_id = users.username
+      WHERE users.username = ?
+    ");
+    $conn->execute(array($provider_username));
+    $results = $stm->fetch();
+
+    if($results == FALSE)
+      return -1;
+    else if($results['status'] != 'Active')
+      return -2;
+    else if($results['provider_approval'] == FALSE )
+      return -2;
+    $provider_id   = $results['provider_id'];
+    $provider_name = $results['provider_name'];
+
+    // ----------------------------------------
+    // Checks variables $est_starting_time and $est_finished_time
+    if($est_starting_time != NULL){
+      $starting_date_string = explode( '/' , $est_starting_time , 3 );
+      if( count($starting_date_string) != 3 )
+        return -4;
+      // -> DAY
+      $start_day   = $starting_date_string[0];
+      // -> MONTH
+      $start_month = $starting_date_string[1];
+      // -> YEAR
+      $start_year  = $starting_date_string[2];
+
+      if( (intval($start_day) <= 0) || (intval($start_month) <= 0) || (intval($start_year) <= 0) )
+        return -4;
+      if( (intval($start_day) < 1) || (intval($start_day) > 31) )
+        return -4;
+      if( (intval($start_month) < 1) || (intval($start_month) > 12) )
+        return -4;
+      if( (intval($start_year) < 1) )
+        return -4;
+
+      $stm = $conn->prepare("
+        SELECT CURRENT_TIMESTAMP < ? AS date_validation;
+      ");
+      $stm     = $conn->execute(array( "TO_TIMESTAMP('$start_day $start_month $start_year 20' , 'DD MM YYYY HH24')" ));
+      $results = $stm->fetch();
+      if( $results['date_validation'] == FALSE )
+        return -5;
+    }
+
+    if($est_finished_time != NULL){
+      $finishing_date_string = explode( '/' , $est_finished_time , 3 );
+      if( count($finishing_date_string) != 3 )
+        return -4;
+      // -> DAY
+      $finish_day   = $finishing_date_string[0];
+      // -> MONTH
+      $finish_month = $finishing_date_string[1];
+      // -> YEAR
+      $finish_year  = $finishing_date_string[2];
+
+      if( (intval($finish_day) <= 0) || (intval($finish_month) <= 0) || (intval($finish_year) <= 0) )
+        return -4;
+      if( (intval($finish_day) < 1) || (intval($finish_day) > 31) )
+        return -4;
+      if( (intval($finish_month) < 1) || (intval($finish_month) > 12) )
+        return -4;
+      if( (intval($finish_year) < 1) )
+        return -4;
+
+      $stm = $conn->prepare("
+        SELECT CURRENT_TIMESTAMP < ? AS date_validation;
+      ");
+      $stm     = $conn->execute(array( "TO_TIMESTAMP('$finish_day $finish_month $finish_year 20' , 'DD MM YYYY HH24')" ));
+      $results = $stm->fetch();
+      if( $results['date_validation'] == FALSE )
+        return -5;
+    }
+    if(($est_starting_time != NULL) && ($est_finished_time != NULL)){
+      $stm = $conn->prepare("
+        SELECT ? < ? AS date_validation;
+      ");
+      $stm     = $conn->execute(array( "TO_TIMESTAMP('$start_day  $start_month  $start_year  20' , 'DD MM YYYY HH24')",
+                                      "TO_TIMESTAMP('$finish_day $finish_month $finish_year 20' , 'DD MM YYYY HH24')" 
+      ));
+      $results = $stm->fetch();
+      if( $results['date_validation'] == FALSE )
+        return -6;
+    }
+    
+
+    // ----------------------------------------
+    // Check variable $request_id
+    $stm = $conn->prepare("
+      SELECT * 
+      FROM   request
+      WHERE  id = ?
+    ");
+    $stm->execute(array($request_id));
+    $results = $stm->fetch();
+
+    if($results == FALSE)
+      return -7;
+    
+    $area_id                 = $results['area_id'];
+    $sensor_type_wanted      = $results['sensor_type'];
+    $resolution_value_wanted = $results['resolution_type'];
+
+    // ----------------------------------------
+    // Checks variables $vehicle_name, $sensor_type and $resolution_value
+    // 1: $vehicle_name
+    $stm = $conn->prepare("
+      SELECT  id,
+              vehicle_name,
+              active,
+              approval
+      FROM  vehicle
+      WHERE service_provider_id = ? AND
+            vehicle_name        = ?
+    ");
+    $stm->execute(array($provider_id, $vehicle_name));
+    $results = $stm->fetch();
+
+    if( $results == FALSE )
+      return -8;
+    if( $results['active'] == FALSE )
+      return -9;
+    if( $results['approval'] == FALSE )
+      return -10;
+    
+    $vehicle_id = $results['id'];
+    
+    // 2: $sensor_name
+    $stm = $conn->prepare("
+      SELECT  id,
+              sensor_type,
+              sensor_name,
+              active
+      FROM  sensor
+      WHERE sensor.sensor_name = ? AND
+            sensor.vehicle_id  = ? AND
+            sensor.sensor_type = ?
+    ");
+    $stm->execute(array($sensor_name, $vehicle_id, $sensor_type_wanted));
+
+
+    if( $results == FALSE )
+      return -11;
+    if( $results['active'] == FALSE )
+      return -12;
+
+    $sensor_id = $results['id'];
+
+    // 3: $resolution_value
+    $stm = $conn->prepare("
+      SELECT  *
+      FROM  resolution
+      WHERE sensor_id = ? AND
+            value     = ?
+    ");
+    $stm->execute(array($sensor_id, $resolution_value));
+    $results = $stm->fetch();
+
+    if( $resolution_value_wanted != $resolution_value )           // [resolution] = cm
+      return -13;
+    if( $results == FALSE )
+      return -14;
+    if( $results['active'] == FALSE )
+      return -15;
+    
+    $resolution_id          = $results['id'];
+    $resolution_consumption = floatval($results['consumption']);  // ?????
+    $resolution_velocity    = floatval($results['vel_sampling']); // m/s that AUV can accomplish running at resolution specified
+    $resolution_cost        = floatval($results['cost']);         // €/h
+    $resolution_swath       = floatval($results['swath']);        // m
+
+    // ----------------------------------------
+    // Inserts into table mission a new entry
+    $stm = $conn->prepare("
+      INSERT INTO mission (
+        status,
+        est_starting_time,
+        est_finished_time,
+        price,
+        provider_id,
+        resolution_id,
+        area_id,
+        path_pdf
+      )
+      VALUES ( ? , ? , ? , ? , ? , ? , ? , ? )
+      RETURNING id
+    ");
+    try{
+      $stm->execute(array('Proposal',
+                                  $est_starting_time==NULL? NULL:"TO_TIMESTAMP('$start_day $start_month $start_year 20' , 'DD MM YYYY HH24')",
+                                  $est_finished_time==NULL? NULL:"TO_TIMESTAMP('$finish_day $finish_month $finish_year 20' , 'DD MM YYYY HH24')",
+                                  $price,
+                                  $provider_id,
+                                  $resolution_id,
+                                  $area_id,
+                                  $path_pdf
+      ));
+    } catch(PDOexception $e) {
+      return -16;
+    }
+
+    $results    = $stm->fetch();
+    $mission_id = $results['id'];
+
+    // Inserts in table request_mission a new entry
+    $stm = $conn->prepare("
+      INSERT INTO request_mission (request_id, mission_id)
+      VALUES ( ? , ? )
+    ");
+    try{
+      $stm->execute(array($request_id, $mission_id));
+    } catch(PDOexception $e) {
+      // Deletes the new mission already present in table mission
+      $stm = $conn->prepare("
+        DELETE FROM request
+        WHERE  id = ?
+      ");
+      $stm->execute(array($mission_id));
+      return -17;
+    }
+
+    // ----------------------------------------
+    // Notifies the client of new proposal available
+    $stm = $prepare("
+      SELECT  *
+      FROM    service_client
+      WHERE   id = ?
+    ");
+    $stm->execute(array($client_id));
+    $results         = $stm->fetch();
+    $client_username = $results['user_id'];
+
+    notifyServiceClientNewProposalAvailable($client_username, $provider_name, $provider_username, $request_id, $mission_id);
+
+    // Returns 0 in case of success
+    return 0;
+  }
+  function notifyServiceClientNewProposalAvailable($client_username, $provider_name, $provider_username, $request_id, $mission_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Notification text
+    $notification_info = "Service Provider $provider_name ($provider_username) made a new proposal (mission id: $mission_id) for your request (request id: $request_id)";
+
+    // Send to service client that a new proposal is available
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($notification_info,
+                          'FALSE',
+                          $client_username,
+                          $mission_id,
+                          $request_id
+      ));
+    } catch (PDOexception $e) {
+      // Error creating the new notification
+      return -1;
+    }
+
+    // Success creating the new notification
+    return 0;
+  }
+  
+
+
 ?>
