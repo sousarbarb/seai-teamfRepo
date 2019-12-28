@@ -30,23 +30,10 @@
 
     // ----------------------------------------
     // Checks variable $client_username
-    $stm = $conn->prepare("
-      SELECT  users.username             AS client_username,
-              users.status               AS status         ,
-              service_client.id          AS client_id      ,
-              service_client.client_name AS client_name
-      FROM  users
-      INNER JOIN service_client
-        ON service_client.user_id = users.username
-      WHERE users.username = ?
-    ");
-    $conn->execute(array($client_username));
-    $results = $stm->fetch();
-
-    if($results == FALSE)
-      return -1;
-    else if($results['status'] != 'Active')
-      return -2;
+    $results = verifyServiceClientUsername($client_username);
+    if( $results < 0 )
+      return $results + 0;
+    $results   = getServiceClientInformation($client_username);
     $client_id = $results['client_id'];
     
     // ----------------------------------------
@@ -182,23 +169,10 @@
 
     // ----------------------------------------
     // Checks variable $client_username
-    $stm = $conn->prepare("
-      SELECT  users.username             AS client_username,
-              users.status               AS status         ,
-              service_client.id          AS client_id      ,
-              service_client.client_name AS client_name
-      FROM  users
-      INNER JOIN service_client
-        ON service_client.user_id = users.username
-      WHERE users.username = ?
-    ");
-    $conn->execute(array($client_username));
-    $results = $stm->fetch();
-
-    if($results == FALSE)
-      return -1;
-    else if($results['status'] != 'Active')
-      return -2;
+    $results = verifyServiceClientUsername($client_username);
+    if( $results < 0 )
+      return $results + 0;
+    $results   = getServiceClientInformation($client_username);
     $client_id = $results['client_id'];
     
     // ----------------------------------------
@@ -256,36 +230,9 @@
     // Checks $deadline variable
     // (desired format: 'DD/MM/AAAA')
     if($deadline != NULL){
-      $deadline_string_array = explode( '/' , $deadline , 3 );
-
-      if( count($deadline_string_array) != 3 )
-        return-6;
-
-      // DAY
-      $day = $deadline_string_array[0];
-      // MONTH
-      $month = $deadline_string_array[1];
-      // YEAR
-      $year = $deadline_string_array[2];
-
-      // Check if values are valid
-      if( (intval($day) <= 0) || (intval($month) <= 0) || (intval($year) <= 0) )
-        return -6;
-      if( (intval($day) < 1) || (intval($day) > 31) )
-        return -6;
-      if( (intval($month) < 1) || (intval($month) > 12) )
-        return -6;
-      if( (intval($year) < 1) )
-        return -6;
-      
-      $stm = $conn->prepare("
-        SELECT CURRENT_TIMESTAMP < ? AS deadline_validation;
-      ");
-      $stm     = $conn->execute(array( "TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')" ));
-      $results = $stm->fetch();
-
-      if( $results['deadline_validation'] == FALSE )
-        return -7;
+      $results = verifyDateTimeValidation($deadline);
+      if( $results < 0 )
+        return $result - 5;
     }
     
     // ----------------------------------------
@@ -343,7 +290,7 @@
       VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? )
     ");
     try{
-      $stm->execute(array($deadline==NULL? NULL:"TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')",
+      $stm->execute(array($deadline==NULL? NULL:getDateTimeToTimestampString($deadline),
                           $area_id,
                           $client_id,
                           $comments,
@@ -377,7 +324,19 @@
    * valid.
    *
    * INPUT ARGUMENTS:
-   * :
+   * request_id       : integer representing the request's id;
+   * est_starting_time: date in the following format -> 'DD/MM/AAAA'. This camp isn't always required
+   *                    (just when the provider wants to specify an estimated start date for the 
+   *                    mission);
+   * est_finished_time: date in the following format -> 'DD/MM/AAAA'. This camp isn't always required
+   *                    (just when the provider wants to specify an estimated finish date for the 
+   *                    mission);
+   * price            : cost determinated by service provider of the request proposal to submit;
+   * provider_username: provider's username;
+   * vehicle_name     : vehicle name that, in database, is an unique key for vehicle table;
+   * sensor_name      : sensor name (NOT SENSOR TYPE NEITHER SENSOR ID);
+   * resolution_value : resolution value (NOT RESOLUTION ID);
+   * path_pdf         : path_pdf in the server for aditional informations.
    * 
    * OUTPUT ARGUMENTS:
    *   0: operation concluded with success;
@@ -399,6 +358,8 @@
    * -15: the resolution selected isn't active;
    * -16: inserting the new mission was not possible;
    * -17: relating the mission with the request was not possible.
+   ****************************************************************************************************
+   ***** NOTIFYSERVICECLIENTNEWPROPOSALAVAILABLE
    ****************************************************************************************************/
   function createNewMission($request_id, $est_starting_time, $est_finished_time, $price, $provider_username, $vehicle_name, $sensor_name, $resolution_value, $path_pdf){
     // Global variable: connection to the database
@@ -406,101 +367,37 @@
 
     // ----------------------------------------
     // Checks variable $provider_username
-    $stm = $conn->prepare("
-      SELECT  users.username               AS provider_username,
-              users.status                 AS status           ,
-              service_provider.id          AS provider_id      ,
-              service_provider.entity_name AS provider_name    ,
-              service_provider.approval    AS provider_approval
-      FROM  users
-      INNER JOIN service_provider
-        ON service_provider.user_id = users.username
-      WHERE users.username = ?
-    ");
-    $conn->execute(array($provider_username));
-    $results = $stm->fetch();
-
-    if($results == FALSE)
-      return -1;
-    else if($results['status'] != 'Active')
-      return -2;
-    else if($results['provider_approval'] == FALSE )
-      return -2;
+    $results = verifyServiceProviderUsername($provider_username);
+    if( $results < 0 )
+      return $results + 0;
+    $results = getServiceProviderInformation($provider_username);
     $provider_id   = $results['provider_id'];
     $provider_name = $results['provider_name'];
 
     // ----------------------------------------
     // Checks variables $est_starting_time and $est_finished_time
     if($est_starting_time != NULL){
-      $starting_date_string = explode( '/' , $est_starting_time , 3 );
-      if( count($starting_date_string) != 3 )
-        return -4;
-      // -> DAY
-      $start_day   = $starting_date_string[0];
-      // -> MONTH
-      $start_month = $starting_date_string[1];
-      // -> YEAR
-      $start_year  = $starting_date_string[2];
-
-      if( (intval($start_day) <= 0) || (intval($start_month) <= 0) || (intval($start_year) <= 0) )
-        return -4;
-      if( (intval($start_day) < 1) || (intval($start_day) > 31) )
-        return -4;
-      if( (intval($start_month) < 1) || (intval($start_month) > 12) )
-        return -4;
-      if( (intval($start_year) < 1) )
-        return -4;
-
-      $stm = $conn->prepare("
-        SELECT CURRENT_TIMESTAMP < ? AS date_validation;
-      ");
-      $stm     = $conn->execute(array( "TO_TIMESTAMP('$start_day $start_month $start_year 20' , 'DD MM YYYY HH24')" ));
-      $results = $stm->fetch();
-      if( $results['date_validation'] == FALSE )
-        return -5;
+      $results = verifyDateTimeValidation($est_starting_time);
+      if( $results < 0 )
+        return $results - 3;
     }
-
     if($est_finished_time != NULL){
-      $finishing_date_string = explode( '/' , $est_finished_time , 3 );
-      if( count($finishing_date_string) != 3 )
-        return -4;
-      // -> DAY
-      $finish_day   = $finishing_date_string[0];
-      // -> MONTH
-      $finish_month = $finishing_date_string[1];
-      // -> YEAR
-      $finish_year  = $finishing_date_string[2];
-
-      if( (intval($finish_day) <= 0) || (intval($finish_month) <= 0) || (intval($finish_year) <= 0) )
-        return -4;
-      if( (intval($finish_day) < 1) || (intval($finish_day) > 31) )
-        return -4;
-      if( (intval($finish_month) < 1) || (intval($finish_month) > 12) )
-        return -4;
-      if( (intval($finish_year) < 1) )
-        return -4;
-
-      $stm = $conn->prepare("
-        SELECT CURRENT_TIMESTAMP < ? AS date_validation;
-      ");
-      $stm     = $conn->execute(array( "TO_TIMESTAMP('$finish_day $finish_month $finish_year 20' , 'DD MM YYYY HH24')" ));
-      $results = $stm->fetch();
-      if( $results['date_validation'] == FALSE )
-        return -5;
+      $results = verifyDateTimeValidation($est_finished_time);
+      if( $results < 0 )
+        return $results - 3;
     }
     if(($est_starting_time != NULL) && ($est_finished_time != NULL)){
       $stm = $conn->prepare("
         SELECT ? < ? AS date_validation;
       ");
-      $stm     = $conn->execute(array( "TO_TIMESTAMP('$start_day  $start_month  $start_year  20' , 'DD MM YYYY HH24')",
-                                      "TO_TIMESTAMP('$finish_day $finish_month $finish_year 20' , 'DD MM YYYY HH24')" 
+      $stm     = $conn->execute(array(getDateTimeToTimestampString($est_starting_time),
+                                      getDateTimeToTimestampString($est_finished_time)
       ));
       $results = $stm->fetch();
       if( $results['date_validation'] == FALSE )
         return -6;
     }
     
-
     // ----------------------------------------
     // Check variable $request_id
     $stm = $conn->prepare("
@@ -586,6 +483,31 @@
     $resolution_cost        = floatval($results['cost']);         // €/h
     $resolution_swath       = floatval($results['swath']);        // m
 
+    
+    // ----------------------------------------
+    // ----------------------------------------
+    // PUT HERE OTHER ARGUMENTS VALIDATION
+    // ----------------------------------------
+    // ----------------------------------------
+    // Checks if service provider is present in table PROVIDER_REQUEST relative to the request in question
+    if( verifyServiceProviderIsPresentInTableProviderRequest($provider_id, $request_id) == FALSE )
+      return -16;
+    
+    // Its necessary to check if the vehicle still has the capability of executing the request
+    // (for now, sensor_type and resolution_value has been checked )
+    // 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   MISSING   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //
+    
+    // Also missing it is the estimating cost algorithm to evaluate if service provider promises are valid
+    // 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   MISSING   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //
+
+    // ----------------------------------------
+    // ----------------------------------------
+
+
     // ----------------------------------------
     // Inserts into table mission a new entry
     $stm = $conn->prepare("
@@ -646,7 +568,6 @@
     $stm->execute(array($client_id));
     $results         = $stm->fetch();
     $client_username = $results['user_id'];
-
     notifyServiceClientNewProposalAvailable($client_username, $provider_name, $provider_username, $request_id, $mission_id);
 
     // Returns 0 in case of success
@@ -680,6 +601,257 @@
     return 0;
   }
   
+  /****************************************************************************************************
+   ****** VERIFYSERVICECLIENTUSERNAME
+   ****************************************************************************************************
+   * INPUT ARGUMENTS:
+   * client_username
+   * 
+   * OUTPUT ARGUMENTS:
+   *  0: service client ok;
+   * -1: the user is not registed in the platform or it isn't a service client;
+   * -2: the client isn't an Active user.
+   ****************************************************************************************************
+   ****** GETSERVICECLIENTINFORMATION
+   ****************************************************************************************************/
+  function verifyServiceClientUsername($client_username){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Verifies the client info
+    $stm = $conn->prepare("
+      SELECT  users.username             AS client_username,
+              users.status               AS status         ,
+              service_client.id          AS client_id      ,
+              service_client.client_name AS client_name
+      FROM  users
+      INNER JOIN service_client
+        ON service_client.user_id = users.username
+      WHERE users.username = ?
+    ");
+    $conn->execute(array($client_username));
+    $results = $stm->fetch();
+
+    // Error returning
+    if($results == FALSE)
+      return -1;
+    if($results['status'] != 'Active')
+      return -2;
+
+      // Returns 0 if Service Client is OK
+      return 0;
+  }
+  function getServiceClientInformation($client_username){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Gets the client info
+    $stm = $conn->prepare("
+      SELECT  users.username             AS client_username,
+              users.status               AS status         ,
+              service_client.id          AS client_id      ,
+              service_client.client_name AS client_name
+      FROM  users
+      INNER JOIN service_client
+        ON service_client.user_id = users.username
+      WHERE users.username = ?
+    ");
+    $conn->execute(array($client_username));
+    $results = $stm->fetch();
+
+    // Returns Service Client information
+    return $stm->fetch();
+  }
+  
+  /****************************************************************************************************
+   ****** VERIFYSERVICEPROVIDERUSERNAME
+   ****************************************************************************************************
+   * INPUT ARGUMENTS:
+   * provider_username
+   * 
+   * OUTPUT ARGUMENTS:
+   *  0: service provider ok;
+   * -1: the user is not registed in the platform or it isn't a service provider;
+   * -2: the provider isn't an Active user;
+   * -3: the service provider has yet to be approved by administration.
+   ****************************************************************************************************
+   ****** GETSERVICEPROVIDERINFORMATION
+   ****************************************************************************************************/
+  function verifyServiceProviderUsername($provider_username){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Verifies the provider info
+    $stm = $conn->prepare("
+      SELECT  users.username               AS provider_username,
+              users.status                 AS status           ,
+              service_provider.id          AS provider_id      ,
+              service_provider.entity_name AS provider_name    ,
+              service_provider.approval    AS provider_approval
+      FROM  users
+      INNER JOIN service_provider
+        ON service_provider.user_id = users.username
+      WHERE users.username = ?
+    ");
+    $conn->execute(array($provider_username));
+    $results = $stm->fetch();
+
+    // Error returning
+    if($results == FALSE)
+      return -1;
+    if($results['status'] != 'Active')
+      return -2;
+    if($results['provider_approval'] == FALSE )
+      return -3;
+
+    // Returns 0 if Service Provider is OK
+    return 0;
+  }
+  function getServiceProviderInformation($provider_username){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Gets the provider info
+    $stm = $conn->prepare("
+      SELECT  users.username               AS provider_username,
+              users.status                 AS status           ,
+              service_provider.id          AS provider_id      ,
+              service_provider.entity_name AS provider_name    ,
+              service_provider.approval    AS provider_approval
+      FROM  users
+      INNER JOIN service_provider
+        ON service_provider.user_id = users.username
+      WHERE users.username = ?
+    ");
+    $conn->execute(array($provider_username));
+
+    // Returns Service Provider information
+    return $stm->fetch();
+  }
+  
+  /****************************************************************************************************
+   ****** VERIFYDATETIMEVALIDATION
+   ****************************************************************************************************
+   * INPUT ARGUMENTS:
+   * date_time: string in the following format 'DD MM YYYY'
+   * 
+   * OUTPUT ARGUMENTS:
+   *  0: date_time ok;
+   * -1: date format isn't valid. The correct one is 'DD/MM/AAAA';
+   * -2: date after today;
+   ****************************************************************************************************
+   ****** GETDATETIMETOTIMESTAMPSTRING
+   ****************************************************************************************************/
+  function verifyDateTimeValidation($date_time){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Checks date_time format
+    $date_time_array = explode( '/' , $date_time , 3 );
+    if( count($date_time_array) != 3 )  // Date isn't in right format
+      return -1;
+    // -> day
+    $day   = $date_time_array[0];
+    // -> month
+    $month = $date_time_array[1];
+    // -> year
+    $year  = $date_time_array[2];
+
+    // Check values validation
+    if( (intval($day) <= 0) || (intval($month) <= 0) || (intval($year) <= 0) )
+      return -1;
+    if( (intval($day) < 1) || (intval($day) > 31) )
+      return -1;
+    if( (intval($month) < 1) || (intval($month) > 12) )
+      return -1;
+    if( (intval($year) < 1) )
+      return -1;
+
+    $stm = $conn->prepare("
+      SELECT CURRENT_TIMESTAMP < ? AS date_validation;
+    ");
+    $stm     = $conn->execute(array( "TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')" ));
+    $results = $stm->fetch();
+    if( $results['date_validation'] == FALSE )
+      return -2;
+
+    // Returns 0 if date_time is OK
+    return 0;
+  }
+  function getDateTimeToTimestampString($date_time){
+    // Global variable: connection to the database
+    global $conn;
+
+    // String formating
+    $date_time_array = explode( '/' , $date_time , 3 );
+    // -> day
+    $day   = $date_time_array[0];
+    // -> month
+    $month = $date_time_array[1];
+    // -> year
+    $year  = $date_time_array[2];
+
+    // Return string to time stamp (needed in SQL)
+    return "TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')";
+  }
+  
+  /****************************************************************************************************
+   ****** VERIFYSERVICEPROVIDERISPRESENTINTABLEPROVIDERREQUEST
+   ****************************************************************************************************
+   * This function verifies if, in the moment of request creation the service provider was capable of 
+   * executing the request.
+   * 
+   * INPUT ARGUMENTS:
+   * provider_id: integer representing provider's id;
+   * request_id : integer representing request's id.
+   * 
+   * OUTPUT ARGUMENTS (boolean):
+   * TRUE : the combination provider_id @ $request_id is present in table provider_request;
+   * FALSE: it's not present.
+   ****************************************************************************************************
+   ****** DELETESERVICEPROVIDERANDREQUESTFROMTABLEPROVIDERREQUEST
+   ****************************************************************************************************
+   * Function to delete the combination of provider_id with request_id from table provider_request.
+   * 
+   * INPUT ARGUMENTS:
+   * provider_id: integer representing provider's id;
+   * request_id : integer representing request's id.
+   * 
+   * OUTPUT ARGUMENTS:
+   * 1: operation executed with success; 
+   * 0: the combination provider_id @ $request_id was not present in table provider_request.
+   ****************************************************************************************************/
+  function verifyServiceProviderIsPresentInTableProviderRequest($provider_id, $request_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Search for combination $provider_id @ $request_id
+    $stm = $conn->prepare("
+      SELECT  *
+      FROM  provider_request
+      WHERE provider_id = ? AND
+            request_id  = ?
+    ");
+    $stm->execute(array($provider_id, $request_id));
+
+    // Return TRUE / FALSE
+    return ($stm->fetch() == TRUE);
+  }
+  function deleteServiceProviderAndRequestFromTableProviderRequest($provider_id, $request_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Deletes from table
+    $stm = $conn->prepare("
+      DELETE FROM provider_request
+      WHERE provider_id = ? AND
+            request_id  = ?
+    ");
+    $stm->execute(array($provider_id, $request_id));
+
+    // Returns affeted rows by delete
+    return $stm->rowCount();
+  }
 
 
 ?>
