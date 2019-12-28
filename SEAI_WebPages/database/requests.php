@@ -767,7 +767,6 @@
     return 0;
   }
 
-
   /****************************************************************************************************
    ****** UPDATEMISSIONSTATUS
    ****************************************************************************************************
@@ -904,7 +903,7 @@
     $provider_username = $results_2['provider_username'];
 
     // Send Service Client Notification
-    $notification_info = "Mission (mission id: $mission_id) executed by $provider_name ($provider_username) from request $request_id changed: $mission_status";
+    $notification_info = "Mission status (mission id: $mission_id) executed by $provider_name ($provider_username) from request $request_id changed: $mission_status";
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -994,6 +993,256 @@
     // Success creating the new notification
     return 0;
   }
+
+  /****************************************************************************************************
+   ****** UPDATEAGREEMENTPAYMENT
+   ****************************************************************************************************
+   * Function that updates the boolean variables present in request table. These means that either 
+   * sides (client and provider) confirms their stand relative to payment agreement.
+   * 
+   * INPUT ARGUMENTS:
+   * request_id        : integer that represents request id OR NULL if not specified;
+   * mission_id        : integer that represents request id OR NULL if not specified;
+   * agreement_client  : boolean variable true/false OR NULL if not specified (if null => do not alter);
+   * agreement_provider: boolean variable true/false OR NULL if not specified (if null => do not alter).
+   * 
+   * OUTPUT ARGUMENTS:
+   * 1: operation executed successfully;
+   * 0: insuccess in updating executing the agreement variables.
+   * 
+   * NOTES:
+   * - the $request_id and $mission_id can't ve simultaneously NULL;
+   * - specificy the boolean variables NULL if you don't want to alter them;
+   * - we can't alter the client and provider agreement at the same time!!!
+   *   (... T/F,NULL OR ... NULL,T/F).
+   ****************************************************************************************************/
+  function updateAgreementPayment($request_id, $mission_id, $agreement_client, $agreement_provider){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get mission_id or request_id
+    if( $mission_id != NULL ) {
+      $stm = $conn->prepare("
+        SELECT  request.id AS request_id,
+                mission.id AS mission_id
+        FROM  mission
+        INNER JOIN request_mission
+          ON  request_mission.mission_id = mission.id
+        INNER JOIN request
+          ON  request.id = request_mission.request_id
+        WHERE mission.status <> 'Proposal' AND
+              mission.status <> 'Refused'  AND
+              mission.status <> 'Expired'  AND
+              mission.status <> 'Finish'   AND
+              mission.status <> 'In progress'    AND
+              request.sensor_type     IS NOT NULL AND
+              request.resolution_type IS NOT NULL AND
+              mission.id   =   ?
+      ");
+      $stm->execute(array($mission_id));
+      $result     = $stm->fetch();
+      $mission_id = $result['mission_id'];
+      $request_id = $result['request_id'];
+    }
+    else if( ($mission_id == NULL) && ($request_id != NULL) ) {
+      $stm = $conn->prepare("
+        SELECT  request.id AS request_id,
+                mission.id AS mission_id
+        FROM  request
+        INNER JOIN request_mission
+          ON  request_mission.request_id = request.id
+        INNER JOIN mission
+          ON  mission.id = request_mission.mission_id
+        WHERE mission.status <> 'Proposal' AND
+              mission.status <> 'Refused'  AND
+              mission.status <> 'Expired'  AND
+              mission.status <> 'Finish'   AND
+              mission.status <> 'In progress'    AND
+              request.sensor_type     IS NOT NULL AND
+              request.resolution_type IS NOT NULL AND
+              request.id   =   ?
+      ");
+      $stm->execute(array($mission_id));
+      $result     = $stm->fetch();
+      $mission_id = $result['mission_id'];
+      $request_id = $result['request_id'];
+    }
+    else {
+      return 0;
+    }
+
+    // Updates agreements
+    if( ($agreement_client != NULL) && ($agreement_provider != NULL) )
+      return 0;
+    else if ($agreement_client != NULL) {
+      $stm = $conn->prepare("
+        UPDATE request
+        SET    agreement_client = ?
+        WHERE  id = ?
+      ");
+      $stm->execute(array($agreement_client? 'TRUE':'FALSE',$request_id));
+
+      // Notify Service Provider
+      notifyServiceProviderOfServiceClientAgreementStatus($mission_id, $agreement_client)
+    }
+    else if ($agreement_provider != NULL) {
+      $stm = $conn->prepare("
+        UPDATE request
+        SET    agreement_provider = ?
+        WHERE  id = ?
+      ");
+      $stm->execute(array($agreement_provider? 'TRUE':'FALSE',$request_id));
+
+      // Notify Service Client
+      notifyServiceClientOfServiceProviderAgreementStatus($mission_id, $agreement_provider);
+    }
+    else
+      return 0;
+
+    // Returns 1 in case of success
+    return $stm->rowCount();
+  }
+  function notifyServiceClientOfServiceProviderAgreementStatus($mission_id, $agreement_status){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get service client information
+    $stm = $conn->prepare("
+      SELECT  mission.id                 AS mission_id,
+              request.id                 AS request_id,
+              request.sensor_type        AS request_sensor_type,
+              request.resolution_type    AS request_res_value,
+              service_client.id          AS client_id,
+              service_client.client_name AS client_name,
+              service_client.user_id     AS client_username
+      FROM  mission
+      INNER JOIN request_mission
+        ON  request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON  request.id = request_mission.request_id
+      INNER JOIN service_client
+        ON  service_client.id = request.id
+      WHERE request.sensor_type     IS NOT NULL AND
+            request.resolution_type IS NOT NULL AND
+            mission.id   =   ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_1 = $stm->fetch();
+
+    // Get service provider information
+    $stm = $conn->prepare("
+      SELECT  mission.id                   AS mission_id,
+              service_provider.id          AS provider_id,
+              service_provider.entity_name AS provider_name,
+              service_provider.user_id     AS provider_username
+      FROM  mission
+      INNER JOIN service_provider
+        ON  service_provider.id = mission.provider_id
+      WHERE mission.id = ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_2 = $stm->fetch();
+
+    $request_id        = $results_1['request_id'];
+    $client_name       = $results_1['client_name'];
+    $client_username   = $results_1['client_username'];
+    $provider_name     = $results_2['provider_name'];
+    $provider_username = $results_2['provider_username'];
+
+    // Send Service Client Notification
+    $AGGSTATUS = $agreement_status ? 'YES' : 'NO';
+    $notification_info = "$provider_name ($provider_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
+
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($notification_info,
+                          'FALSE',
+                          $client_username,
+                          $mission_id,
+                          $request_id
+      ));
+    } catch (PDOexception $e) {
+      // Error creating the new notification
+      return -1;
+    }
+
+    // Success creating the new notification
+    return 0;
+  }
+  function notifyServiceProviderOfServiceClientAgreementStatus($mission_id, $agreement_status){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get service client information
+    $stm = $conn->prepare("
+      SELECT  mission.id                 AS mission_id,
+              request.id                 AS request_id,
+              request.sensor_type        AS request_sensor_type,
+              request.resolution_type    AS request_res_value,
+              service_client.id          AS client_id,
+              service_client.client_name AS client_name,
+              service_client.user_id     AS client_username
+      FROM  mission
+      INNER JOIN request_mission
+        ON  request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON  request.id = request_mission.request_id
+      INNER JOIN service_client
+        ON  service_client.id = request.id
+      WHERE request.sensor_type     IS NOT NULL AND
+            request.resolution_type IS NOT NULL AND
+            mission.id   =   ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_1 = $stm->fetch();
+
+    // Get service provider information
+    $stm = $conn->prepare("
+      SELECT  mission.id                   AS mission_id,
+              service_provider.id          AS provider_id,
+              service_provider.entity_name AS provider_name,
+              service_provider.user_id     AS provider_username
+      FROM  mission
+      INNER JOIN service_provider
+        ON  service_provider.id = mission.provider_id
+      WHERE mission.id = ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_2 = $stm->fetch();
+
+    $request_id        = $results_1['request_id'];
+    $client_name       = $results_1['client_name'];
+    $client_username   = $results_1['client_username'];
+    $provider_name     = $results_2['provider_name'];
+    $provider_username = $results_2['provider_username'];
+
+    // Send Service Provider Notification
+    $AGGSTATUS = $agreement_status ? 'YES' : 'NO';
+    $notification_info = "$client_name ($client_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
+
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($notification_info,
+                          'FALSE',
+                          $provider_username,
+                          $mission_id,
+                          $request_id
+      ));
+    } catch (PDOexception $e) {
+      // Error creating the new notification
+      return -1;
+    }
+
+    // Success creating the new notification
+    return 0;
+  }
+
 
   /****************************************************************************************************
    ****** VERIFYSERVICECLIENTUSERNAME
