@@ -161,7 +161,16 @@
    *  -8: area variable is NULL;
    *  -9: the area polygon must be defined by at least three vertices;
    * -10: inserting the new area was not possible;
-   * -11: inserting the new request was not possible.
+   * -11: inserting the new request was not possible;
+   * -12: there aren't any service providers capable of satisfying the request.
+   ****************************************************************************************************
+   ****** SELECTPOSSIBLESERVICEPROVIDERSTOAPPLYFORREQUEST
+   ****************************************************************************************************
+   * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   * NOT MADE YET
+   * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   * Function to select automatically service providers when a new request is made by a client. It 
+   * should be noted that, for the specific request, this selection will never be updated again.
    ****************************************************************************************************/
   function newRequestForNewData($area, $client_username, $sensor_type, $resolution_value, $deadline, $comments, $restricted){
     // Global variable: connection to the database
@@ -234,7 +243,7 @@
       if( $results < 0 )
         return $result - 5;
     }
-    
+ 
     // ----------------------------------------
     // Fomulation of string for area definition
     if($area == NULL)
@@ -256,6 +265,21 @@
     }
 
     $polygon .= ") ) ' )";
+
+
+    // ----------------------------------------
+    // ----------------------------------------
+    // PUT HERE OTHER ARGUMENTS VALIDATION
+    // ----------------------------------------
+    // ----------------------------------------
+    // Check if area belongs to land or water.
+    // 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   MISSING   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //
+
+    // ----------------------------------------
+    // ----------------------------------------
+
     
     // ----------------------------------------
     // Create a new area
@@ -288,6 +312,7 @@
         restricted
       )
       VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? )
+      RETURNING id
     ");
     try{
       $stm->execute(array($deadline==NULL? NULL:getDateTimeToTimestampString($deadline),
@@ -309,8 +334,149 @@
       $stm->execute(array($area_id));
       return -11;
     }
+    $results    = $stm->fetch();
+    $request_id = $results['id'];
+
+
+    // ----------------------------------------
+    // ----------------------------------------
+    // PUT HERE OTHER ARGUMENTS VALIDATION
+    // ----------------------------------------
+    // ----------------------------------------
+    // Checks if service provider is present in table PROVIDER_REQUEST relative to the request in question
+    // 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   INCOMPLETE   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //
+    $results = selectPossibleServiceProvidersToApplyForRequest($request_id, $area_id, $sensor_type, $resolution_value);
+    if( $results < 0 ){
+      // Eliminates the area already created
+      $stm = $conn->prepare("
+        DELETE FROM area
+        WHERE  id = ?
+      ");
+      $stm->execute(array($area_id));
+
+      // Eliminates the request already created
+      $stm = $conn->prepare("
+        DELETE FROM request
+        WHERE  id = ?
+      ");
+      $stm->execute(array($request_id));
+
+      // Returns errors
+      return $results - 11;
+    }
+
+
+    // ----------------------------------------
+    // ----------------------------------------
 
     // Returns 0 in case of success
+    return 0;
+  }
+  function selectPossibleServiceProvidersToApplyForRequest($request_id, $area_id, $sensor_type, $resolution_value){
+    // Global variable: connection to the database
+    global $conn;
+
+    // ----------------------------------------
+    // Get DEPTH MIN and DEPTH MAX relative to request area
+    $results = getMinMaxDepthAreaSelected($area_id);
+
+    $value_min = $results['depth_min'];
+    $value_max = $results['depth_max'];
+
+    // ----------------------------------------
+    // Get possible service providers capable of satisfying the request in question
+    $stm = $conn->prepare("
+      WITH filtersensorresolution AS (	
+        SELECT  service_provider.id              AS provider_id      ,
+                service_provider.user_id         AS provider_username, 
+                service_provider.approval        AS user_approval    ,
+                vehicle.vehicle_name             AS vehicle_name     ,
+                vehicle.approval                 AS vehicle_approval ,
+                sensor.sensor_name               AS sensor_name      ,
+                sensor.sensor_type               AS sensor_type      ,
+                sensor.active                    AS sensor_active    , 
+                resolution.id                    AS resolution_id    ,
+                resolution.value                 AS resolution_value ,
+                resolution.active                AS resolution_active,
+                specification.specification_type AS spec_type        ,
+                specification.value_min          AS spec_min         ,
+                specification.value_max          AS spec_max
+        FROM service_provider
+        FULL OUTER JOIN vehicle 
+          ON vehicle.service_provider_id = service_provider.id
+        FULL OUTER JOIN sensor 
+          ON vehicle.id = sensor.vehicle_id
+        FULL OUTER JOIN resolution 
+          ON resolution.sensor_id = sensor.id
+        FULL OUTER JOIN specification
+          ON specification.vehicle_id = vehicle.id
+        WHERE service_provider.approval = true AND
+              vehicle.approval          = true AND
+              sensor.active             = true AND
+              resolution.active         = true AND
+              specification.active      = true AND
+              sensor.sensor_type        =   ?  AND
+              resolution.value          =   ?  AND
+              specification.specification_type = 'depth'             AND
+              CAST(specification.value_min AS double precision) <= ? AND
+              CAST(specification.value_max AS double precision) >= ?
+      )
+      SELECT DISTINCT 
+        filtersensorresolution.provider_username,
+        filtersensorresolution.provider_id
+      FROM filtersensorresolution
+    ");
+    $stm->execute(array($sensor_type, $resolution_value, $value_min, $value_max));
+    $results = $stm->fetchAll();
+
+    if( $results == FALSE ) // There isn't no Service Providers capable of executing that request
+      return -1;
+
+    // ----------------------------------------
+    // Insert the combination provider_id & request_id in table provider_request
+    // Notify all service providers capable of apply for specific request
+    foreach ($results as $result){
+      insertServiceProviderAndRequestInTableProviderRequest($result['provider_id'], $request_id)
+      notifyProviderNewPossibleRequestToApply($result['provider_username'], $request_id);
+    }
+    
+    // Returns 0 in case of success
+    return 0;
+  }
+  function getMinMaxDepthAreaSelected($area_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   MISSING   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //
+  }
+  function notifyProviderNewPossibleRequestToApply($provider_username, $request_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Notification text
+    $information = "New request ($request_id) available to apply";
+
+    // Sends the notification for the service provider of a new valid request to apply
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id, request_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($information,
+                          'FALSE',
+                          $provider_username,
+                          $request_id
+      ));
+    } catch (PDOexception $e) {
+      // Error creating the new notification
+      return -1;
+    }
+
+    // Success creating the new notification
     return 0;
   }
   
@@ -526,13 +692,13 @@
     ");
     try{
       $stm->execute(array('Proposal',
-                                  $est_starting_time==NULL? NULL:"TO_TIMESTAMP('$start_day $start_month $start_year 20' , 'DD MM YYYY HH24')",
-                                  $est_finished_time==NULL? NULL:"TO_TIMESTAMP('$finish_day $finish_month $finish_year 20' , 'DD MM YYYY HH24')",
-                                  $price,
-                                  $provider_id,
-                                  $resolution_id,
-                                  $area_id,
-                                  $path_pdf
+                          $est_starting_time==NULL? NULL:"TO_TIMESTAMP('$start_day $start_month $start_year 20' , 'DD MM YYYY HH24')",
+                          $est_finished_time==NULL? NULL:"TO_TIMESTAMP('$finish_day $finish_month $finish_year 20' , 'DD MM YYYY HH24')",
+                          $price,
+                          $provider_id,
+                          $resolution_id,
+                          $area_id,
+                          $path_pdf
       ));
     } catch(PDOexception $e) {
       return -16;
@@ -600,7 +766,235 @@
     // Success creating the new notification
     return 0;
   }
-  
+
+
+  /****************************************************************************************************
+   ****** UPDATEMISSIONSTATUS
+   ****************************************************************************************************
+   * Function to update the mission status.
+   * 
+   * INPUT ARGUMENTS:
+   * request_id    : integer representing the request id. This request is relative to the mission that 
+   *                 is being executed;
+   * mission_id    : integer representing the mission id;
+   * mission_status: string that represents the mission current status. The status posible are the 
+   *                 following ones:
+   *                 - 'Proposal' - there is no need to update the status mission (it is its default
+   *                                status)
+   *                 - 'Refused'
+   *                 - 'Waiting Agreement'
+   *                 - 'In progress'
+   *                 - 'Expired'
+   *                 - 'Finish'
+   * 
+   * OUTPUT ARGUMENTS:
+   *  1: operation executed successfully;
+   *  0: insuccess in updating executing the mission;
+   * -1: status not valid.
+   ****************************************************************************************************/
+  function updateMissionStatus($mission_id, $mission_status){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Updating status
+    switch ($variable) {
+      case 'Refused':
+        $stm = $conn->prepare("
+          UPDATE  mission
+          SET   status = ?
+          WHERE id     = ?
+        ");
+        $stm->execute(array($mission_status,$mission_id));
+      break;
+
+      case 'Waiting Agreement':
+        $stm = $conn->prepare("
+          UPDATE  mission
+          SET   status = ?
+          WHERE id     = ?
+        ");
+        $stm->execute(array($mission_status,$mission_id));
+      break;
+
+      case 'In progress':
+        $stm = $conn->prepare("
+          UPDATE  mission
+          SET   starting_time = CURRENT_TIMESTAMP(0),
+                status        = ?
+          WHERE id     = ?
+        ");
+        $stm->execute(array($mission_status,$mission_id));
+      break;
+
+      case 'Expired':
+        $stm = $conn->prepare("
+          UPDATE  mission
+          SET   status = ?
+          WHERE id     = ?
+        ");
+        $stm->execute(array($mission_status,$mission_id));
+      break;
+
+      case 'Finish':
+        $stm = $conn->prepare("
+          UPDATE  mission
+          SET   finished_time = CURRENT_TIMESTAMP(0),
+                status        = ?
+          WHERE id     = ?
+        ");
+        $stm->execute(array($mission_status,$mission_id));
+      break;
+      
+      default:
+        return -1;
+    }
+
+    // Notify Service Client and Service Provider
+    notifyServiceClientMissionStatus($mission_id, $mission_status);
+    notifyServiceProviderMissionStatus($mission_id, $mission_status)
+
+    // Return 0 or 1
+    return $stm->rowCount();
+  }
+  function notifyServiceClientMissionStatus($mission_id, $mission_status){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get service client information
+    $stm = $conn->prepare("
+      SELECT  mission.id                 AS mission_id,
+              request.id                 AS request_id,
+              request.sensor_type        AS request_sensor_type,
+              request.resolution_type    AS request_res_value,
+              service_client.id          AS client_id,
+              service_client.client_name AS client_name,
+              service_client.user_id     AS client_username
+      FROM  mission
+      INNER JOIN request_mission
+        ON  request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON  request.id = request_mission.request_id
+      INNER JOIN service_client
+        ON  service_client.id = request.id
+      WHERE request.sensor_type     IS NOT NULL AND
+            request.resolution_type IS NOT NULL AND
+            mission.id   =   ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_1 = $stm->fetch();
+
+    // Get service provider information
+    $stm = $conn->prepare("
+      SELECT  mission.id                   AS mission_id,
+              service_provider.id          AS provider_id,
+              service_provider.entity_name AS provider_name,
+              service_provider.user_id     AS provider_username
+      FROM  mission
+      INNER JOIN service_provider
+        ON  service_provider.id = mission.provider_id
+      WHERE mission.id = ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_2 = $stm->fetch();
+
+    $request_id        = $results_1['request_id'];
+    $client_name       = $results_1['client_name'];
+    $client_username   = $results_1['client_username'];
+    $provider_name     = $results_2['provider_name'];
+    $provider_username = $results_2['provider_username'];
+
+    // Send Service Client Notification
+    $notification_info = "Mission (mission id: $mission_id) executed by $provider_name ($provider_username) from request $request_id changed: $mission_status";
+
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($notification_info,
+                          'FALSE',
+                          $client_username,
+                          $mission_id,
+                          $request_id
+      ));
+    } catch (PDOexception $e) {
+      // Error creating the new notification
+      return -1;
+    }
+
+    // Success creating the new notification
+    return 0;
+  }
+  function notifyServiceProviderMissionStatus($mission_id, $mission_status){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get service client information
+    $stm = $conn->prepare("
+      SELECT  mission.id                 AS mission_id,
+              request.id                 AS request_id,
+              request.sensor_type        AS request_sensor_type,
+              request.resolution_type    AS request_res_value,
+              service_client.id          AS client_id,
+              service_client.client_name AS client_name,
+              service_client.user_id     AS client_username
+      FROM  mission
+      INNER JOIN request_mission
+        ON  request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON  request.id = request_mission.request_id
+      INNER JOIN service_client
+        ON  service_client.id = request.id
+      WHERE request.sensor_type     IS NOT NULL AND
+            request.resolution_type IS NOT NULL AND
+            mission.id   =   ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_1 = $stm->fetch();
+
+    // Get service provider information
+    $stm = $conn->prepare("
+      SELECT  mission.id                   AS mission_id,
+              service_provider.id          AS provider_id,
+              service_provider.entity_name AS provider_name,
+              service_provider.user_id     AS provider_username
+      FROM  mission
+      INNER JOIN service_provider
+        ON  service_provider.id = mission.provider_id
+      WHERE mission.id = ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_2 = $stm->fetch();
+
+    $request_id        = $results_1['request_id'];
+    $client_name       = $results_1['client_name'];
+    $client_username   = $results_1['client_username'];
+    $provider_name     = $results_2['provider_name'];
+    $provider_username = $results_2['provider_username'];
+
+    // Send Service provider Notification
+    $notification_info = "Mission status (mission id: $mission_id) from request $request_id made by $client_name ($client_username) changed: $mission_status";
+
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($notification_info,
+                          'FALSE',
+                          $provider_username,
+                          $mission_id,
+                          $request_id
+      ));
+    } catch (PDOexception $e) {
+      // Error creating the new notification
+      return -1;
+    }
+
+    // Success creating the new notification
+    return 0;
+  }
+
   /****************************************************************************************************
    ****** VERIFYSERVICECLIENTUSERNAME
    ****************************************************************************************************
@@ -820,6 +1214,8 @@
    * OUTPUT ARGUMENTS:
    * 1: operation executed with success; 
    * 0: the combination provider_id @ $request_id was not present in table provider_request.
+   ****************************************************************************************************
+   ****** INSERTSERVICEPROVIDERANDREQUESTINTABLEPROVIDERREQUEST
    ****************************************************************************************************/
   function verifyServiceProviderIsPresentInTableProviderRequest($provider_id, $request_id){
     // Global variable: connection to the database
@@ -851,6 +1247,24 @@
 
     // Returns affeted rows by delete
     return $stm->rowCount();
+  }
+  function insertServiceProviderAndRequestInTableProviderRequest($provider_id, $request_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Inserts in table
+    $stm = $conn->prepare("
+      INSERT INTO provider_request (provider_id, request_id)
+      VALUES ( ? , ? )
+    ");
+    try{
+      $stm->execute(array($provider_id, $request_id))
+    } catch(PDOexception $e) {
+      return -1;
+    }
+
+    // Returns 0 in case of success
+    return 0;
   }
 
 
