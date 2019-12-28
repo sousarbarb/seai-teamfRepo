@@ -1177,6 +1177,32 @@ SELECT * FROM vehicle_sensor_resolution;
     // Return row with vehicle information
     return $stm->fetch();
   }
+  function getVehicleActiveGeneralInformation($vehicle_name){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all informations abou the vehicle stored in database
+    $stm = $conn->prepare("
+      SELECT  service_provider.entity_name AS provider_entity_name,
+              service_provider.user_id     AS provider_username   ,
+              vehicle.service_provider_id  AS provider_id         ,
+              vehicle.id                   AS vehicle_id          ,
+              vehicle.vehicle_name         AS vehicle_name        ,
+              vehicle.localization         AS vehicle_localization,
+              vehicle.comments             AS vehicle_comments    ,
+              vehicle.active               AS vehicle_active      ,
+              vehicle.approval             AS vehicle_approval    ,
+              vehicle.public               AS vehicle_public
+      FROM    vehicle
+      INNER JOIN service_provider
+        ON service_provider.id = vehicle.service_provider_id
+      WHERE   vehicle.vehicle_name = ?
+    ");
+    $stm->execute(array($vehicle_name));
+
+    // Return row with vehicle information
+    return $stm->fetch();
+  }
 
   /****************************************************************************************************
    ***** GETVEHICLESPECIFICATIONS
@@ -1201,6 +1227,28 @@ SELECT * FROM vehicle_sensor_resolution;
     // Return rows with vehicle specifications
     return $stm->fetchAll();
   }
+  function getVehicleActiveSpecifications($vehicle_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all specifications of an vehicle
+    $stm = $conn->prepare("
+      SELECT  id                 AS spec_id      ,
+              specification_type AS spec_type    ,
+              value_min          AS spec_valuemin,
+              value_max          AS spec_valuemax,
+              active             AS spec_active  ,
+              comments           AS spec_comments
+      FROM    specification
+      WHERE   active     = 'TRUE' AND
+              vehicle_id = ?
+      ORDER BY  specification_type ASC
+    ");
+    $stm->execute(array($vehicle_id));
+
+    // Return rows with vehicle specifications
+    return $stm->fetchAll();
+  }
 
   /****************************************************************************************************
    ***** GETVEHICLECOMMUNICATIONS
@@ -1216,6 +1264,7 @@ SELECT * FROM vehicle_sensor_resolution;
       FROM    communication, vehicle_communication
       WHERE   vehicle_communication.vehicle_id       = ?                AND
               vehicle_communication.communication_id = communication.id
+      ORDER BY  communication.communication_type ASC
     ");
     $stm->execute(array($vehicle_id));
 
@@ -1252,7 +1301,7 @@ SELECT * FROM vehicle_sensor_resolution;
         ON resolution.sensor_id = sensor.id
       WHERE sensor.vehicle_id = ?
       ORDER BY sensor_type ASC,
-              res_value   ASC
+               res_value   ASC
     ");
     $stm->execute(array($vehicle_id));
 
@@ -1285,6 +1334,29 @@ SELECT * FROM vehicle_sensor_resolution;
     // Return rows with vehicle sensorial capabilities
     return $stm->fetchAll();
   }
+  function getVehicleActiveSensors($vehicle_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all sensors and respective resolutions of a vehicle
+    $stm = $conn->prepare("
+      SELECT
+        sensor.id          AS sensor_id      ,
+        sensor.sensor_type AS sensor_type    ,
+        sensor.sensor_name AS sensor_name    ,
+        sensor.active      AS sensor_active  ,
+        sensor.comments    AS sensor_comments
+      FROM  sensor
+      WHERE sensor.active     = 'TRUE' AND
+            sensor.vehicle_id = ?
+      ORDER BY  sensor.sensor_type ASC,
+                sensor.sensor_name ASC
+    ");
+    $stm->execute(array($vehicle_id));
+
+    // Return rows with vehicle sensorial capabilities
+    return $stm->fetchAll();
+  }
 
   /****************************************************************************************************
    ***** GETSENSORRESOLUTIONS
@@ -1307,6 +1379,32 @@ SELECT * FROM vehicle_sensor_resolution;
         resolution.comments     AS res_comments
       FROM  resolution
       WHERE resolution.sensor_id = ?
+      ORDER BY  resolution.value ASC
+    ");
+    $stm->execute(array($sensor_id));
+
+    // Return rows with vehicle sensorial capabilities
+    return $stm->fetchAll();
+  }
+  function getSensorActiveResolutions($sensor_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all sensors and respective resolutions of a vehicle
+    $stm = $conn->prepare("
+      SELECT
+        resolution.id           AS res_id         ,
+        resolution.sensor_id    AS res_sensorid   ,
+        resolution.value        AS res_value      ,
+        resolution.consumption  AS res_consumption,
+        resolution.vel_sampling AS res_velocity   ,
+        resolution.cost         AS res_cost       ,
+        resolution.swath        AS res_swath      ,
+        resolution.active       AS res_active     ,
+        resolution.comments     AS res_comments
+      FROM  resolution
+      WHERE resolution.active    = 'TRUE' AND
+            resolution.sensor_id = ?
       ORDER BY  resolution.value ASC
     ");
     $stm->execute(array($sensor_id));
