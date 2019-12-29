@@ -46,28 +46,28 @@
 				{/if}
 				<label class="vehicle_filtro_lbl">Filter type 1</label><br>
 				<form method="get" action="{$BASE_URL}actions/vehicles_filter_public.php">
-				  <input type="radio" name="map_filter1" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter1=='all'))}checked="checked"{/if}> All</input><br>
-				  <input type="radio" name="map_filter1" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter1'))}checked="checked"{/if}> Filter1</input><br>
-				  <input type="radio" name="map_filter1" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter2'))}checked="checked"{/if}> Filter2</input><br>
-				  <input type="radio" name="map_filter1" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter3'))}checked="checked"{/if}> Filter3</input><br>
-				  <input type="radio" name="map_filter1" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter4'))}checked="checked"{/if}> Filter4</input><br>
-				  <input type="radio" name="map_filter1" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter5'))}checked="checked"{/if}> Filter5</input><br>
+				  <input type="checkbox" name="map_filter1" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter1=='all'))}checked="checked"{/if}> All</input><br>
+				  <input type="checkbox" name="map_filter1" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter1'))}checked="checked"{/if}> Filter1</input><br>
+				  <input type="checkbox" name="map_filter1" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter2'))}checked="checked"{/if}> Filter2</input><br>
+				  <input type="checkbox" name="map_filter1" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter3'))}checked="checked"{/if}> Filter3</input><br>
+				  <input type="checkbox" name="map_filter1" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter4'))}checked="checked"{/if}> Filter4</input><br>
+				  <input type="checkbox" name="map_filter1" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter5'))}checked="checked"{/if}> Filter5</input><br>
 				<br>
 				<label class="vehicle_filtro_lbl">Filter type 2</label><br>
-				  <input type="radio" name="map_filter2" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter2=='all'))}checked="checked"{/if}> All</input><br>
-				  <input type="radio" name="map_filter2" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter1'))}checked="checked"{/if}> Filter1</input><br>
-				  <input type="radio" name="map_filter2" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter2'))}checked="checked"{/if}> Filter2</input><br>
-				  <input type="radio" name="map_filter2" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter3'))}checked="checked"{/if}> Filter3</input><br>
-				  <input type="radio" name="map_filter2" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter4'))}checked="checked"{/if}> Filter4</input><br>
-				  <input type="radio" name="map_filter2" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter5'))}checked="checked"{/if}> Filter5</input><br>
+				  <input type="checkbox" name="map_filter2" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter2=='all'))}checked="checked"{/if}> All</input><br>
+				  <input type="checkbox" name="map_filter2" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter1'))}checked="checked"{/if}> Filter1</input><br>
+				  <input type="checkbox" name="map_filter2" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter2'))}checked="checked"{/if}> Filter2</input><br>
+				  <input type="checkbox" name="map_filter2" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter3'))}checked="checked"{/if}> Filter3</input><br>
+				  <input type="checkbox" name="map_filter2" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter4'))}checked="checked"{/if}> Filter4</input><br>
+				  <input type="checkbox" name="map_filter2" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter5'))}checked="checked"{/if}> Filter5</input><br>
 				<br>
 				<label class="vehicle_filtro_lbl">Filter type 3</label><br>
-				  <input type="radio" name="map_filter3" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter3=='all'))}checked="checked"{/if}> All</input><br>
-				  <input type="radio" name="map_filter3" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter1'))}checked="checked"{/if}> Filter1</input><br>
-				  <input type="radio" name="map_filter3" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter2'))}checked="checked"{/if}> Filter2</input><br>
-				  <input type="radio" name="map_filter3" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter3'))}checked="checked"{/if}> Filter3</input><br>
-				  <input type="radio" name="map_filter3" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter4'))}checked="checked"{/if}> Filter4</input><br>
-				  <input type="radio" name="map_filter3" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter5'))}checked="checked"{/if}> Filter5</input><br>
+				  <input type="checkbox" name="map_filter3" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter3=='all'))}checked="checked"{/if}> All</input><br>
+				  <input type="checkbox" name="map_filter3" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter1'))}checked="checked"{/if}> Filter1</input><br>
+				  <input type="checkbox" name="map_filter3" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter2'))}checked="checked"{/if}> Filter2</input><br>
+				  <input type="checkbox" name="map_filter3" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter3'))}checked="checked"{/if}> Filter3</input><br>
+				  <input type="checkbox" name="map_filter3" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter4'))}checked="checked"{/if}> Filter4</input><br>
+				  <input type="checkbox" name="map_filter3" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter5'))}checked="checked"{/if}> Filter5</input><br>
 				  <input type="submit" name="map_submit" style="display:none" value=""></input>
 				</form>
 			</div>
