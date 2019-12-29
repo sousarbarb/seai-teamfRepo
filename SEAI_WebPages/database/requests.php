@@ -1,5 +1,51 @@
 <?php
   /****************************************************************************************************
+   ****** GETALLDATASTOREDAREAS
+   ****************************************************************************************************
+   * Gets all areas relative to public data stored in the platform. The primary use for this function
+   * is to display these areas in the map when the user is selecting the intended area.
+   * 
+   * INPUT ARGUMENTS:
+   * None.
+   * 
+   * OUTPUT ARGUMENTS:
+   * Querie with all areas OR NULL (if the platform has no data to show / sell).
+   ****************************************************************************************************/
+  function getAllDataStoredAreas(){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all areas relative to data already present in database
+    $stm = $conn->prepare("
+      SELECT
+        request.id                    AS request_id         ,
+        request.sensor_type           AS request_sensor_type,
+        request.resolution_type       AS request_res_value  ,
+        request.comments              AS request_comments   ,
+        data.path                     AS data_filepath      ,
+        data.price                    AS data_price         ,
+        data.date                     AS data_date          ,
+        data.file_type                AS data_filetype      ,
+        ST_AsText(area.polygon)       AS area_polygon
+      FROM request
+      INNER JOIN area
+        ON  area.id = request.area_id
+      INNER JOIN data
+        ON  data.id = area.data_id
+      WHERE
+        request.restricted      = 'FALSE'   AND
+        request.sensor_type     IS NOT NULL AND
+        request.resolution_type IS NOT NULL AND
+        area.data_id            IS NOT NULL
+    ");
+    $stm->execute();
+
+    // Return results
+    return $stm->fetchAll();
+  }
+
+
+  /****************************************************************************************************
    ****** SEARCHDATAWITHFILTER
    ****************************************************************************************************
    * Function that explores all data present in database and retrieves which ones intersects with 
@@ -21,6 +67,8 @@
    * -2: minimum number of vertice to define a polygon must be greater or equal to three;
    ****************************************************************************************************
    ****** PROCESSPOLYGONGETSTRING
+   ****************************************************************************************************
+   ****** GETDATAFILTERFILETYPE
    ****************************************************************************************************/
   function searchDataWithFilters($area, $sensors_selected, $resolutions_selected, $filetypes_selected){
     // Global variable: connection to the database
