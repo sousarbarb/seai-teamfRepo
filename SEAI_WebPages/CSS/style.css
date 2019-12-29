@@ -598,7 +598,7 @@ opacity: 0.8;
   margin: 0 auto;
   table-layout: auto;
   border-collapse: collapse;
-  Font-size:20px;
+  font-size: 18px;
 }
 
 .vehicles_table th {
@@ -666,6 +666,32 @@ opacity: 0.8;
 .vehicle_filtro_lbl {
   width: 150px;
   text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.vehicles_add input[type="text"] {
+  line-height: 0.5em;
+  width: 30rem;
+  padding: 6px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.vehicles_add textarea[type="text"] {
+  width: 30rem;
+  padding: 6px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.vehicles_add_lbl {
+  width: 150px;
+  text-align: left;
   font-size: 18px;
   font-weight: bold;
 }

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-22 14:39:52
+/* Smarty version 3.1.33, created on 2019-12-29 14:36:51
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\common\navbar_logged_in.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5dff7228ea9c25_46318623',
+  'unifunc' => 'content_5e08abf35842d6_29563858',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4a5f412744aef8d44f6670bcad960004efd0eeeb' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\common\\navbar_logged_in.tpl',
-      1 => 1577021991,
+      1 => 1577626608,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5dff7228ea9c25_46318623 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e08abf35842d6_29563858 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <body>
@@ -116,9 +116,9 @@ pages/menu_requests_progress.php">In Progess</a>
           </a>
           <div class="dropdown-container" aria-labelledby="navbarDropdown">
             <a class="dropdown-in" href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-pages/menu_consult_accounts.php">Manage Accounts</a>
+pages/accounts_manage.php">Manage Accounts</a>
             <a class="dropdown-in" href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-pages/menu_consult_vehicles.php">Manage Vehicles</a>
+pages/vehicles_manage.php">Manage Vehicles</a>
           </div>
         </li>
         <?php }?>
