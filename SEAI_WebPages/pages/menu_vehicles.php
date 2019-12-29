@@ -4,6 +4,47 @@ include_once('../config/init.php');
 if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
   die(header('Location: index.php'));
 } else {
+
+  // Get all service providers approved by an administrator
+  if(isset($_POST['service_providers_array'])){
+    $smarty->assign( 'service_providers_selected' ,  $_POST['service_providers_array'] );
+    $service_providers_selected = $_POST['service_providers_array'];
+  }
+  $service_providers = getAllApprovalServiceProviders();
+  $smarty->assign('service_providers', $service_providers);
+
+  // Get all distinct active specifications
+  if(isset($_POST['specifications_array'])){
+    $smarty->assign( 'specifications_selected' ,  $_POST['specifications_array'] );
+    $specifications_selected = $_POST['specifications_array'];
+  }
+  $specifications = getAllActiveDistinctSpecifications();
+  $smarty->assign('specifications', $specifications);
+
+  // Get all distinct types of communications
+  if(isset($_POST['communications_array'])){
+    $smarty->assign( 'communications_selected' ,  $_POST['communications_array'] );
+    $communications_selected = $_POST['communications_array'];
+  }
+  $communications = getAllCommunicationTypes();
+  $smarty->assign('communications', $communications);
+
+  // Get all distinct types of sensors
+  if(isset($_POST['sensors_array'])){
+    $smarty->assign( 'sensors_selected' ,  $_POST['sensors_array'] );
+    $sensors_selected = $_POST['sensors_array'];
+  }
+  $sensors = getAllActiveDistinctSensorTypes();
+  $smarty->assign('sensors', $sensors);
+
+  // Get all distinct resolution values
+  if(isset($_POST['resolutions_array'])){
+    $smarty->assign( 'resolutions_selected' ,  $_POST['resolutions_array'] );
+    $resolutions_selected = $_POST['resolutions_array'];
+  }
+  $resolutions = getAllActiveDistinctResolutionValues();
+  $smarty->assign('resolutions', $resolutions);
+
   $search_results = searchVehiclesWithFilters(
     TRUE,       // Vehicles Active: NULL (restriction not activated)
                 //                  FALSE (only show inactive vehicles)

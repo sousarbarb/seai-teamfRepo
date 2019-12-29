@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-26 01:05:36
+/* Smarty version 3.1.33, created on 2019-12-29 04:57:28
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_vehicles\menu_my_vehicles.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5e03f950f09c74_16609363',
+  'unifunc' => 'content_5e082428391882_44719075',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b1161ea42c9958aa3f842377f8af7e07f0669824' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_vehicles\\menu_my_vehicles.tpl',
-      1 => 1577318735,
+      1 => 1577591830,
       2 => 'file',
     ),
   ),
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5e03f950f09c74_16609363 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e082428391882_44719075 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -63,11 +63,11 @@ foreach ($_from as $_smarty_tpl->tpl_vars['result']->value) {
 </td>
           <td><?php echo $_smarty_tpl->tpl_vars['result']->value['vehicle_localization'];?>
 </td>
-          <?php if (($_smarty_tpl->tpl_vars['result']->value['vehicle_active']) == TRUE) {?><td>YES</td>
-          <?php } elseif (($_smarty_tpl->tpl_vars['result']->value['vehicle_active']) == FALSE) {?><td>NO</td>
+          <?php if (($_smarty_tpl->tpl_vars['result']->value['vehicle_active']) == TRUE) {?><td>Yes</td>
+          <?php } elseif (($_smarty_tpl->tpl_vars['result']->value['vehicle_active']) == FALSE) {?><td>No</td>
           <?php }?>
-          <?php if (($_smarty_tpl->tpl_vars['result']->value['vehicle_approval']) == TRUE) {?><td>YES</td>
-          <?php } elseif (($_smarty_tpl->tpl_vars['result']->value['vehicle_approval']) == FALSE) {?><td>NO</td>
+          <?php if (($_smarty_tpl->tpl_vars['result']->value['vehicle_approval']) == TRUE) {?><td>Yes</td>
+          <?php } elseif (($_smarty_tpl->tpl_vars['result']->value['vehicle_approval']) == FALSE) {?><td>No</td>
           <?php }?>
           <?php if (($_smarty_tpl->tpl_vars['result']->value['vehicle_public']) == TRUE) {?><td>Public</td>
           <?php } elseif (($_smarty_tpl->tpl_vars['result']->value['vehicle_public']) == FALSE) {?><td>Private</td>
@@ -88,31 +88,181 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 pages/menu_vehicles_add.php" class="button4 buttonsAcc" style="text-decoration:none;color:white;"> Add Vehicle </a>
         <br><br>
         <?php }?>
-        <label class="vehicle_filtro_lbl">Filter type 1</label><br>
-        <form method="get" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-actions/vehicles_filter_entity.php">
-          <input type="radio" name="vehicles_filter1" value="all" <?php if ((!(isset($_smarty_tpl->tpl_vars['form_values']->value)) || ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'all'))) {?>checked="checked"<?php }?>> All</input><br>
-          <input type="radio" name="vehicles_filter1" value="filter1" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter1'))) {?>checked="checked"<?php }?>> Filter1</input><br>
-          <input type="radio" name="vehicles_filter1" value="filter2" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter2'))) {?>checked="checked"<?php }?>> Filter2</input><br>
-          <input type="radio" name="vehicles_filter1" value="filter3" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter3'))) {?>checked="checked"<?php }?>> Filter3</input><br>
-          <input type="radio" name="vehicles_filter1" value="filter4" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter4'))) {?>checked="checked"<?php }?>> Filter4</input><br>
-          <input type="radio" name="vehicles_filter1" value="filter5" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter5'))) {?>checked="checked"<?php }?>> Filter5</input><br>
+
+        <form method="post" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+pages/menu_my_vehicles.php">
+
+        <label class="vehicle_filtro_lbl">Approval Status</label><br>
+          <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['approvals']->value, 'approval_status');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['approval_status']->value) {
+?>
+            <input type="checkbox"
+                    name="approvals_array[]"
+                    id="approvals_filter"
+                    value="<?php echo $_smarty_tpl->tpl_vars['approval_status']->value;?>
+"
+                    <?php if (!empty($_smarty_tpl->tpl_vars['approvals_selected']->value)) {?>
+                      <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['approvals_selected']->value, 'selected');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['selected']->value) {
+?>
+                        <?php if ($_smarty_tpl->tpl_vars['approval_status']->value == $_smarty_tpl->tpl_vars['selected']->value) {?>
+                          checked
+                        <?php }?>
+                      <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                    <?php }?>
+                    >
+            <?php echo $_smarty_tpl->tpl_vars['approval_status']->value;?>
+<br>
+          <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
         <br>
-        <label class="vehicle_filtro_lbl">Filter type 2</label><br>
-          <input type="radio" name="vehicles_filter2" value="all" <?php if ((!(isset($_smarty_tpl->tpl_vars['form_values']->value)) || ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'all'))) {?>checked="checked"<?php }?>> All</input><br>
-          <input type="radio" name="vehicles_filter2" value="filter1" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter1'))) {?>checked="checked"<?php }?>> Filter1</input><br>
-          <input type="radio" name="vehicles_filter2" value="filter2" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter2'))) {?>checked="checked"<?php }?>> Filter2</input><br>
-          <input type="radio" name="vehicles_filter2" value="filter3" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter3'))) {?>checked="checked"<?php }?>> Filter3</input><br>
-          <input type="radio" name="vehicles_filter2" value="filter4" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter4'))) {?>checked="checked"<?php }?>> Filter4</input><br>
-          <input type="radio" name="vehicles_filter2" value="filter5" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter5'))) {?>checked="checked"<?php }?>> Filter5</input><br>
+
+        <label class="vehicle_filtro_lbl">Specifications</label><br>
+          <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['specifications']->value, 'specification_type');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['specification_type']->value) {
+?>
+            <input  type="checkbox"
+                    name="specifications_array[]"
+                    id="specifications_filter"
+                    value="<?php echo $_smarty_tpl->tpl_vars['specifications_type']->value['specifications_type'];?>
+"
+                    <?php if (!empty($_smarty_tpl->tpl_vars['specifications_selected']->value)) {?>
+                      <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['specifications_selected']->value, 'selected');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['selected']->value) {
+?>
+                        <?php if ($_smarty_tpl->tpl_vars['specification_type']->value['specification_type'] == $_smarty_tpl->tpl_vars['selected']->value) {?>
+                          checked
+                        <?php }?>
+                      <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                    <?php }?>
+                    >
+            <?php echo $_smarty_tpl->tpl_vars['specification_type']->value['specification_type'];?>
+<br>
+          <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
         <br>
-        <label class="vehicle_filtro_lbl">Filter type 3</label><br>
-          <input type="radio" name="vehicles_filter3" value="all" <?php if ((!(isset($_smarty_tpl->tpl_vars['form_values']->value)) || ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'all'))) {?>checked="checked"<?php }?>> All</input><br>
-          <input type="radio" name="vehicles_filter3" value="filter1" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter1'))) {?>checked="checked"<?php }?>> Filter1</input><br>
-          <input type="radio" name="vehicles_filter3" value="filter2" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter2'))) {?>checked="checked"<?php }?>> Filter2</input><br>
-          <input type="radio" name="vehicles_filter3" value="filter3" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter3'))) {?>checked="checked"<?php }?>> Filter3</input><br>
-          <input type="radio" name="vehicles_filter3" value="filter4" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter4'))) {?>checked="checked"<?php }?>> Filter4</input><br>
-          <input type="radio" name="vehicles_filter3" value="filter5" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter5'))) {?>checked="checked"<?php }?>> Filter5</input><br>
+
+        <label class="vehicle_filtro_lbl">Communications</label><br>
+          <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['communications']->value, 'communication_type');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['communication_type']->value) {
+?>
+            <input  type="checkbox"
+                    name="communications_array[]"
+                    id="communications_filter"
+                    value="<?php echo $_smarty_tpl->tpl_vars['communication_type']->value['communication_type'];?>
+"
+                    <?php if (!empty($_smarty_tpl->tpl_vars['communications_selected']->value)) {?>
+                      <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['communications_selected']->value, 'selected');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['selected']->value) {
+?>
+                        <?php if ($_smarty_tpl->tpl_vars['communication_type']->value['communication_type'] == $_smarty_tpl->tpl_vars['selected']->value) {?>
+                          checked
+                        <?php }?>
+                      <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                    <?php }?>
+                    >
+            <?php echo $_smarty_tpl->tpl_vars['communication_type']->value['communication_type'];?>
+<br>
+          <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+        <br>
+
+        <label class="vehicle_filtro_lbl">Sensors</label><br>
+          <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['sensors']->value, 'sensor_type');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['sensor_type']->value) {
+?>
+            <input  type="checkbox"
+                    name="sensors_array[]"
+                    id="sensors_filter"
+                    value="<?php echo $_smarty_tpl->tpl_vars['sensor_type']->value['sensor_type'];?>
+"
+                    <?php if (!empty($_smarty_tpl->tpl_vars['sensors_selected']->value)) {?>
+                      <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['sensors_selected']->value, 'selected');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['selected']->value) {
+?>
+                        <?php if ($_smarty_tpl->tpl_vars['sensor_type']->value['sensor_type'] == $_smarty_tpl->tpl_vars['selected']->value) {?>
+                          checked
+                        <?php }?>
+                      <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                    <?php }?>
+                    >
+            <?php echo $_smarty_tpl->tpl_vars['sensor_type']->value['sensor_type'];?>
+<br>
+          <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+        <br>
+
+        <label class="vehicle_filtro_lbl">Resolutions</label><br>
+          <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['resolutions']->value, 'res_value');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['res_value']->value) {
+?>
+            <input  type="checkbox"
+                    name="resolutions_array[]"
+                    id="resolutions_filter"
+                    value="<?php echo $_smarty_tpl->tpl_vars['res_value']->value['value'];?>
+"
+                    <?php if (!empty($_smarty_tpl->tpl_vars['resolutions_selected']->value)) {?>
+                      <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['resolutions_selected']->value, 'selected');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['selected']->value) {
+?>
+                        <?php if ($_smarty_tpl->tpl_vars['res_value']->value['value'] == $_smarty_tpl->tpl_vars['selected']->value) {?>
+                          checked
+                        <?php }?>
+                      <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                    <?php }?>
+                    >
+            <?php echo $_smarty_tpl->tpl_vars['res_value']->value['value'];?>
+<br>
+          <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+        <br>
+
+        
           <input type="submit" name="vehicles_submit" style="display:none" value=""></input>
         </form>
       </div>

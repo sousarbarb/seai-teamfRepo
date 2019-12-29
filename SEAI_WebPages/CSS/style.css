@@ -286,8 +286,7 @@ footer {
 
 .footer-short {
   bottom: 0px;
-  width: 85%;
-  float: right;
+  margin-left: 14rem;
   border-style: solid;
   border-color: white;
   border-width: thin;
@@ -580,7 +579,7 @@ opacity: 0.8;
   width:100%;
   height:100%;
   display:grid;
-  grid-template-columns: 75% auto;
+  grid-template-columns: auto auto;
   grid-template-rows: auto auto auto;
   z-index: -100;
   grid-gap: 50px;
@@ -596,7 +595,7 @@ opacity: 0.8;
   float: left;
 
   width: 100%;
-  margin: 1em auto;
+  margin: 0 auto;
   table-layout: auto;
   border-collapse: collapse;
   Font-size:20px;
@@ -607,6 +606,8 @@ opacity: 0.8;
   border:solid  0.1em;
   border-color:#ffffff;
   color: #ffffff;
+  padding: 0.5em;
+  font-size: 24px;
 }
 
 .vehicles_table td {
@@ -614,6 +615,7 @@ opacity: 0.8;
   border:solid  0.1em;
   border-color:#ffffff;
   color: #ffffff;
+  padding: 0.2em;
 }
 
 /*
@@ -855,7 +857,7 @@ opacity: 0.8;
  background-color: #31ACF7;
  color: white;
  font-size: 20px;
- margin-left:13em;
+ margin-left:11em;
  margin-top:1em;
 }
 
