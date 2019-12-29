@@ -1,5 +1,150 @@
 <?php
   /****************************************************************************************************
+   ****** SEARCHDATAWITHFILTER
+   ****************************************************************************************************
+   * 
+   * 
+   * INPUT ARGUMENTS:
+   * 
+   * OUTPUT ARGUMENTS:
+   * -1: the PHP structure representing the area is not defined;
+   * -2: minimum number of vertice to define a polygon must be greater or equal to three;
+   ****************************************************************************************************
+   ****** PROCESSPOLYGONGETSTRING
+   ****************************************************************************************************/
+  function searchDataWithFilters($area, $sensors_selected, $resolutions_selected, $filetypes_selected){
+    // Global variable: connection to the database
+    global $conn;
+
+    // --------------------------------------------------------------------------------
+    // PROCESS AREA
+    if($area == NULL)
+      return -1;
+    if($area['polygonsVertLatLng']['numerodevertices'] < 3)
+      return -2;
+    $polygon = processPolygonGetString($area);
+
+    // --------------------------------------------------------------------------------
+    // PROCESSING FILTERS
+    // Inital query
+    $sql_prepare = [];
+    $sql ="
+      SELECT
+        service_provider.entity_name  AS provider_name      ,
+        service_provider.user_id      AS provider_username  ,
+        mission.id                    AS mission_id         ,
+        mission.path_pdf              AS mission_details_pdf,
+        request.id                    AS request_id         ,
+        request.sensor_type           AS request_sensor_type,
+        request.resolution_type       AS request_res_value  ,
+        request.comments              AS request_comments   ,
+        data.path                     AS data_filepath      ,
+        data.price                    AS data_price         ,
+        data.date                     AS data_date          ,
+        data.file_type                AS data_filetype      ,
+        ST_AsText(area.polygon)       AS area_polygon       ,
+        ST_Intersects(
+          ?            :: geography,
+          area.polygon :: geography
+        )                             AS area_boolintersects,
+        ST_Area(ST_Intersection( ?::geography , area.polygon::geography )::geography, true)
+        /
+        ST_Area( ?::geography,true )  AS area_ratio         ,
+        data.price
+        / ST_Area( area.polygon::geography, true )
+                                      AS price_area_ratio
+      FROM  mission
+      INNER JOIN service_provider
+        ON  service_provider.id = mission.provider_id
+      INNER JOIN request_mission
+        ON  request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON  request.id = request_mission.request_id
+      INNER JOIN area
+        ON  area.id = request.area_id
+      INNER JOIN data
+        ON  data.id = area.data_id
+      WHERE
+        mission.status          = 'Finish'  AND
+        request.restricted      = 'FALSE'   AND
+        request.sensor_type     IS NOT NULL AND
+        request.resolution_type IS NOT NULL AND
+        area.data_id            IS NOT NULL AND
+        ST_Intersects(
+          ?            :: geography,
+          area.polygon :: geography
+        )                        = 'TRUE'   AND
+    ";
+    array_push( $sql_prepare , $polygon );
+    array_push( $sql_prepare , $polygon );
+    array_push( $sql_prepare , $polygon );
+    array_push( $sql_prepare , $polygon );
+
+    // SETTING UP FILTERS
+    // Sensor Type
+    if(!empty($sensors_selected)){
+      $sql .= " AND (";
+      foreach($sensors_selected as $selected){
+        $select_stripTags = strip_tags( $selected );
+        $sql .= " request.sensor_type = ? OR ";
+        array_push( $sql_prepare , $select_stripTags );
+      }
+      $sql .= " 'FALSE' ) ";
+    }
+    // Resolution Value
+    if(!empty($resolutions_selected)){
+      $sql .= " AND (";
+      foreach($resolutions_selected as $selected){
+        $select_stripTags = strip_tags( $selected );
+        $sql .= " request.resolution_type = ? OR ";
+        array_push( $sql_prepare , $select_stripTags );
+      }
+      $sql .= " 'FALSE' ) ";
+    }
+    // File Type
+    if(!empty($filetypes_selected)){
+      $sql .= " AND (";
+      foreach($filetypes_selected as $selected){
+        $select_stripTags = strip_tags( $selected );
+        $sql .= " data.file_type = ? OR ";
+        array_push( $sql_prepare , $select_stripTags );
+      }
+      $sql .= " 'FALSE' ) ";
+    }
+
+    // --------------------------------------------------------------------------------
+    // EXECUTING QUERY
+    $stm = $conn->prepare($sql);
+    $stm->execute($sql_prepare);
+
+    // Return results
+    return $stm->fetchAll();
+  }
+  function processPolygonGetString($area){
+    // Initial string necessary for query
+    $polygon = "'POLYGON( ( ";
+
+    // Add to polygon the points vertices defined by the user
+    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
+    $polygon .= "   ";
+    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
+
+    for($i = 1 ; $i < $area['polygonsVertLatLng']['numerodevertices'] ; $i++){
+      $polygon .= " , ";
+      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['long'];
+      $polygon .= "   ";
+      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['lat'];
+    }
+
+    // Clossing string
+    $polygon .= ") ) '";
+
+    // Returns string
+    return $polygon;
+  }
+
+
+  /****************************************************************************************************
    ****** NEWREQUESTOLDDATA
    ****************************************************************************************************
    * This function creates a new request to acquire data already present in the platform. It should 
@@ -164,6 +309,8 @@
    * -11: inserting the new request was not possible;
    * -12: there aren't any service providers capable of satisfying the request.
    ****************************************************************************************************
+   ****** PROCESSAREAGETSTRING
+   ****************************************************************************************************
    ****** SELECTPOSSIBLESERVICEPROVIDERSTOAPPLYFORREQUEST
    ****************************************************************************************************
    * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -251,20 +398,7 @@
     if($area['polygonsVertLatLng']['numerodevertices'] < 3)
       return -9;
     
-    $polygon = "ST_GeographyFromText( 'POLYGON( ( ";
-
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
-    $polygon .= "   ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
-
-    for($i = 1 ; $i < $area['polygonsVertLatLng']['numerodevertices'] ; $i++){
-      $polygon .= " , ";
-      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['long'];
-      $polygon .= "   ";
-      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['lat'];
-    }
-
-    $polygon .= ") ) ' )";
+    $polygon = processAreaGetString($area);
 
 
     // ----------------------------------------
@@ -373,6 +507,28 @@
 
     // Returns 0 in case of success
     return 0;
+  }  
+  function processAreaGetString($area){
+    // Initial string necessary for query
+    $polygon = "ST_GeographyFromText( 'POLYGON( ( ";
+
+    // Add to polygon the points vertices defined by the user
+    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
+    $polygon .= "   ";
+    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
+
+    for($i = 1 ; $i < $area['polygonsVertLatLng']['numerodevertices'] ; $i++){
+      $polygon .= " , ";
+      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['long'];
+      $polygon .= "   ";
+      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['lat'];
+    }
+
+    // Clossing string
+    $polygon .= ") ) ' )";
+
+    // Returns string
+    return $polygon;
   }
   function selectPossibleServiceProvidersToApplyForRequest($request_id, $area_id, $sensor_type, $resolution_value){
     // Global variable: connection to the database
@@ -1515,6 +1671,4 @@
     // Returns 0 in case of success
     return 0;
   }
-
-
 ?>
