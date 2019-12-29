@@ -828,7 +828,10 @@
    * -14: the resolution doesn't math with sensor specified;
    * -15: the resolution selected isn't active;
    * -16: inserting the new mission was not possible;
-   * -17: relating the mission with the request was not possible.
+   * -17: relating the mission with the request was not possible;
+   * -20: vehicle doesn't satisfies the depth requirements to execute the mission;
+   * -21: service provider can't guarantee that mission will be concluded on time.
+   *      (estimate finish time > finish time specified by service provider)
    ****************************************************************************************************
    ***** NOTIFYSERVICECLIENTNEWPROPOSALAVAILABLE
    ****************************************************************************************************/
@@ -966,14 +969,37 @@
     
     // Its necessary to check if the vehicle still has the capability of executing the request
     // (for now, sensor_type and resolution_value has been checked )
-    // 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   MISSING   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //
+    $results   = getMinMaxDepthAreaSelected($area_id);
+    $depth_min = $results['depth_min'];
+    $depth_max = $results['depth_max'];
+    $stm = $conn->prepare("
+      SELECT
+        vehicle.id                       AS vehicle_id,
+        vehicle.vehicle_name             AS vehicle_name,
+        specification.specification_type AS spec_type   ,
+        specification.value_min          AS value_min   ,
+        specification.value_max          AS value_max
+      FROM vehicle
+      INNER JOIN specification
+        ON specification.vehicle_id = vehicle.id
+      WHERE
+        specification.specification_type = 'depth' AND
+        vehicle.id                       = ?       AND
+        specification.value_min          < ?       AND
+        specification.value_max          > ?
+    ");
+    $stm->execute(array($vehicle_id, $depth_min, $depth_max));
+    $results = $stm->fetch();
+    if( $results == FALSE )
+      return -20;
     
-    // Also missing it is the estimating cost algorithm to evaluate if service provider promises are valid
-    // 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   MISSING   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //
+    // Estimates costs and evaluates if the estimated finished time is valid
+    if($est_finished_time != NULL){
+      if(verifyServiceProviderEstimatedFinishTime($area_id,
+                                                  $est_starting_time, $est_finished_time,
+                                                  $resolution_velocity, $resolution_swath) == FALSE)
+        return -21;
+    }
 
     // ----------------------------------------
     // ----------------------------------------
@@ -997,8 +1023,8 @@
     ");
     try{
       $stm->execute(array('Proposal',
-                          $est_starting_time==NULL? NULL:"TO_TIMESTAMP('$start_day $start_month $start_year 20' , 'DD MM YYYY HH24')",
-                          $est_finished_time==NULL? NULL:"TO_TIMESTAMP('$finish_day $finish_month $finish_year 20' , 'DD MM YYYY HH24')",
+                          $est_starting_time==NULL? NULL:getDateTimeToTimestampString($est_starting_time),
+                          $est_finished_time==NULL? NULL:getDateTimeToTimestampString($est_finished_time),
                           $price,
                           $provider_id,
                           $resolution_id,
@@ -1070,6 +1096,59 @@
 
     // Success creating the new notification
     return 0;
+  }
+  function verifyServiceProviderEstimatedFinishTime($area_id,
+                                                    $est_starting_time, $est_finished_time,
+                                                    $resolution_velocity, $resolution_swath){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get area value
+    $stm = $conn->prepare("
+      SELECT  ST_Area(polygon::geography, true) AS area_metersquare
+      FROM    area
+      WHERE   id = ?
+    ");
+    $stm->execute(array($area_id));
+    $results = $stm->fetch();
+    $area = floatval($results['area_metersquare']);
+    $swath = floatval($resolution_swath);
+    $velocity = floatval($resolution_velocity);
+
+    // ALGORITHM
+    $total_distance = ceil( sqrt( $area ) / $swath) * sqrt( $area )
+                    + (ceil(sqrt( $area ) / $swath) - 1) * $swath;
+    $estimated_duration = ( $total_distance / $velocity ) * ( 1/3600 );
+    
+    // Verifies if it's okay
+    if($est_starting_time != NULL){
+      $stm = $conn->prepare("
+        SELECT
+          ?
+          >
+          ? + INTERVAL '1 hour' * DOUBLE PRECISION ?
+          AS validation
+      ");
+      $stm->execute(array(getDateTimeToTimestampString($est_finished_time),
+                          getDateTimeToTimestampString($est_starting_time),
+                          strval($estimated_duration)
+      ));
+    }
+    else{
+      $stm = $conn->prepare("
+        SELECT
+          ?
+          >
+          CURRENT_TIMESTAMP(0) + INTERVAL '1 hour' * DOUBLE PRECISION ?
+          AS validation
+      ");
+      $stm->execute(array(getDateTimeToTimestampString($est_finished_time)
+                          strval($estimated_duration)
+      ));
+    }
+
+    $results = $stm->fetch();
+    return ($results['validation'] == TRUE );
   }
 
   /****************************************************************************************************
