@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-11 04:31:04
+/* Smarty version 3.1.33, created on 2019-12-29 18:29:11
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\menu_vehicles\menu_vehicles_add.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5df062f8729427_83364517',
+  'unifunc' => 'content_5e08e267f2e103_28437518',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '914e70e83c34650f8018f0d2fa4e27e59435bd81' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\menu_vehicles\\menu_vehicles_add.tpl',
-      1 => 1576035063,
+      1 => 1577640545,
       2 => 'file',
     ),
   ),
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5df062f8729427_83364517 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e08e267f2e103_28437518 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -41,34 +41,83 @@ $_smarty_tpl->_subTemplateRender('file:../common/logout.tpl', $_smarty_tpl->cach
   <h2 class="display-4 text-white">ADD VEHICLE</h2>
   <p class="lead text-white mb-0">Add a vehicle from my institution</p>
   <div class="separator"></div>
+  <?php if ((isset($_smarty_tpl->tpl_vars['success_messages']->value))) {?>
+    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['success_messages']->value, 'success');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['success']->value) {
+?>
+      <div class="msg_success"><?php echo $_smarty_tpl->tpl_vars['success']->value;?>
+ <a class="msg_close" href="#"  style="text-decoration:none;">&#215;</a></div>
+    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+  <?php }?>
+  <?php if ((isset($_smarty_tpl->tpl_vars['error_messages']->value))) {?>
+    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['error_messages']->value, 'error');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['error']->value) {
+?>
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a><?php echo $_smarty_tpl->tpl_vars['error']->value;?>
+</div>
+    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+  <?php }?>
   <div class="text-white">
-    <form method="get" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+    <form class="vehicles_add" method="post" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 actions/vehicles_add.php">
-      <label class="vehicle_filtro_lbl">Name</label><br>
-      <input type="text" name="vehicles_add_name" placeholder="Enter the vehicle name"></input><br><br>
-      <label class="vehicle_filtro_lbl">Filter type 1</label><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter1" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter1'))) {?>checked="checked"<?php }?>> Filter1</input><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter2" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter2'))) {?>checked="checked"<?php }?>> Filter2</input><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter3" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter3'))) {?>checked="checked"<?php }?>> Filter3</input><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter4" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter4'))) {?>checked="checked"<?php }?>> Filter4</input><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter5" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter1'] == 'filter5'))) {?>checked="checked"<?php }?>> Filter5</input><br>
-    <br>
-    <label class="vehicle_filtro_lbl">Filter type 2</label><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter1" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter1'))) {?>checked="checked"<?php }?>> Filter1</input><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter2" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter2'))) {?>checked="checked"<?php }?>> Filter2</input><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter3" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter3'))) {?>checked="checked"<?php }?>> Filter3</input><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter4" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter4'))) {?>checked="checked"<?php }?>> Filter4</input><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter5" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter2'] == 'filter5'))) {?>checked="checked"<?php }?>> Filter5</input><br>
-    <br>
-    <label class="vehicle_filtro_lbl">Filter type 3</label><br>
-      <input type="radio" name="vehicles_add_spec3" value="filter1" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter1'))) {?>checked="checked"<?php }?>> Filter1</input><br>
-      <input type="radio" name="vehicles_add_spec3" value="filter2" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter2'))) {?>checked="checked"<?php }?>> Filter2</input><br>
-      <input type="radio" name="vehicles_add_spec3" value="filter3" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter3'))) {?>checked="checked"<?php }?>> Filter3</input><br>
-      <input type="radio" name="vehicles_add_spec3" value="filter4" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter4'))) {?>checked="checked"<?php }?>> Filter4</input><br>
-      <input type="radio" name="vehicles_add_spec3" value="filter5" <?php if ((isset($_smarty_tpl->tpl_vars['form_values']->value) && ($_smarty_tpl->tpl_vars['form_values']->value['vehicles_filter3'] == 'filter5'))) {?>checked="checked"<?php }?>> Filter5</input><br>
+
+      <input  type="hidden"
+              name="vehicle_service_username"
+              value="<?php echo $_smarty_tpl->tpl_vars['login']->value;?>
+">
+
+      <label class="vehicles_add_lbl">Vehicle Name</label>
+      <input  type="text"
+              name="vehicle_name"
+              placeholder="type here..."
+      <?php if (isset($_smarty_tpl->tpl_vars['FORM_VALUES']->value['vehicle_name'])) {?>
+              value="<?php echo $_smarty_tpl->tpl_vars['FORM_VALUES']->value['vehicle_name'];?>
+"
+      <?php }?>
+      >
+      <br>
+
+      <label class="vehicles_add_lbl">Localization</label>
+      <input  type="text"
+              name="vehicle_localization"
+              placeholder="41.252314 50.102957 (lon. lat.)..."
+      <?php if (isset($_smarty_tpl->tpl_vars['FORM_VALUES']->value['vehicle_localization'])) {?>
+              value="<?php echo $_smarty_tpl->tpl_vars['FORM_VALUES']->value['vehicle_localization'];?>
+"
+      <?php }?>
+      >
+      <br>
+
+      <label class="vehicles_add_lbl" style="vertical-align: top;padding-top:5px;">Comments</label>
+      <textarea type="text"
+                name="vehicle_comments"
+                placeholder="type here..."><?php if (isset($_smarty_tpl->tpl_vars['FORM_VALUES']->value['vehicle_comments'])) {
+echo $_smarty_tpl->tpl_vars['FORM_VALUES']->value['vehicle_comments'];
+}?></textarea>
+      <br>
+
+      <label class="vehicles_add_lbl">Public</label>
+      <input type="radio" name="vehicle_public" value="y"> Yes
+      <input type="radio" name="vehicle_public" value="n"> No
+      <br>
+      <br>
       <input type="submit" name="vehicles_add_submit" class="button4 submitAsBtn" value="Add Vehicle" style="width:auto;"></input>
+      <a href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+pages/menu_my_vehicles.php" class="button4 buttonsAcc" style="text-decoration:none;color:white"> My Vehicles List </a>
+
     </form>
-  </div>
+
+      </div>
 
 </div>
 <?php }?>

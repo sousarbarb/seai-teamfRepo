@@ -13,32 +13,70 @@
   <h2 class="display-4 text-white">ADD VEHICLE</h2>
   <p class="lead text-white mb-0">Add a vehicle from my institution</p>
   <div class="separator"></div>
+  {if (isset($success_messages))}
+    {foreach $success_messages as $success}
+      <div class="msg_success">{$success} <a class="msg_close" href="#"  style="text-decoration:none;">&#215;</a></div>
+    {/foreach}
+  {/if}
+  {if (isset($error_messages))}
+    {foreach $error_messages as $error}
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+    {/foreach}
+  {/if}
   <div class="text-white">
-    <form method="get" action="{$BASE_URL}actions/vehicles_add.php">
-      <label class="vehicle_filtro_lbl">Name</label><br>
+    <form class="vehicles_add" method="post" action="{$BASE_URL}actions/vehicles_add.php">
+
+      <input  type="hidden"
+              name="vehicle_service_username"
+              value="{$login}">
+
+      <label class="vehicles_add_lbl">Vehicle Name</label>
+      <input  type="text"
+              name="vehicle_name"
+              placeholder="type here..."
+      {if isset($FORM_VALUES['vehicle_name'])}
+              value="{$FORM_VALUES['vehicle_name']}"
+      {/if}
+      >
+      <br>
+
+      <label class="vehicles_add_lbl">Localization</label>
+      <input  type="text"
+              name="vehicle_localization"
+              placeholder="41.252314 50.102957 (lon. lat.)..."
+      {if isset($FORM_VALUES['vehicle_localization'])}
+              value="{$FORM_VALUES['vehicle_localization']}"
+      {/if}
+      >
+      <br>
+
+      <label class="vehicles_add_lbl" style="vertical-align: top;padding-top:5px;">Comments</label>
+      <textarea type="text"
+                name="vehicle_comments"
+                placeholder="type here...">{if isset($FORM_VALUES['vehicle_comments'])}{$FORM_VALUES['vehicle_comments']}{/if}</textarea>
+      <br>
+
+      <label class="vehicles_add_lbl">Public</label>
+      <input type="radio" name="vehicle_public" value="y"> Yes
+      <input type="radio" name="vehicle_public" value="n"> No
+      <br>
+      <br>
+      <input type="submit" name="vehicles_add_submit" class="button4 submitAsBtn" value="Add Vehicle" style="width:auto;"></input>
+      <a href="{$BASE_URL}pages/menu_my_vehicles.php" class="button4 buttonsAcc" style="text-decoration:none;color:white"> My Vehicles List </a>
+
+    </form>
+
+    {* old
+      <label class="vehicles_add_lbl">Name</label><br>
       <input type="text" name="vehicles_add_name" placeholder="Enter the vehicle name"></input><br><br>
-      <label class="vehicle_filtro_lbl">Filter type 1</label><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter1'))}checked="checked"{/if}> Filter1</input><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter2'))}checked="checked"{/if}> Filter2</input><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter3'))}checked="checked"{/if}> Filter3</input><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter4'))}checked="checked"{/if}> Filter4</input><br>
-      <input type="radio" name="vehicles_add_spec1" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter5'))}checked="checked"{/if}> Filter5</input><br>
     <br>
-    <label class="vehicle_filtro_lbl">Filter type 2</label><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter1'))}checked="checked"{/if}> Filter1</input><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter2'))}checked="checked"{/if}> Filter2</input><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter3'))}checked="checked"{/if}> Filter3</input><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter4'))}checked="checked"{/if}> Filter4</input><br>
-      <input type="radio" name="vehicles_add_spec2" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter5'))}checked="checked"{/if}> Filter5</input><br>
-    <br>
-    <label class="vehicle_filtro_lbl">Filter type 3</label><br>
+    <label class="vehicles_add_lbl">Filter type 3</label><br>
       <input type="radio" name="vehicles_add_spec3" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter1'))}checked="checked"{/if}> Filter1</input><br>
       <input type="radio" name="vehicles_add_spec3" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter2'))}checked="checked"{/if}> Filter2</input><br>
       <input type="radio" name="vehicles_add_spec3" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter3'))}checked="checked"{/if}> Filter3</input><br>
       <input type="radio" name="vehicles_add_spec3" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter4'))}checked="checked"{/if}> Filter4</input><br>
       <input type="radio" name="vehicles_add_spec3" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter5'))}checked="checked"{/if}> Filter5</input><br>
-      <input type="submit" name="vehicles_add_submit" class="button4 submitAsBtn" value="Add Vehicle" style="width:auto;"></input>
-    </form>
+    *}
   </div>
 
 </div>
