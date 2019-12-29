@@ -194,6 +194,12 @@
       $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['lat'];
     }
 
+    // Closing polygon
+    $polygon .= " , ";
+    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
+    $polygon .= "   ";
+    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
+
     // Clossing string
     $polygon .= ") ) '";
 
@@ -379,7 +385,8 @@
    *  -9: the area polygon must be defined by at least three vertices;
    * -10: inserting the new area was not possible;
    * -11: inserting the new request was not possible;
-   * -12: there aren't any service providers capable of satisfying the request.
+   * -12: there aren't any service providers capable of satisfying the request;
+   * -20: area doesn't obey the land or sea restriction;
    ****************************************************************************************************
    ****** PROCESSAREAGETSTRING
    ****************************************************************************************************
@@ -479,9 +486,8 @@
     // ----------------------------------------
     // ----------------------------------------
     // Check if area belongs to land or water.
-    // 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   MISSING   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //
+    if( verifyLandOrSeaRestriction($area) == FALSE )
+      return -20;
 
     // ----------------------------------------
     // ----------------------------------------
@@ -550,9 +556,6 @@
     // ----------------------------------------
     // ----------------------------------------
     // Checks if service provider is present in table PROVIDER_REQUEST relative to the request in question
-    // 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   INCOMPLETE   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //
     $results = selectPossibleServiceProvidersToApplyForRequest($request_id, $area_id, $sensor_type, $resolution_value);
     if( $results < 0 ){
       // Eliminates the area already created
@@ -572,8 +575,6 @@
       // Returns errors
       return $results - 11;
     }
-
-
     // ----------------------------------------
     // ----------------------------------------
 
@@ -595,6 +596,12 @@
       $polygon .= "   ";
       $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['lat'];
     }
+
+    // Closing polygon
+    $polygon .= " , ";
+    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
+    $polygon .= "   ";
+    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
 
     // Clossing string
     $polygon .= ") ) ' )";
@@ -676,10 +683,80 @@
   function getMinMaxDepthAreaSelected($area_id){
     // Global variable: connection to the database
     global $conn;
+    
+    // Search intersections with depth_grid polygons
+    $stm = $conn->prepare("
+      WITH grid_intersections AS (
+        SELECT
+          ST_Intersects(
+            depth_grid.grid_item :: geography,
+            area.polygon         :: geography
+          )                AS intersection_areas,
+          depth_grid.depth AS depth_area
+        FROM
+          area, depth_grid
+        WHERE
+          area.id = ?              AND
+          ST_Intersects(
+            ?         :: geography,
+            land_poly :: geography
+          )                        = 'TRUE'
+      )
+      SELECT 
+        MIN(depth_area) AS depth_min, 
+        MAX(depth_area) AS depth_max
+      FROM  grid_intersections
+    ");
+    $stm->execute(array($area_id));
 
-    // 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   MISSING   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //
+    // Return results
+    return $stm->fetch();
+  }
+  function verifyLandOrSeaRestriction($area){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Setting up the polygon
+    $polygon = processPolygonGetString($area);
+
+    // Get number of land polygons
+    $stm = $conn->prepare("
+      SELECT  COUNT(land_poly) AS land_poly_count
+      FROM    land
+    ");
+    $stm->execute();
+    $result   = $stm->fetch();
+    $LANDPOLY = $result['land_poly_count'];
+    if( $LANDPOLY == 0 )
+      return TRUE;                // Without any extra information, we assume area is OK
+
+    // Get number of TRUE and FALSE intersections with land
+    $sql_prepare = [];
+    $stm = $conn->prepare("
+      SELECT
+        COUNT(
+        ST_Intersects(
+          ?         :: geography,
+          land_poly :: geography
+        ))                        AS true_count
+      FROM land
+      WHERE
+        ST_Intersects(
+          ?         :: geography,
+          land_poly :: geography
+        )                         = 'TRUE'
+    ");
+    array_push( $sql_prepare , $polygon );
+    array_push( $sql_prepare , $polygon );
+    $stm->execute($sql_prepare);
+    $result        = $stm->fetch();
+    $TRUEINTERSECT = $result['true_count'];
+
+    // Returns TRUE OR FALSE
+    if( $TRUEINTERSECT == 0 || $TRUEINTERSECT == $LANDPOLY )
+      return TRUE;                // Area is either in sea or in land
+    else
+      return FALSE;               // Area is between land and sea
   }
   function notifyProviderNewPossibleRequestToApply($provider_username, $request_id){
     // Global variable: connection to the database
