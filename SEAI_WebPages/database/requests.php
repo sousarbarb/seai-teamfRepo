@@ -2,9 +2,19 @@
   /****************************************************************************************************
    ****** SEARCHDATAWITHFILTER
    ****************************************************************************************************
-   * 
+   * Function that explores all data present in database and retrieves which ones intersects with 
+   * area selected by the service client. Also, the querie takes into account the restricted property 
+   * that, when is set TRUE, the respective data can't show.
    * 
    * INPUT ARGUMENTS:
+   * area                : PHP structure containin all vertices that defines the area selected by a 
+   *                       service client;
+   * sensors_selected    : array containing the sensors types selected (see how its done
+   *                       in git/database/test-vehicles);
+   * resolutions_selected: array containing the resolution values selected (see how its done 
+   *                       in git/database/test-vehicles);
+   * filetypes_selected  : array containing the file types selected (see how its done 
+   *                       in git/database/test-vehicles).
    * 
    * OUTPUT ARGUMENTS:
    * -1: the PHP structure representing the area is not defined;
@@ -141,6 +151,20 @@
 
     // Returns string
     return $polygon;
+  }
+  function getDataFilterFileType(){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all distinct file types
+    $stm = $conn->prepare("
+      SELECT DISTINCT file_type
+      FROM            data
+      ORDER BY file_type ASC
+    ");
+
+    // Return all distinct file types
+    return $stm->fetchAll();
   }
 
 
