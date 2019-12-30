@@ -1,6 +1,6 @@
 <!--                             FOOTER                                  -->
 
-<footer>
+<div class="footer-initial">
   <div class="rodapes">
     <p></p>
     <p>Universidade do Porto - Faculdade de Engenharia<br>
@@ -16,26 +16,12 @@
   </div>
   <nav id="rodape">
     <ul>
-      <li><div class="input-div">
-        <img src = "{$BASE_URL}images/logo/lsts.png" width=70px height=70px class = "info" >
-    <div class="popup-box">Hello! i am a small popup</div>
-</div></li>
-
-      <!--<li><img src = "{$BASE_URL}images/logo/feup.png" width=150px height=50px></li>-->
-      <!--<li><img src = "{$BASE_URL}images/logo/lsts.png" widht=300px height=100px></li>-->
-      
+      <li><img src = "{$BASE_URL}images/logo/feup.png" width=150px height=50px></li>
+      <li><img src = "{$BASE_URL}images/logo/lsts.png" widht=50px height=50px></li>
 
     </ul>
   </nav>
 
 </footer>
-
-<script>
-$(".info").on('click', function() {
-
-  $(".popup-box").toggle();
-})
-</script>
-
 </body>
 </html>
