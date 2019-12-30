@@ -1,6 +1,6 @@
 <?php
 
-  function getAllMissionsProposal( $request_id )
+  function getAllMissionsProposal( $request_id ){
     global $conn;
 
     // Get all areas relative to data already present in database
@@ -56,7 +56,6 @@
 
 
 
-  }
   /****************************************************************************************************
    ****** GETALLDATASTOREDAREAS
    ****************************************************************************************************
