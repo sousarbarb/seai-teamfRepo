@@ -867,4 +867,39 @@
     else
       return NULL;
   }
+  
+function verifyEmailExistance($email){
+  global $conn;
+    // Validation of service client credentials
+    // 1: check if there is already an e-mail ou username registed in the platform
+    $stm = $conn->prepare("
+      SELECT *
+      FROM users
+      WHERE e_mail = ?
+    ");
+    $stm->execute(array($email));
+    $results = $stm->fetch();
+    if( $results != FALSE )
+        return 1;
+      else
+        return -1;
+}
+
+function changePassword ( $mail, $newPass ) {
+    // Global variable: connection to the database
+    global $conn;
+  
+    // Update pass (assuming that the mail is valid!)
+    $stm = $conn->prepare("
+      UPDATE users
+      SET    password = ?
+      WHERE  e_mail = ?"
+    );
+    
+    $stm->execute( array( sha1( $newPass ), $mail ) );
+ 
+    // Return the number of affected rows in this query (!! it works !!)
+      // Sucess 1  
+    return $stm->rowCount();
+  }
 ?>
