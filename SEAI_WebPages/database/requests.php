@@ -239,24 +239,24 @@
   function processPolygonGetString($area){
     // Initial string necessary for query
     $polygon = "'POLYGON( ( ";
-
+    $n_poly =$area['numberPolygons']
     // Add to polygon the points vertices defined by the user
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
     $polygon .= "   ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
-    for($i = 1 ; $i < $area['polygonsVertLatLng']['numerodevertices'] ; $i++){
+    for($i = 1 ; $i < $area['polygonsVertLatLng'][$n_poly-1]['numerodevertices'] ; $i++){
       $polygon .= " , ";
-      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['long'];
+      $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['long'];
       $polygon .= "   ";
-      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['lat'];
+      $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['lat'];
     }
 
     // Closing polygon
     $polygon .= " , ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
     $polygon .= "   ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
     // Clossing string
     $polygon .= ") ) '";
