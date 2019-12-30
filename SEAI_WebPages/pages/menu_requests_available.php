@@ -5,12 +5,11 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
   die(header('Location: index.php'));
 } else {
   $requests = getAllRequests( $smarty->getTemplateVars('user_id') );
-  if (requests==-1){
+  if ($requests==false){
   	$_SESSION['error_messages'][] = 'Request not found';
-	die(header("Location:  $BASE_URL" . 'pages/menu_requests_available.php'));
   }
 
   $smarty->assign('menu', '4');
-  $smarty->display('requests/menu_requests_available.tpl');
+  $smarty->display('menu_requests_waiting/menu_requests_available.tpl');
 }
 ?>

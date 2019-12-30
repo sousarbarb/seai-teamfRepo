@@ -11,9 +11,9 @@
         mission.est_starting_time     AS est_starting_time  ,
         mission.est_finished_time     AS est_finished_time  ,
         mission.price                 AS price ,
-        mission.path                  AS pdf
+        mission.path_pdf              AS pdf
 
-      FROM request, service_provider, provider_request, request_mission
+      FROM mission, request, service_provider, provider_request, request_mission
 
        WHERE (
         mission.provider_id = service_provider.id  AND
@@ -21,7 +21,7 @@
         request.id = request_mission.request_id    AND
         request.id = ?)
        ");
-    $stm->execute(array($id));
+    $stm->execute(array($request_id));
 
     // Return results
     return $stm->fetchAll();
@@ -39,12 +39,13 @@
         request.sensor_type           AS request_sensor_type,
         request.resolution_type       AS request_res_value  ,
         request.comments              AS request_comments   ,
-        service_client.name           AS client_name,
-        area.polygon                  AS polygon, 
+        service_client.client_name    AS client_name,
+        area.polygon                  AS polygon
+
       FROM request, service_client, area, service_provider, provider_request
       WHERE (
-        request.request_id = provider_request.request_id  AND
-        service_provider.service_provider_id = ?          AND
+        request.id = provider_request.request_id  AND
+        service_provider.id = ?          AND
         request.area_id = area.id                         AND
         request.client_id = service_client.id)
        ");
