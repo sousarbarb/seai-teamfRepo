@@ -49,6 +49,6 @@
 
   </div>
 
-{include file='../common/slideshow.tpl'}
+{include file='../inicial/slideshow.tpl'}
 {include file='../common/footer.tpl'}
 {*include file='../common/footer-short.tpl'*}

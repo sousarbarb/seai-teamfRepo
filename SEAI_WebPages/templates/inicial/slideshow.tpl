@@ -10,22 +10,22 @@
       <div class="carousel-item active">
         <img src="{$BASE_URL}images/slideshow/auv2.jpg" class="d-block w-100" >
         <div class="carousel-caption d-none d-md-block">
-          <!--<h5>First slide label</h5>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>-->
+          <h5>First slide label</h5>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </div>
       </div>
       <div class="carousel-item">
         <img src="{$BASE_URL}images/slideshow/auv3.jpg" class="d-block w-100">
         <div class="carousel-caption d-none d-md-block">
-          <!--<h5>Second slide label</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+          <h5>Second slide label</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
       </div>
       <div class="carousel-item">
         <img src="{$BASE_URL}images/slideshow/networked_systems.png" class="d-block w-100" >
         <div class="carousel-caption d-none d-md-block">
-          <!--<h5>Third slide label</h5>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>-->
+          <h5>Third slide label</h5>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </div>
       </div>
     </div>

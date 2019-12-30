@@ -924,14 +924,14 @@ opacity: 0.8;
   background-color: lightyellow;
 }
 
-.notification_read {
+/*.notification_read {
   font-size: 20px;
   padding: 1em;
   padding-bottom: 1.5em;
   margin-top: 1em;
   border-radius: 2em;
   background-color: grey;
-}
+}*/
 
 .notification_mark_read {
   float: right;
@@ -939,4 +939,21 @@ opacity: 0.8;
   padding-right: 1em;
   padding-top: 1em;
   font-size: 16px;
+}
+
+.notification_date {
+  float: right;
+  text-decoration: none;
+  padding-right: 1em;
+  padding-top: 1em;
+  font-size: 16px;
+}
+
+/*------------------------- Admin ------------------------------------*/
+.manage_green {
+  background-color: green;
+}
+
+.manage_red {
+  background-color: red;
 }
