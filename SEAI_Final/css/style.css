@@ -1,0 +1,992 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url('https://ak5.picdn.net/shutterstock/videos/1096255/thumb/1.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+/*---------------------------- HEADER ----------------------------------------*/
+.header {
+  /*background-color: #f1f1f1;*/
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+.column{
+  padding: 20px;
+  text-align: center
+}
+
+/*---------------------------NAVIGATION---------------------------------------*/
+.vertical-nav {
+  min-width: 10rem;
+  width: 14rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s;
+}
+
+.page-content {
+  width: 100% ;
+  margin-left: 0;
+  transition: all 0.4s;
+}
+
+/* for toggle behavior */
+
+#sidebar.active {
+  margin-left: -17rem;
+}
+
+#content.active {
+  width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -17rem;
+  }
+  #sidebar.active {
+    margin-left: 0;
+  }
+  #content {
+    width: 100%;
+    margin: 0;
+  }
+  #content.active {
+    margin-left: 17rem;
+    width: calc(100% - 17rem);
+  }
+}
+/*--------------------------- Separator---------------------------------------*/
+
+.separator {
+  margin: 3rem 0;
+  border-bottom: 1px dashed #fff;
+}
+
+.text-uppercase {
+  letter-spacing: 0.1em;
+}
+
+.text-gray {
+  color: #aaa;
+}
+
+.nav-tabs .nav-item {
+  margin-bottom:-1px;
+}
+/*
+.nav-tabs .nav-link{border:1px solid transparent;border-top-left-radius:.25rem;border-top-right-radius:.25rem}
+.nav-tabs .nav-link:focus,.nav-tabs .nav-link:hover{border-color:#e9ecef #e9ecef #dee2e6}
+.nav-tabs .nav-link.disabled{color:#6c757d;background-color:transparent;border-color:transparent}
+.nav-tabs .nav-item.show .nav-link,.nav-tabs .nav-link.active{color:#495057;background-color:#fff;border-color:#dee2e6 #dee2e6 #fff}
+.nav-tabs .dropdown-menu{margin-top:-1px;border-top-left-radius:0;border-top-right-radius:0}
+.nav-pills .nav-link{border-radius:.25rem}
+.nav-pills .nav-link.active,.nav-pills .show>.nav-link{color:#fff;background-color:#007bff}
+.nav-fill .nav-item{-ms-flex:1 1 auto;flex:1 1 auto;text-align:center}
+.nav-justified .nav-item{-ms-flex-preferred-size:0;flex-basis:0;-ms-flex-positive:1;flex-grow:1;text-align:center}
+.tab-content>.tab-pane{display:none}
+*/
+
+.icon-side {
+  width: 25px;
+}
+
+/*------------------------------TEXT BEFORE LOGIN ----------------------------*/
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/*---------------------------------- hyperlink -------------------------------*/
+a.one:link {color:#ff0000;}
+a.one:visited {color:#3399ff;}
+a.one:hover {color:#9999ff;}
+/*----------------------------------SLIDE SHOW--------------------------------*/
+#slider{
+  width: 100%;
+  height: auto;
+}
+
+/*-------------------------------------LOGIN----------------------------------*/
+#header .rightbox{
+    float:right;
+    display: inline;
+    width: 100px;
+}
+
+/* Full-width input fields */
+.container input[type=text], .container input[type=password] {
+width: 100%;
+padding: 12px 20px;
+margin: 8px 0;
+display: inline-block;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+background-color: #31ACF7;
+color: white;
+padding: 14px 20px;
+margin: 4px 2px;
+border: none;
+cursor: pointer;
+width: 100%;
+}
+.logbutton {
+    position: absolute; /* or position: absolute; */
+    top: 10px;
+    right: 10px;
+}
+.button4 {border-radius: 12px;}
+
+.button4left {
+  border-top-left-radius: 12px;
+  border-right-color: white;
+  border-right-style: solid;
+}
+
+.button4right {
+  border-top-right-radius: 12px;
+}
+
+button:hover {
+opacity: 0.8;
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+text-align: center;
+margin: 24px 0 12px 0;
+position: relative;
+}
+img.avatar {
+width: 40%;
+border-radius: 50%;
+}
+.container {
+padding: 16px;
+}
+span.psw {
+float: right;
+padding-top: 16px;
+}
+p.psw{
+  float: left;
+  padding-top: 16px;
+}
+/* The Modal (background) */
+.modal {
+display: none; /* Hidden by default */
+position: fixed; /* Stay in place */
+z-index: 1; /* Sit on top */
+left: 0;
+top: 0;
+width: 100%; /* Full width */
+height: 100%; /* Full height */
+overflow: auto; /* Enable scroll if needed */
+background-color: rgb(0,0,0); /* Fallback color */
+background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+padding-top: 0px;
+}
+/* Modal Content/Box */
+.modal-content {
+background-color: #fefefe;
+margin: 3% auto 10% auto; /* 5% from the top, 15% from the bottom and centered */
+border: 1px solid #888;
+width: 80%; /* Could be more or less, depending on screen size */
+}
+/* The Close Button (x) */
+.close {
+position: absolute;
+right: 25px;
+top: 0;
+color: #000;
+font-size: 35px;
+font-weight: bold;
+}
+.close:hover,
+.close:focus {
+color: red;
+cursor: pointer;
+}
+/* Add Zoom Animation */
+.animate {
+-webkit-animation: animatezoom 0.6s;
+animation: animatezoom 0.6s
+}
+@-webkit-keyframes animatezoom {
+from {-webkit-transform: scale(0)}
+to {-webkit-transform: scale(1)}
+}
+@keyframes animatezoom {
+from {transform: scale(0)}
+to {transform: scale(1)}
+}
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+span.psw {
+display: block;
+float: none;
+}
+}
+
+/*------------------------------ FOOTER ------------------------------------- */
+footer {
+  bottom: 0px;
+  width: 100%;
+  /*background: url(images/footer/footer.png);*/
+  border-style: solid;
+  border-color: white;
+  border-width: thin;
+}
+
+.rodapes{
+  float: left;
+  width: 30%;
+  margin-left: 50px;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  bottom: 0px;
+  color: white;
+}
+
+#rodape{
+  float: right;
+  vertical-align: middle;
+  margin-right:50px;
+  margin-top:35px;
+  }
+
+#rodape ul li {
+  list-style-type: none;
+  display: inline;
+  padding: 70px;
+}
+
+.footer-short {
+  bottom: 0px;
+  margin-left: 14rem;
+  border-style: solid;
+  border-color: white;
+  border-width: thin;
+}
+.input-div {
+  margin: 20px;
+  position: relative;
+  display: inline-block;
+}
+.popup-box {
+  position: relative;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: 3px;
+  width: 87%;
+  background: #ccc;
+  display: none;
+}
+.info {
+  cursor: pointer;
+}
+/*------------------ Create Account ----------------------------------------- */
+
+.reg {
+  position: absolute;
+  margin-top: 30px;
+  margin-left: 600px;
+  font-size: 40px;
+  color: black;
+}
+
+.acc_type_select {
+font-size: 30px;
+color: black;
+margin-bottom: auto;
+}
+
+.register input[type="radio"] {
+-ms-transform: scale(1.5); /* IE 9 */
+-webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+transform: scale(2);
+}
+
+.btn {
+position: absolute;
+margin-top: 20px;
+margin-left: 420px;
+padding: 6px 12px;
+border-radius: 4px;
+text-align: center;
+vertical-align: middle;
+}
+.btn-info {
+background-color: #31ACF7;
+color: white;
+border: none;
+cursor: pointer;
+width:auto;
+text-decoration:none;
+}
+.btn-info:hover, .btn-info:focus, .btn-info:acitive {
+background-color: white;
+border-color: white;
+color: #fff;
+}
+
+.buttonsRegSelect {
+  background-color: #31ACF7;
+  color: white;
+  font-weight: bold;
+  padding: 14px 30px;
+  margin: 4px 0px;
+  cursor: pointer;
+  display:inline-block;
+  float:left;
+  width:350px;
+  text-decoration:none;
+  outline: 0;
+}
+
+.buttonsRegSelect:hover {
+opacity: 0.8;
+}
+
+.buttonsRegSelected {
+  -background-color: #dae0e5!important;
+  background-color: #268cc9;
+}
+
+.formulario {
+width: 700px;
+height: auto;
+margin-left: 23%;
+margin-bottom: 10%;
+font-size: 22px;
+color:white;
+}
+.formulario form {
+  display: none;
+}
+.tab {
+margin-left: 5%;
+border-spacing: 0 10px;
+width: 700px;
+-background-color: #268cc9;
+}
+.tab tr.space_under>td {
+  padding-bottom: 1em;
+}
+
+.gg {
+width: 250px;
+}
+
+.register input[type=text], .register input[type=password]{
+border-radius:4px;
+-moz-border-radius:4px;
+-webkit-border-radius:4px;
+box-shadow: 1px 1px 2px #333333;
+-moz-box-shadow: 1px 1px 2px #333333;
+-webkit-box-shadow: 1px 1px 2px #333333;
+-background: #cccccc;
+border:1px solid #000000;
+width:300px;
+height: 30px;
+}
+
+.exemplo {
+position: absolute;
+margin-left: 20px;
+margin-top: 100px;
+font-size: 20px;
+color: black;
+}
+
+.info {
+position: relative;
+margin-top: 650px;
+margin-left: 50px;
+text-align: center;
+font-family: Arial Nova Light;
+font-size: 25px;
+color: white;
+}
+
+/*------------------ Logout -------------------------------*/
+.submitAsBtn {
+  background-color: #31ACF7;
+  color: white;
+  padding: 14px 20px;
+  margin: 4px 2px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  outline: 0;
+}
+
+.submitAsBtn:hover {
+  opacity: 0.8;
+}
+
+/*------------------- Menus ----------------*/
+
+.dropdown-active {
+  background-color:#f0f2f5!important;
+}
+
+.dropdown-container {
+  display: none;
+  background-color: #f0f2f5;
+  padding-left: 8px;
+}
+
+.dropdown-in {
+  display:block;
+  width:100%;
+  padding:.25rem 1.5rem;
+  clear:both;
+  font-weight:400;
+  color:#212529;
+  text-align:inherit;
+  white-space:nowrap;
+  background-color:transparent;
+  border:0
+}
+
+.dropdown-in:focus,.dropdown-in:hover {
+  color:#16181b;
+  text-decoration:none;
+  background-color:#f8f9fa;
+}
+
+.dropdown-in.active,.dropdown-in:active {
+  color:#16181b;
+  text-decoration:none;
+  background-color: #f8f9fa;
+}
+
+.dropdown-in.disabled,.dropdown-in:disabled {
+  color:#6c757d;
+  pointer-events:none;
+  background-color:transparent
+}
+
+a.menu-highlight:hover {
+  background-color:#f0f2f5!important;
+}
+
+.menu-highlight-active {
+  background-color: #dae0e5!important;
+  color: white;
+}
+
+/*-------------------- Menus After Login ---------------------*/
+.menusLogin {
+  width: calc(100% -17rem);
+  margin-left: 17rem;
+  transition: all 0.4s;
+}
+
+.myaccountlabel {
+  width: 15rem;
+  font-size:1.25rem;
+  font-weight:300;
+}
+
+.myacc form input:not([type="submit"]) {
+  line-height: 0.5em;
+  width: 30rem;
+  padding: 6px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.buttonsAcc {
+  background-color: #31ACF7;
+  color: white;
+  padding: 14px 20px;
+  margin: 4px 2px;
+  border: none;
+  cursor: pointer;
+  width:auto;
+  text-decoration:none;
+}
+
+.buttonsAcc:hover {
+opacity: 0.8;
+}
+
+.msg_success {
+  color: lightgreen;
+  font-size: 20px;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-radius: 2em;
+  text-align: center;
+  background: #4b6cb7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #182848, #4b6cb7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.msg_error {
+  color: red;
+  font-size: 20px;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-radius: 2em;
+  text-align: center;
+  background: #4b6cb7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #182848, #4b6cb7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.msg_close {
+  float: left;
+  text-decoration: none;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+/*------------------------------ Vehicles ------------------------------------*/
+.grid-vehicles {
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  z-index: -100;
+  grid-gap: 50px;
+}
+
+.vehicles_table {
+  display: table;
+  border-spacing: 10px;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  float: left;
+
+  width: 100%;
+  margin: 0 auto;
+  table-layout: auto;
+  border-collapse: collapse;
+  font-size: 18px;
+}
+
+.vehicles_table th {
+  text-align: center;
+  border:solid  0.1em;
+  border-color:#ffffff;
+  color: #ffffff;
+  padding: 0.5em;
+  font-size: 18px;
+}
+
+.vehicles_table td {
+  text-align:center;
+  border:solid  0.1em;
+  border-color:#ffffff;
+  color: #ffffff;
+  padding: 0.2em;
+}
+
+/*
+.vehicles_row {
+  display: table-row;
+}
+
+.vehicle {
+  width: 10rem;
+  display: table-cell;
+  padding:5px;
+}
+
+.vehicle_frame {
+  width: 10rem;
+  height: 10rem;
+  background-color: black;
+  border-style: solid;
+}
+
+
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.vehicle_frame img {
+  max-width: 9.6rem;
+  vertical-align: middle;
+}
+
+.vehicle label {
+  text-align: center;
+  width: 100%;
+}
+*/
+
+.vehicles_sideText {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  width: 100%;
+  float: right;
+}
+
+.vehicle_filtro_lbl {
+  width: 150px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.vehicles_add input[type="text"] {
+  line-height: 0.5em;
+  width: 30rem;
+  padding: 6px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.vehicles_add textarea[type="text"] {
+  width: 30rem;
+  padding: 6px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.vehicles_add_lbl {
+  width: 150px;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.vehicle_titulo {
+  width: 200px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.vehicle_titulo_table {
+  margin: 1.5em 0em 0.75em 0em;
+}
+
+.vehicle_res {
+  width: 300px;
+  text-align: left;
+  font-size: 15px;
+}
+
+.vehicle_text {
+  color: #ffffff;
+  font-size: 20px;
+  width: 1000x;
+  font-size:1.25rem;
+  font-weight:300;
+}
+
+.path {
+  position: absolute;
+  margin-top: -330px;
+  margin-left: 700px;
+}
+
+.button_provider_hist2 {
+  font-size:14px;
+  width: auto;
+  padding: 5px 5px;
+  background-color: green;
+}
+
+.button_provider_hist3 {
+  font-size:14px;
+  width: auto;
+  padding: 5px 5px;
+  background-color: orangered;
+}
+
+.vehicle_info_label {
+  width: 8rem;
+  font-size:1.25rem;
+  font-weight:300;
+}
+
+/***********************************Mapa***********************************************/
+.grid{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 70% auto;
+  grid-template-rows: 90% auto;
+  z-index:-100;
+
+}
+
+ #map { position:absolute; top:0; bottom:0; right: 0; left: 0; width:100%; }
+
+	#tooltip {
+        display: none;
+        position: absolute;
+        background: #666;
+        color: white;
+        opacity: 0.8;
+        border: 1px dashed #999;
+        font-family: sans-serif;
+        font-size: 12px;
+        height: 20px;
+        line-height: 20px;
+        z-index: 1000;
+      }
+
+
+.filters{
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
+
+
+.infotext{
+	color: #ffffff;
+    font-size: 13px;
+	margin-left:2em;
+	margin-top: 2em
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
+.popup {
+  width:5em;
+  height:2em;
+  display: inline-block;
+  border-radius: 0.2em;
+  border: none;
+  background-color: #31ACF7;
+  color: white;
+  font-size: 15px;
+  margin-left: 2em;
+  margin-top: 1em;
+  padding:0.3em 0 0 0;
+  text-align:center;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  font-size: 13px;
+  background-color: #555;
+  color: #fff;
+  border-radius: 0.3em;
+  padding: 0.5em 0.3em 0.5em 0.3em ;
+  position: absolute;
+  z-index: 100000;
+  margin-top: -13.5em;
+  margin-left: -7.692em;
+  line-height: 1.5em;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .pshow {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+/***********************************End of Mapa***********************************************/
+/*-------------------------- table existent data -----------------------------*/
+
+.table_ed {
+  width: 70%;
+  margin: 0em auto;
+  table-layout: auto;
+  border-collapse: collapse;
+  Font-size:15px;
+
+}
+
+.table_ed th {
+  border:solid  0.1em;
+  border-color:#ffffff;
+  color: #ffffff;
+}
+.table_ed td{
+	text-align:center;
+	border:solid  0.1em;
+	border-color:#ffffff;
+	color: #ffffff;
+}
+
+/********************************************************************************************************************************************************************
+****************************************** Table_previous_data *************************************************************************************************************
+********************************************************************************************************************************************************************/
+
+.table_pd {
+  width: 95%;
+  margin: 1em auto;
+  table-layout: auto;
+  border-collapse: collapse;
+  Font-size:20px;
+  margin-right:20em;
+  margin-bottom: 25em;
+}
+
+.table_pd th {
+  border:solid  0.1em;
+  border-color:#ffffff;
+  color: #ffffff;
+}
+.table_pd td{
+	text-align:center;
+	border:solid  0.1em;
+	border-color:#ffffff;
+	color: #ffffff;
+}
+
+ .comfirm{
+  width:10em;
+  height:2.5em;
+  border-radius: 0.2em;
+  border: none;
+  background-color: #31ACF7;
+  color: white;
+  font-size: 20px;
+  margin-left:5em;
+  margin-top:1em;
+}
+.info {
+  display: none;
+
+}
+
+.show {
+  display: table-cell;
+}
+
+/*------------------------ Plan New Mission ----------------------------------*/
+.confirm{
+ width:10em;
+ height:2.5em;
+ border-radius: 0.2em;
+ border: none;
+ background-color: #31ACF7;
+ color: white;
+ font-size: 20px;
+ margin-left:11em;
+ margin-top:1em;
+}
+
+.table_plan_new_mission {
+  table-layout: fixed ;
+  width: 100% ;
+}
+.table_plan_new_mission td {
+  width: 25% ;
+}
+
+.button_provider_hist {
+  font-size:14px;
+  width: auto;
+  padding: 5px 5px;
+}
+
+.custom-txt {
+  color:white;
+  font-size:14px;
+}
+
+/*------------------------- Notifications ------------------------------------*/
+.notification_not_read {
+  font-size: 20px;
+  padding: 1em;
+  padding-bottom: 1.5em;
+  margin-top: 1em;
+  border-radius: 2em;
+  background-color: lightyellow;
+}
+
+/*.notification_read {
+  font-size: 20px;
+  padding: 1em;
+  padding-bottom: 1.5em;
+  margin-top: 1em;
+  border-radius: 2em;
+  background-color: grey;
+}*/
+
+.notification_mark_read {
+  float: right;
+  text-decoration: none;
+  padding-right: 1em;
+  padding-top: 1em;
+  font-size: 14px;
+}
+
+.notification_date {
+  float: right;
+  text-decoration: none;
+  padding-right: 1em;
+  padding-top: 1em;
+  font-size: 16px;
+}
