@@ -9,13 +9,13 @@
       <div class="container">
         <input type="text" placeholder="Enter Username" name="user" required>
         <input type="password" placeholder="Enter Password" name="password" required>
-        <button type="submit" class="button4 submitAsBtn"  name="login"> Confirm </button>
+        <button type="submit" class="button4 submitAsBtn"> Confirm </button>
         <label>
           <input type="checkbox" checked="checked" name="remember"> Remember me
         </label>
       </div>
       <div class="container">
-        <button type="submit" class="button4 submitAsBtn"  name="pass"> Confirm </button>
+        <span class="psw"> <a href="#" class="button4 submitAsBtn" style="text-decoration:none;color:white;">Forgot password?</a></span>
         <p class="psw"><a href="{$BASE_URL}pages/register.php" class="button4 submitAsBtn" style="text-decoration:none;color:white;">Sign-Up Here </a></p>
       </div>
       </form>

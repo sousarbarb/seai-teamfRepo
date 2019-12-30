@@ -8,7 +8,7 @@
     $data = strip_tags($data);
     return $data;
   }
-if(isset($_POST['login']){
+
   if (!$_POST['user'] || !$_POST['password']) {
     $_SESSION['error_messages'][] = 'Invalid login';
     $_SESSION['form_values'] = $_POST;
@@ -91,9 +91,5 @@ try {
 } catch (PDOException $e) {
   $_SESSION['error_messages'][] = 'Login Failed';
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
-}
-}
-if(isset($_POST['pass']){
-
 }
 ?>
