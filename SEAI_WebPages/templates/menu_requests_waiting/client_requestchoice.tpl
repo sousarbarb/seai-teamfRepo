@@ -8,24 +8,18 @@
 
     <table class='table_pd'>
     <tr>
-    <th>Institution Name</th><th>Detailed Information</th>
+    <th>Institution Name</th><th>Estimated Starting Time</th><th>Estimated Finishing Time</th><th>Estimated Cost</th><th>Detailed Informations</th>
     </tr>
 
-    {*get requests from DB
-    .................*}
-
-    {$requests = [
-                    ["area"=>"100", "sp"=>"20", "date"=>"13", "specs"=>"x", "price"=>"13", "file"=>"files/teste.txt"],
-                    ["area"=>"100", "sp"=>"20", "date"=>"13", "specs"=>"x", "price"=>"13", "file"=>"files/teste.txt"],
-                    ["area"=>"100", "sp"=>"20", "date"=>"13", "specs"=>"x", "price"=>"13", "file"=>"files/teste.txt"]
-                ]}
+    {{$missions = getAllMissionsProposal( $request_id )}
 
 
-
-    {foreach $requests as $request}
+    {foreach $missions as $mission}
         <tr>
-        <td>{$request.institute_name}</td><td>{$request.informarions} <a href="pdf.pdf" download><img src ="images/pdf.png" widht=20px height=20px></td>
-        <td><a href="actions/actiondeleterequest.php?id_request=". {$row['id_request']}."">Eliminar</a></td><td><a href="menu_my_account.tpl">Aceitar</a></td>
+        <td>{$mission['entity_name']}</td><td>{$mission['est_starting_time']}</td><td>{$mission['est_finished_time']}</td><td>{$mission['price']}</td><td>{$mission['pdf']} <a href="pdf.pdf" download><img src ="images/pdf.png" widht=20px height=20px></td>
+
+        <td><a href="client_requestchoice.tpl">Aceitar</a></td>
+        <td><a href="actions/deletemission.php?id_misson=". {$mission['mission_id']}."">Ignorar</a></td>
 
         </tr>
     {/foreach}

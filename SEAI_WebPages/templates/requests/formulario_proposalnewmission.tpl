@@ -16,15 +16,15 @@
 
     <div class="text-white">
 
-      <label class="myaccountlabel">Starting Time</label>
+      <label class="myaccountlabel">Estimated Starting Time</label>
       <input type="datetime-local" name="starting_time" class="lead" placeholder="Enter the starting time of the mission"
       value="{if isset($form_values)}{$form_values.starting_time}{/if}">
       <br>
-      <label class="myaccountlabel">Finishing Time</label>
+      <label class="myaccountlabel">Estimated Finishing Time</label>
       <input type="datetime-local" name="finishing_time" class="lead" placeholder="Enter the finishing time of the mission"
       value="{if isset($form_values)}{$form_values.finishing_time}{/if}">
       <br>
-      <label class="myaccountlabel">Cost</label>
+      <label class="myaccountlabel">Estimated Cost</label>
       <input type="number" name="cost" class="lead" placeholder="Enter the total cost of the mission"
       value="{if isset($form_values)}{$form_values.cost}{/if}">
       <br>

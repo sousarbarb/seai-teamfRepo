@@ -26,6 +26,8 @@ $stmt->execute();
 include_once($BASE_DIR . 'database/users.php');
 include_once($BASE_DIR . 'database/vehicles.php');
 include_once($BASE_DIR . 'database/request.php');
+include_once($BASE_DIR . 'database/requests.php');
+include_once($BASE_DIR . 'database/notifications.php');
 
 
 

@@ -1,4 +1,62 @@
 <?php
+
+  function getAllMissionsProposal( $request_id )
+    global $conn;
+
+    // Get all areas relative to data already present in database
+    $stm = $conn->prepare("
+      SELECT
+        mission.id                    AS mission_id,
+        service_provider.entity_name  AS entity_name,
+        mission.est_starting_time     AS est_starting_time  ,
+        mission.est_finished_time     AS est_finished_time  ,
+        mission.price                 AS price ,
+        mission.path                  AS pdf
+
+      FROM request, service_provider, provider_request, request_mission
+
+       WHERE (
+        mission.provider_id = service_provider.id  AND
+        mission.id = request_mission.mission_id    AND
+        request.id = request_mission.request_id    AND
+        request.id = ?)
+       ");
+    $stm->execute(array($id));
+
+    // Return results
+    return $stm->fetchAll();
+  }
+
+
+  function getAllRequests( $id ) {
+      global $conn;
+
+
+    // Get all areas relative to data already present in database
+    $stm = $conn->prepare("
+      SELECT
+        request.id                    AS request_id,
+        request.sensor_type           AS request_sensor_type,
+        request.resolution_type       AS request_res_value  ,
+        request.comments              AS request_comments   ,
+        service_client.name           AS client_name,
+        area.polygon                  AS polygon, 
+      FROM request, service_client, area, service_provider, provider_request
+      WHERE (
+        request.request_id = provider_request.request_id  AND
+        service_provider.service_provider_id = ?          AND
+        request.area_id = area.id                         AND
+        request.client_id = service_client.id)
+       ");
+    $stm->execute(array($id));
+
+    // Return results
+    return $stm->fetchAll();
+  }
+
+
+
+  }
   /****************************************************************************************************
    ****** GETALLDATASTOREDAREAS
    ****************************************************************************************************
