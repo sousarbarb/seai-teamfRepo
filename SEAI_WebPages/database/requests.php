@@ -62,10 +62,10 @@
    ****************************************************************************************************
    * Gets all areas relative to public data stored in the platform. The primary use for this function
    * is to display these areas in the map when the user is selecting the intended area.
-   * 
+   *
    * INPUT ARGUMENTS:
    * None.
-   * 
+   *
    * OUTPUT ARGUMENTS:
    * Querie with all areas OR NULL (if the platform has no data to show / sell).
    ****************************************************************************************************/
@@ -106,20 +106,20 @@
   /****************************************************************************************************
    ****** SEARCHDATAWITHFILTER
    ****************************************************************************************************
-   * Function that explores all data present in database and retrieves which ones intersects with 
-   * area selected by the service client. Also, the querie takes into account the restricted property 
+   * Function that explores all data present in database and retrieves which ones intersects with
+   * area selected by the service client. Also, the querie takes into account the restricted property
    * that, when is set TRUE, the respective data can't show.
-   * 
+   *
    * INPUT ARGUMENTS:
-   * area                : PHP structure containin all vertices that defines the area selected by a 
+   * area                : PHP structure containin all vertices that defines the area selected by a
    *                       service client;
    * sensors_selected    : array containing the sensors types selected (see how its done
    *                       in git/database/test-vehicles);
-   * resolutions_selected: array containing the resolution values selected (see how its done 
+   * resolutions_selected: array containing the resolution values selected (see how its done
    *                       in git/database/test-vehicles);
-   * filetypes_selected  : array containing the file types selected (see how its done 
+   * filetypes_selected  : array containing the file types selected (see how its done
    *                       in git/database/test-vehicles).
-   * 
+   *
    * OUTPUT ARGUMENTS:
    * -1: the PHP structure representing the area is not defined;
    * -2: minimum number of vertice to define a polygon must be greater or equal to three;
@@ -283,17 +283,17 @@
   /****************************************************************************************************
    ****** NEWREQUESTOLDDATA
    ****************************************************************************************************
-   * This function creates a new request to acquire data already present in the platform. It should 
+   * This function creates a new request to acquire data already present in the platform. It should
    * be noted that the payment agreement is only after choosing a specific data to acquire.
    * Also, after that, just like the request for a mission, the two sides must reach an agreement.
-   * 
+   *
    * INPUT ARGUMENTS:
-   * client_username: client username. This can be obtain by $_SESSION['username'] if set (means the 
+   * client_username: client username. This can be obtain by $_SESSION['username'] if set (means the
    *                  logged in username);
-   * mission_id     : integer that equals tothe mission id intended. Also, this probably can be 
+   * mission_id     : integer that equals tothe mission id intended. Also, this probably can be
    *                  obtain by accessing the mission_id colunm in the query used to display missions
    *                  that match client's criterias.
-   * 
+   *
    * OUTPUT ARGUMENTS:
    *  0: operation concluded with success;
    * -1: the user is not registed in the platform or it isn't a service client;
@@ -316,7 +316,7 @@
       return $results + 0;
     $results   = getServiceClientInformation($client_username);
     $client_id = $results['client_id'];
-    
+
     // ----------------------------------------
     // Checks variable $mission_id
     $stm = $conn->prepare("
@@ -335,7 +335,7 @@
       return -4;
     else if($results['restricted'] == TRUE)
       return -5;
-    
+
     // ----------------------------------------
     // Gets area id relative to the mission specified
     // (resolution_type,sensor_type = NULL <=> )
@@ -359,7 +359,7 @@
     if($results == FALSE)
       return -6;
     $area_id = $results['area_id'];
-    
+
     // ----------------------------------------
     // Creates the new request
     $stm = $conn->prepare("
@@ -390,7 +390,7 @@
       INSERT INTO request_mission (
         request_id,
         mission_id
-      ) 
+      )
       VALUES ( ? , ? )
     ");
     try{
@@ -410,17 +410,17 @@
     // Returns 0 in case of success
     return 0;
   }
-  
+
   /****************************************************************************************************
    ****** NEWREQUESTFORNEWDATA
    ****************************************************************************************************
-   * This function is relative to creating a new request to acquire data not present in the platform. 
-   * Note that the sensor type and resolution value are always requires in order to the request be a 
+   * This function is relative to creating a new request to acquire data not present in the platform.
+   * Note that the sensor type and resolution value are always requires in order to the request be a
    * valid one.
-   * 
+   *
    * INPUT ARGUMENTS:
    * area:           : PHP structure that contains all the points of the area selected by the user;
-   * client_username : client username. This can be obtain by $_SESSION['username'] if set (means the 
+   * client_username : client username. This can be obtain by $_SESSION['username'] if set (means the
    *                   logged in username);
    * sensor_type     : one of the sensor types that are present in the platform;
    * resolution_value: one of the resolution values that are present in the platform;
@@ -429,7 +429,7 @@
    * comments        : comments if needed;
    * restricted      : boolean variable that defines if the user wants to keep the data only to
    *                   himself.
-   * 
+   *
    * OUTPUT ARGUMENTS:
    *   0: operation concluded with success;
    *  -1: the user is not registed in the platform or it isn't a service client;
@@ -453,7 +453,7 @@
    * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    * NOT MADE YET
    * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-   * Function to select automatically service providers when a new request is made by a client. It 
+   * Function to select automatically service providers when a new request is made by a client. It
    * should be noted that, for the specific request, this selection will never be updated again.
    ****************************************************************************************************/
   function newRequestForNewData($area, $client_username, $sensor_type, $resolution_value, $deadline, $comments, $restricted){
@@ -467,7 +467,7 @@
       return $results + 0;
     $results   = getServiceClientInformation($client_username);
     $client_id = $results['client_id'];
-    
+
     // ----------------------------------------
     // Checks sensor type and resolution value
     // 1: checks sensor type
@@ -482,7 +482,7 @@
 
     if($results == FALSE)
       return -3;
-    
+
     // 2: checks resolution value
     $stm = $conn->prepare("
       SELECT  *
@@ -518,7 +518,7 @@
 
     if($results == FALSE)
       return -5;
-    
+
     // ----------------------------------------
     // Checks $deadline variable
     // (desired format: 'DD/MM/AAAA')
@@ -527,14 +527,14 @@
       if( $results < 0 )
         return $result - 5;
     }
- 
+
     // ----------------------------------------
     // Fomulation of string for area definition
     if($area == NULL)
       return -8;
     if($area['polygonsVertLatLng']['numerodevertices'] < 3)
       return -9;
-    
+
     $polygon = processAreaGetString($area);
 
 
@@ -550,7 +550,7 @@
     // ----------------------------------------
     // ----------------------------------------
 
-    
+
     // ----------------------------------------
     // Create a new area
     $stm = $conn->prepare("
@@ -566,7 +566,7 @@
 
     $results = $stm->fetch();
     $area_id = $results['id'];
-    
+
     // ----------------------------------------
     // Create a new request
     $stm = $conn->prepare("
@@ -638,7 +638,7 @@
 
     // Returns 0 in case of success
     return 0;
-  }  
+  }
   function processAreaGetString($area){
     // Initial string necessary for query
     $polygon = "ST_GeographyFromText( 'POLYGON( ( ";
@@ -681,15 +681,15 @@
     // ----------------------------------------
     // Get possible service providers capable of satisfying the request in question
     $stm = $conn->prepare("
-      WITH filtersensorresolution AS (	
+      WITH filtersensorresolution AS (
         SELECT  service_provider.id              AS provider_id      ,
-                service_provider.user_id         AS provider_username, 
+                service_provider.user_id         AS provider_username,
                 service_provider.approval        AS user_approval    ,
                 vehicle.vehicle_name             AS vehicle_name     ,
                 vehicle.approval                 AS vehicle_approval ,
                 sensor.sensor_name               AS sensor_name      ,
                 sensor.sensor_type               AS sensor_type      ,
-                sensor.active                    AS sensor_active    , 
+                sensor.active                    AS sensor_active    ,
                 resolution.id                    AS resolution_id    ,
                 resolution.value                 AS resolution_value ,
                 resolution.active                AS resolution_active,
@@ -697,11 +697,11 @@
                 specification.value_min          AS spec_min         ,
                 specification.value_max          AS spec_max
         FROM service_provider
-        FULL OUTER JOIN vehicle 
+        FULL OUTER JOIN vehicle
           ON vehicle.service_provider_id = service_provider.id
-        FULL OUTER JOIN sensor 
+        FULL OUTER JOIN sensor
           ON vehicle.id = sensor.vehicle_id
-        FULL OUTER JOIN resolution 
+        FULL OUTER JOIN resolution
           ON resolution.sensor_id = sensor.id
         FULL OUTER JOIN specification
           ON specification.vehicle_id = vehicle.id
@@ -716,7 +716,7 @@
               CAST(specification.value_min AS double precision) <= ? AND
               CAST(specification.value_max AS double precision) >= ?
       )
-      SELECT DISTINCT 
+      SELECT DISTINCT
         filtersensorresolution.provider_username,
         filtersensorresolution.provider_id
       FROM filtersensorresolution
@@ -731,17 +731,17 @@
     // Insert the combination provider_id & request_id in table provider_request
     // Notify all service providers capable of apply for specific request
     foreach ($results as $result){
-      insertServiceProviderAndRequestInTableProviderRequest($result['provider_id'], $request_id)
+      insertServiceProviderAndRequestInTableProviderRequest($result['provider_id'], $request_id);
       notifyProviderNewPossibleRequestToApply($result['provider_username'], $request_id);
     }
-    
+
     // Returns 0 in case of success
     return 0;
   }
   function getMinMaxDepthAreaSelected($area_id){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Search intersections with depth_grid polygons
     $stm = $conn->prepare("
       WITH grid_intersections AS (
@@ -760,8 +760,8 @@
             land_poly :: geography
           )                        = 'TRUE'
       )
-      SELECT 
-        MIN(depth_area) AS depth_min, 
+      SELECT
+        MIN(depth_area) AS depth_min,
         MAX(depth_area) AS depth_max
       FROM  grid_intersections
     ");
@@ -842,23 +842,23 @@
     // Success creating the new notification
     return 0;
   }
-  
+
   /****************************************************************************************************
    ****** CREATENEWMISSION
    ****************************************************************************************************
-   * This function creates, from the service provider point of view, a new mission. This is relative 
+   * This function creates, from the service provider point of view, a new mission. This is relative
    * to a certain request that the provider has the capabilities to candidate.
-   * It should be noted that CREATENEWMISSION assumes that the vehicle, sensor and resolution belongs 
-   * to the service provider. However, it checks if the combination between this three variables is 
+   * It should be noted that CREATENEWMISSION assumes that the vehicle, sensor and resolution belongs
+   * to the service provider. However, it checks if the combination between this three variables is
    * valid.
    *
    * INPUT ARGUMENTS:
    * request_id       : integer representing the request's id;
    * est_starting_time: date in the following format -> 'DD/MM/AAAA'. This camp isn't always required
-   *                    (just when the provider wants to specify an estimated start date for the 
+   *                    (just when the provider wants to specify an estimated start date for the
    *                    mission);
    * est_finished_time: date in the following format -> 'DD/MM/AAAA'. This camp isn't always required
-   *                    (just when the provider wants to specify an estimated finish date for the 
+   *                    (just when the provider wants to specify an estimated finish date for the
    *                    mission);
    * price            : cost determinated by service provider of the request proposal to submit;
    * provider_username: provider's username;
@@ -866,7 +866,7 @@
    * sensor_name      : sensor name (NOT SENSOR TYPE NEITHER SENSOR ID);
    * resolution_value : resolution value (NOT RESOLUTION ID);
    * path_pdf         : path_pdf in the server for aditional informations.
-   * 
+   *
    * OUTPUT ARGUMENTS:
    *   0: operation concluded with success;
    *  -1: the user is not registed in the platform or it isn't a service provider;
@@ -879,7 +879,7 @@
    *  -8: the vehicle specified was not founded in the service provider list of vehicles;
    *  -9: the vehicle isn't active;
    * -10: the vehicle doesn't have administration approval;
-   * -11: the sensor_name doesn't belong to the vehicle or the type of sensor required to execute 
+   * -11: the sensor_name doesn't belong to the vehicle or the type of sensor required to execute
    *      the mission isn't satisfied;
    * -12: the sensor specified isn't active;
    * -13: the resolution required for the request doesn't match with the selected one by provider;
@@ -929,11 +929,11 @@
       if( $results['date_validation'] == FALSE )
         return -6;
     }
-    
+
     // ----------------------------------------
     // Check variable $request_id
     $stm = $conn->prepare("
-      SELECT * 
+      SELECT *
       FROM   request
       WHERE  id = ?
     ");
@@ -942,7 +942,7 @@
 
     if($results == FALSE)
       return -7;
-    
+
     $area_id                 = $results['area_id'];
     $sensor_type_wanted      = $results['sensor_type'];
     $resolution_value_wanted = $results['resolution_type'];
@@ -968,9 +968,9 @@
       return -9;
     if( $results['approval'] == FALSE )
       return -10;
-    
+
     $vehicle_id = $results['id'];
-    
+
     // 2: $sensor_name
     $stm = $conn->prepare("
       SELECT  id,
@@ -1008,14 +1008,14 @@
       return -14;
     if( $results['active'] == FALSE )
       return -15;
-    
+
     $resolution_id          = $results['id'];
     $resolution_consumption = floatval($results['consumption']);  // ?????
     $resolution_velocity    = floatval($results['vel_sampling']); // m/s that AUV can accomplish running at resolution specified
     $resolution_cost        = floatval($results['cost']);         // €/h
     $resolution_swath       = floatval($results['swath']);        // m
 
-    
+
     // ----------------------------------------
     // ----------------------------------------
     // PUT HERE OTHER ARGUMENTS VALIDATION
@@ -1024,7 +1024,7 @@
     // Checks if service provider is present in table PROVIDER_REQUEST relative to the request in question
     if( verifyServiceProviderIsPresentInTableProviderRequest($provider_id, $request_id) == FALSE )
       return -16;
-    
+
     // Its necessary to check if the vehicle still has the capability of executing the request
     // (for now, sensor_type and resolution_value has been checked )
     $results   = getMinMaxDepthAreaSelected($area_id);
@@ -1050,7 +1050,7 @@
     $results = $stm->fetch();
     if( $results == FALSE )
       return -20;
-    
+
     // Estimates costs and evaluates if the estimated finished time is valid
     if($est_finished_time != NULL){
       if(verifyServiceProviderEstimatedFinishTime($area_id,
@@ -1177,7 +1177,7 @@
     $total_distance = ceil( sqrt( $area ) / $swath) * sqrt( $area )
                     + (ceil(sqrt( $area ) / $swath) - 1) * $swath;
     $estimated_duration = ( $total_distance / $velocity ) * ( 1/3600 );
-    
+
     // Verifies if it's okay
     if($est_starting_time != NULL){
       $stm = $conn->prepare("
@@ -1200,7 +1200,7 @@
           CURRENT_TIMESTAMP(0) + INTERVAL '1 hour' * DOUBLE PRECISION ?
           AS validation
       ");
-      $stm->execute(array(getDateTimeToTimestampString($est_finished_time)
+      $stm->execute(array(getDateTimeToTimestampString($est_finished_time),
                           strval($estimated_duration)
       ));
     }
@@ -1213,12 +1213,12 @@
    ****** UPDATEMISSIONSTATUS
    ****************************************************************************************************
    * Function to update the mission status.
-   * 
+   *
    * INPUT ARGUMENTS:
-   * request_id    : integer representing the request id. This request is relative to the mission that 
+   * request_id    : integer representing the request id. This request is relative to the mission that
    *                 is being executed;
    * mission_id    : integer representing the mission id;
-   * mission_status: string that represents the mission current status. The status posible are the 
+   * mission_status: string that represents the mission current status. The status posible are the
    *                 following ones:
    *                 - 'Proposal' - there is no need to update the status mission (it is its default
    *                                status)
@@ -1227,7 +1227,7 @@
    *                 - 'In progress'
    *                 - 'Expired'
    *                 - 'Finish'
-   * 
+   *
    * OUTPUT ARGUMENTS:
    *  1: operation executed successfully;
    *  0: insuccess in updating executing the mission;
@@ -1285,14 +1285,14 @@
         ");
         $stm->execute(array($mission_status,$mission_id));
       break;
-      
+
       default:
         return -1;
     }
 
     // Notify Service Client and Service Provider
     notifyServiceClientMissionStatus($mission_id, $mission_status);
-    notifyServiceProviderMissionStatus($mission_id, $mission_status)
+    notifyServiceProviderMissionStatus($mission_id, $mission_status);
 
     // Return 0 or 1
     return $stm->rowCount();
@@ -1439,19 +1439,19 @@
   /****************************************************************************************************
    ****** UPDATEAGREEMENTPAYMENT
    ****************************************************************************************************
-   * Function that updates the boolean variables present in request table. These means that either 
+   * Function that updates the boolean variables present in request table. These means that either
    * sides (client and provider) confirms their stand relative to payment agreement.
-   * 
+   *
    * INPUT ARGUMENTS:
    * request_id        : integer that represents request id OR NULL if not specified;
    * mission_id        : integer that represents request id OR NULL if not specified;
    * agreement_client  : boolean variable true/false OR NULL if not specified (if null => do not alter);
    * agreement_provider: boolean variable true/false OR NULL if not specified (if null => do not alter).
-   * 
+   *
    * OUTPUT ARGUMENTS:
    * 1: operation executed successfully;
    * 0: insuccess in updating executing the agreement variables.
-   * 
+   *
    * NOTES:
    * - the $request_id and $mission_id can't ve simultaneously NULL;
    * - specificy the boolean variables NULL if you don't want to alter them;
@@ -1525,7 +1525,7 @@
       $stm->execute(array($agreement_client? 'TRUE':'FALSE',$request_id));
 
       // Notify Service Provider
-      notifyServiceProviderOfServiceClientAgreementStatus($mission_id, $agreement_client)
+      notifyServiceProviderOfServiceClientAgreementStatus($mission_id, $agreement_client);
     }
     else if ($agreement_provider != NULL) {
       $stm = $conn->prepare("
@@ -1691,7 +1691,7 @@
    ****************************************************************************************************
    * INPUT ARGUMENTS:
    * client_username
-   * 
+   *
    * OUTPUT ARGUMENTS:
    *  0: service client ok;
    * -1: the user is not registed in the platform or it isn't a service client;
@@ -1747,13 +1747,13 @@
     // Returns Service Client information
     return $stm->fetch();
   }
-  
+
   /****************************************************************************************************
    ****** VERIFYSERVICEPROVIDERUSERNAME
    ****************************************************************************************************
    * INPUT ARGUMENTS:
    * provider_username
-   * 
+   *
    * OUTPUT ARGUMENTS:
    *  0: service provider ok;
    * -1: the user is not registed in the platform or it isn't a service provider;
@@ -1813,13 +1813,13 @@
     // Returns Service Provider information
     return $stm->fetch();
   }
-  
+
   /****************************************************************************************************
    ****** VERIFYDATETIMEVALIDATION
    ****************************************************************************************************
    * INPUT ARGUMENTS:
    * date_time: string in the following format 'DD MM YYYY'
-   * 
+   *
    * OUTPUT ARGUMENTS:
    *  0: date_time ok;
    * -1: date format isn't valid. The correct one is 'DD/MM/AAAA';
@@ -1879,17 +1879,17 @@
     // Return string to time stamp (needed in SQL)
     return "TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')";
   }
-  
+
   /****************************************************************************************************
    ****** VERIFYSERVICEPROVIDERISPRESENTINTABLEPROVIDERREQUEST
    ****************************************************************************************************
-   * This function verifies if, in the moment of request creation the service provider was capable of 
+   * This function verifies if, in the moment of request creation the service provider was capable of
    * executing the request.
-   * 
+   *
    * INPUT ARGUMENTS:
    * provider_id: integer representing provider's id;
    * request_id : integer representing request's id.
-   * 
+   *
    * OUTPUT ARGUMENTS (boolean):
    * TRUE : the combination provider_id @ $request_id is present in table provider_request;
    * FALSE: it's not present.
@@ -1897,13 +1897,13 @@
    ****** DELETESERVICEPROVIDERANDREQUESTFROMTABLEPROVIDERREQUEST
    ****************************************************************************************************
    * Function to delete the combination of provider_id with request_id from table provider_request.
-   * 
+   *
    * INPUT ARGUMENTS:
    * provider_id: integer representing provider's id;
    * request_id : integer representing request's id.
-   * 
+   *
    * OUTPUT ARGUMENTS:
-   * 1: operation executed with success; 
+   * 1: operation executed with success;
    * 0: the combination provider_id @ $request_id was not present in table provider_request.
    ****************************************************************************************************
    ****** INSERTSERVICEPROVIDERANDREQUESTINTABLEPROVIDERREQUEST
@@ -1949,7 +1949,7 @@
       VALUES ( ? , ? )
     ");
     try{
-      $stm->execute(array($provider_id, $request_id))
+      $stm->execute(array($provider_id, $request_id));
     } catch(PDOexception $e) {
       return -1;
     }

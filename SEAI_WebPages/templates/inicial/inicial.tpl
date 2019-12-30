@@ -30,20 +30,20 @@
         </p>
         <p class="lead"> All the data present in the platform is managed by the users that acquired it - Service Providers.</p>
         <p class="lead">Regarding the requests for new mission plans or access to past data, these actions are preformed by the Service Client.</p>
-
+        <p class="lead"> For more information on how to login in the website, check the following videos.</p>
       </div>
       <div class="col-lg-6">
+        <p class="lead text-white mb-0"> Registering as Service Provider</p>
+        <div class="modal-body"  align="center">
+          <iframe width="70%" height="200" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+        <!--<p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>-->
 
-        <p class="lead"> For more information on how to login in the website, check the following videos.</p>
-        <p class="lead text-white mb-0"> Service Provider</p>
-        <div class="bg-white p-5 rounded shadow-sm">
-        <p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>
-        </div>
-        <p class= "lead my-5"></p>
-        <p class="lead text-white mb-0"> Service Client</p>
-        <div class="bg-white p-5 rounded shadow-sm">
-        <p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>
-        </div>
+        <p class="lead text-white mb-0"> Registering as Service Client</p>
+          <div class="modal-body"  align="center">
+            <iframe width="70%" height="200" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+          </div>
+        <!--<p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>-->
       </div>
     </div>
 
