@@ -10,7 +10,6 @@ var allAreas = {
 
 
 
-
 function post(path, params, method='post') {
 
 //esta função dava para ser mais pequena mas ela explode misteriosamente quando a tento encortar
@@ -70,7 +69,67 @@ function getinicialdata(path) {
 				});
 }
 
-
+function getsurveydata(path) {
+	$.ajax({
+					method: 'POST',
+					url: path,
+					data:{iarea:0},
+					success: function(data){
+					console.log(data);
+						if (data!="0") {
+							var parse=(data.substr(0));
+							var area_t=parse.split(/POLYGON/);
+							var t = []; 
+							var clean =[];
+							for (var i = 0; i < area_t.length; i++) {
+								  t.push(area_t[i].split(/\,/));
+							}
+							t.shift();
+							console.log(t);
+							for (var i = 0; i < t.length; i++) {
+								clean[i]=[];
+								for (var j = 0; j < t[i].length; j++) {
+								clean[i].push(t[i][j].split(" "));
+								//console.log(clean[i]);
+								//clean[i][j].shift();
+								//clean[i][j].pop();
+								for (var z = 0; z < clean[i][j].length; z++) {
+								clean[i][j][z]=clean[i][j][z].replace(/[|&;$%@"<>()+,]/g,"");
+							}
+							
+							}
+							}
+							console.log(clean[0]);
+							for (var i = 0; i < clean.length; i++) {
+									for(var j = 0; j < clean[i].length; j++){
+											for(var z = 0; z < clean[i][j].length; z++){
+											clean[i][j][z]=parseFloat(clean[i][j][z]);
+											}
+											clean[i][j]=clean[i][j].reverse();
+									}
+							}
+							for (var i = 0; i < clean.length-1; i++) {
+								clean[i].pop();
+							}
+							console.log(clean);
+						
+							for (var i = 0; i < clean.length; i++) {
+							var initpolygon = L.polygon([
+								clean[i]
+							], {color:'green'}).addTo(map).disableEdit();
+							}
+							
+						}	
+						else{
+							alert(data);
+						}
+											
+					},
+					error: function(xhr, desc, err){
+						console.log(err);
+					}
+				});
+}
 
 
 

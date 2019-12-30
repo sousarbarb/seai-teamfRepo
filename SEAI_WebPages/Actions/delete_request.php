@@ -4,7 +4,7 @@
 		$request_id = $_GET['request_id'];
 		$provider_id = $smarty->getTemplateVars('user_id');
 		$result = deleteServiceProviderAndRequestFromTableProviderRequest($provider_id, $request_id);
-		die (header("Location: ../pages/propostas_disponiveis.tpl"));
+		die (header("Location: ../pages/menu_requests_available.php"));
 
 ?>
 

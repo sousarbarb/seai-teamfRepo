@@ -65,7 +65,7 @@
           {elseif $acc_type=="provider"}
           <div class="dropdown-container" aria-labelledby="navbarDropdown">
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_pendingoffers.php">Pending Offers</a>
-            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_waiting.php">Waiting Offers</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_available.php">Available Requests</a>
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_progress.php">In Progess</a>
           </div>
           {/if}
