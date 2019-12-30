@@ -19,7 +19,7 @@
         <tr>
         <td>{$request['request_id']}</td><td>{$request['client_name']}</td><td>{$request['request_sensor_type']}</td><td>{$request['request_res_value']}</td><td>{$request['polygon']}</td><td>{$request['request._comments']}</td>
 
-        <td><a href="formulario_proposalnewmission.tpl">Aceitar</a></td>
+        <td><a href="form_proposalnewmission.php">Aceitar</a></td>
         <td><a href="{$BASE_URL}actions/delete_request.php?id_request=".{$request['request_id']}."">Ignorar</a></td>
         </tr>
     {/foreach}

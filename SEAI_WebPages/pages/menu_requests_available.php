@@ -7,10 +7,10 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
   $requests = getAllRequests( $smarty->getTemplateVars('user_id') );
   if (requests==-1){
   	$_SESSION['error_messages'][] = 'Request not found';
-	die(header("Location:  $BASE_URL" . 'pages/propostas_disponiveis.php'));
+	die(header("Location:  $BASE_URL" . 'pages/menu_requests_available.php'));
   }
 
   $smarty->assign('menu', '4');
-  $smarty->display('requests/propostas_disponiveis.tpl');
+  $smarty->display('requests/menu_requests_available.tpl');
 }
 ?>
