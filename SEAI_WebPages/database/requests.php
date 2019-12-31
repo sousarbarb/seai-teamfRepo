@@ -55,8 +55,6 @@
     return $stm->fetchAll();
   }
 
-
-
   /****************************************************************************************************
    ****** GETALLDATASTOREDAREAS
    ****************************************************************************************************
@@ -239,7 +237,7 @@
   function processPolygonGetString($area){
     // Initial string necessary for query
     $polygon = "'POLYGON( ( ";
-    $n_poly =$area['numberPolygons']
+	$n_poly =$area['numberPolygons'];
     // Add to polygon the points vertices defined by the user
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
     $polygon .= "   ";

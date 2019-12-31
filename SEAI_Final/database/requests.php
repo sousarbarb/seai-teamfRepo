@@ -1,4 +1,60 @@
 <?php
+
+  function getAllMissionsProposal( $request_id ){
+    global $conn;
+
+    // Get all areas relative to data already present in database
+    $stm = $conn->prepare("
+      SELECT
+        mission.id                    AS mission_id,
+        service_provider.entity_name  AS entity_name,
+        mission.est_starting_time     AS est_starting_time  ,
+        mission.est_finished_time     AS est_finished_time  ,
+        mission.price                 AS price ,
+        mission.path_pdf              AS pdf
+
+      FROM mission, request, service_provider, provider_request, request_mission
+
+       WHERE (
+        mission.provider_id = service_provider.id  AND
+        mission.id = request_mission.mission_id    AND
+        request.id = request_mission.request_id    AND
+        request.id = ?)
+       ");
+    $stm->execute(array($request_id));
+
+    // Return results
+    return $stm->fetchAll();
+  }
+
+
+  function getAllRequests( $id ) {
+      global $conn;
+
+
+    // Get all areas relative to data already present in database
+    $stm = $conn->prepare("
+      SELECT
+        request.id                    AS request_id,
+        request.sensor_type           AS request_sensor_type,
+        request.resolution_type       AS request_res_value  ,
+        request.comments              AS request_comments   ,
+        service_client.client_name    AS client_name,
+        area.polygon                  AS polygon
+
+      FROM request, service_client, area, service_provider, provider_request
+      WHERE (
+        request.id = provider_request.request_id  AND
+        service_provider.id = ?          AND
+        request.area_id = area.id                         AND
+        request.client_id = service_client.id)
+       ");
+    $stm->execute(array($id));
+
+    // Return results
+    return $stm->fetchAll();
+  }
+
   /****************************************************************************************************
    ****** GETALLDATASTOREDAREAS
    ****************************************************************************************************
@@ -181,24 +237,24 @@
   function processPolygonGetString($area){
     // Initial string necessary for query
     $polygon = "'POLYGON( ( ";
-
+	$n_poly =$area['numberPolygons'];
     // Add to polygon the points vertices defined by the user
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
     $polygon .= "   ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
-    for($i = 1 ; $i < $area['polygonsVertLatLng']['numerodevertices'] ; $i++){
+    for($i = 1 ; $i < $area['polygonsVertLatLng'][$n_poly-1]['numerodevertices'] ; $i++){
       $polygon .= " , ";
-      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['long'];
+      $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['long'];
       $polygon .= "   ";
-      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['lat'];
+      $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['lat'];
     }
 
     // Closing polygon
     $polygon .= " , ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
     $polygon .= "   ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
     // Clossing string
     $polygon .= ") ) '";
