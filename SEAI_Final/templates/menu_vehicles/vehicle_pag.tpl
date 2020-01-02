@@ -113,33 +113,24 @@
 			<p class="vehicle_res">No results found</p>
 		{else}
 			<p class="vehicle_res">Numbers of results found: {count($communications)}</p>
-			{foreach $communications as $communication}
 			<table>
 				<tr>
-					<td><label class="vehicle_info_label">Type: </label>{$communication['communication_type']}</td>
-					{if $sameprovider}
-					<td>
-						<form id="{$communication['communication_id']}_deleteCommunication" method="post" action="{$BASE_URL}actions/deletecommunication.php">
-							<input type="hidden" name="communication_id" value="{$communication['communication_id']}">
-						</form>
-						<a href="#" onclick="document.getElementById('{$communication['communication_id']}_deleteCommunication').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Communication</a>
-					</td>
-					{/if}
-				</tr>
-				<tr>
-					<td><label class="vehicle_info_label">Type: </label>{$sensor['sensor_type']}</td>
-				</tr>
-				<tr>
-					<td><label class="vehicle_info_label">Comments: </label>{$sensor['sensor_comments']}</td>
-				</tr>
+					<td><label class="vehicle_info_label">Type:</td>
+        </tr>
+        {foreach $communications as $communication}
+        <tr>
+          <td><ul><li>{$communication['communication_type']}</li><ul></td>
+          {if $sameprovider}
+          <td>
+            <form id="{$communication['communication_id']}_deleteCommunication" method="post" action="{$BASE_URL}actions/deletecommunication.php">
+              <input type="hidden" name="communication_id" value="{$communication['communication_id']}">
+            </form>
+            <a href="#" onclick="document.getElementById('{$communication['communication_id']}_deleteCommunication').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Communication</a>
+          </td>
+          {/if}
+        </tr>
+        {/foreach}
 			</table>
-
-
-
-				<ul>
-					<li>{$communication['communication_type']}</li>
-				</ul>
-			{/foreach}
 		{/if}
 	</article>
 

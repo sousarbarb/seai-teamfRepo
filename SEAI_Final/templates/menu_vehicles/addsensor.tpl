@@ -20,33 +20,37 @@
 
     <div class="myacc">
     <form method="post" action="../actions/addsensor.php">
-    <table class="text-white">
-    <tr><td class="gg">
-    Name: </td><td class="register"><input type="text" name="name"
-              value="{if (isset($form_values))}{$form_values.name}{/if}">
-    </tr>
-    <tr><td class="gg">
-    Type: </td><td class="register"><input type="text" name="type"
-              value="{if (isset($form_values))}{$form_values.type}{/if}">
-    </tr>
-    <tr><td>
-    Comments: </td><td class="register"><input type="text" name="comments"
-              value="{if (isset($form_values))}{$form_values.comments}{/if}">
-    </tr>
+      <table class="text-white">
+        <tr><td class="gg">
+        Name: </td><td class="register"><input type="text" name="name"
+                  value="{if (isset($form_values))}{$form_values.name}{/if}">
+        </tr>
+        <tr><td class="gg">
+        Type: </td><td class="register"><input type="text" name="type"
+                  value="{if (isset($form_values))}{$form_values.type}{/if}">
+        </tr>
+        <tr><td>
+        Comments: </td><td class="register"><input type="text" name="comments"
+                  value="{if (isset($form_values))}{$form_values.comments}{/if}">
+        </tr>
 
-    <input type="hidden" name="vehicle_name"
-        value="{if (isset($form_values))}{$form_values.vehicle_name}{else}{$vehicle_name}{/if}">
+        <input type="hidden" name="vehicle_name"
+            value="{if (isset($form_values))}{$form_values.vehicle_name}{else}{$vehicle_name}{/if}">
 
-    <tr><td>
-    <input type="hidden" name="selectform" value="provider">
-    <input class="btn btn-info" type="submit" name="submit" value="Add">
-    <a href="javascript:void(0)" class="btn btn-info button_form_cancel" style="text-decoration:none;color:white;margin-left:30em;"> Cancel </a>
-    </td></tr>
-    </table>
+        <tr><td>
+        <input type="hidden" name="selectform" value="provider">
+        {if empty($success_messages)}
+          <input class="btn btn-info" type="submit" name="submit" value="Add">
+          <a href="javascript:void(0)" class="btn btn-info button_form_cancel" style="text-decoration:none;color:white;margin-left:30em;"> Cancel </a>
+        {else}
+          <a href="javascript:void(0)" class="btn btn-info button_form_cancel" style="text-decoration:none;color:white;margin-left:30em;"> Back </a>
+        {/if}
+        </td></tr>
+      </table>
     </form>
     <form method="post" action="{$BASE_URL}pages/vehicle_pag.php" name="form_cancel" class="form_cancel">
-    <input type="hidden" class="form_post" name="vehicle_name" value="{if isset($form_values)}{$form_values.vehicle_name}{else}{$vehicle_name}{/if}">
-    <input type="submit" style="display: none;">
+      <input type="hidden" class="form_post" name="vehicle_name" value="{if isset($form_values)}{$form_values.vehicle_name}{else}{$vehicle_name}{/if}">
+      <input type="submit" style="display: none;">
     </form>
     </div>
 <br><br>

@@ -1,11 +1,16 @@
 <?php
 
-include_once('../config/init.php');
+  include_once('../config/init.php');
 
-    $resolution_id = $_POST['resolution_id'];
-    $active = FALSE;
+  if(!$_POST['res_id']){
+    $_SESSION['error_messages'][]="Resolution not found";
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
 
-    editResolutionActive($resolution_id, $active);
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
+  $resolution_id = $_POST['res_id'];
+  $active = FALSE;
+
+  editResolutionActive($resolution_id, $active);
+  header('Location: ' . $_SERVER['HTTP_REFERER']);
     
 ?>

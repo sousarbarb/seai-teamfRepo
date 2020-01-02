@@ -259,8 +259,8 @@
                  value_max = ?,
                  active    = ?,
                  comments  = ?
-          WHERE  specification_id = ? AND
-                 vehicle_id       = ?
+          WHERE  id         = ? AND
+                 vehicle_id = ?
         ");
         try {
           $stm->execute(array($value_min,
@@ -1552,6 +1552,24 @@ SELECT * FROM vehicle_sensor_resolution;
     if($active == FALSE){
       // If a vehicle is no longer active, loses the administrator approval
       editVehicleApproval($id, FALSE);
+
+      // Searches all notifications related with vehicle
+      $stm = $conn->prepare("
+        SELECT  *
+        FROM  notification
+        WHERE vehicle_id = ?
+      ");
+      $stm->execute(array($id));
+      $results = $stm->fetchAll();
+      if( $results != FALSE ){
+        foreach( $results as $result ){
+          $stm = $conn->prepare("
+            DELETE FROM notification
+            WHERE id = ?
+          ");
+          $stm->execute(array($result['id']));
+        }
+      }
       
       // Search active sensors
       $stm = $conn->prepare("
@@ -1594,7 +1612,7 @@ SELECT * FROM vehicle_sensor_resolution;
       
       // Executes the elimination for each existing protocol communication of the vehicle
       foreach($results as $result) {
-        deleteVehicleCommunication($result['vehicle_id'], $result['$communication_id']);
+        deleteVehicleCommunication($result['$communication_id']);
       }
     }
     
@@ -1664,7 +1682,7 @@ SELECT * FROM vehicle_sensor_resolution;
     // Updates sensor
     $stm = $conn->prepare("
         UPDATE sensor
-        SET    name     = ?,
+        SET    sensor_name     = ?,
                comments = ?
         WHERE  id = ?");
     try{
@@ -1780,7 +1798,7 @@ SELECT * FROM vehicle_sensor_resolution;
   /****************************************************************************************************
    ***** DELETEVEHICLECOMMUNICATION
    ****************************************************************************************************/
-  function deleteVehicleCommunication($vehicle_id, $communication_id){
+  function deleteVehicleCommunication($communication_id){
     // Global variable: connection to the database
     global $conn;
 
@@ -1788,10 +1806,9 @@ SELECT * FROM vehicle_sensor_resolution;
     $stm = $conn->prepare("
       DELETE
       FROM  vehicle_communication
-      WHERE vehicle_id       = ? AND
-            communication_id = ?
+      WHERE communication_id = ?
     ");
-    $stm->execute(array($vehicle_id, $communication_id));
+    $stm->execute(array($communication_id));
   }
 
   /****************************************************************************************************
