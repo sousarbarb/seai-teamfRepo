@@ -63,14 +63,14 @@
       <input type="hidden" name="vehicle_name"
             value="{if isset($form_values)}{$form_values.vehicle_name}{else}{$vehicle_name}{/if}">
 
-        <tr><td>
-        {if empty($success_messages)}
-          <input class="btn btn-info" type="submit" name="submit" value="Confirm">
-          <a href="javascript:void(0)" class="btn btn-info button_form_cancel" style="text-decoration:none;color:white;margin-left:32em;"> Cancel </a>
-        {else}
-          <a href="javascript:void(0)" class="btn btn-info button_form_cancel" style="text-decoration:none;color:white;margin-left:30em;"> Back </a>
-        {/if}
-        </td></tr>
+      <tr><td>
+      {if empty($success_messages)}
+        <input class="btn btn-info" type="submit" name="submit" value="Confirm">
+        <a href="javascript:void(0)" class="btn btn-info button_form_cancel" style="text-decoration:none;color:white;margin-left:32em;"> Cancel </a>
+      {else}
+        <a href="javascript:void(0)" class="btn btn-info button_form_cancel" style="text-decoration:none;color:white;margin-left:30em;"> Back </a>
+      {/if}
+      </td></tr>
 
     </table>
   </form>

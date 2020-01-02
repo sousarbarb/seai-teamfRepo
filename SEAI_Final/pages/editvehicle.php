@@ -4,23 +4,23 @@ include_once('../config/init.php');
 if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
   die(header('Location: index.php'));
 } else {
+  if($_POST){
+    if(isset($_POST['vehicle_name']))
+      $_SESSION['vehicle_name_temp'] = $_POST['vehicle_name'];
 
-    $vehicle_id = $_POST['vehicle_id'];  
-    $smarty->assign('vehicle_id', $vehicle_id);
-
-    $vehicle_name = $_POST['vehicle_name'];  
-    $smarty->assign('vehicle_name', $vehicle_name);
-
-    $localization = $_POST['localization'];  
-    $smarty->assign('localization', $localization);
-
+    $vehicle_id   = $_POST['vehicle_id'];  
+    $vehicle_name = $_POST['vehicle_name'];
+    $localization = $_POST['localization'];   
     $comments = $_POST['comments'];  
+    $vehicle_public = $_POST['vehicle_public']; 
+
+    $smarty->assign('vehicle_id', $vehicle_id);
+    $smarty->assign('vehicle_name', $vehicle_name);
+    $smarty->assign('localization', $localization);
     $smarty->assign('comments', $comments);
-
-    $public = $_POST['public'];  
-    $smarty->assign('public', $public);
-
-    $smarty->assign('menu', '3');
-    $smarty->display('menu_vehicles/editvehicle.tpl');
+    $smarty->assign('vehicle_public', $vehicle_public);
+  }
+  $smarty->assign('menu', '3');
+  $smarty->display('menu_vehicles/editvehicle.tpl');
 }
 ?>

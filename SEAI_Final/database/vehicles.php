@@ -1612,7 +1612,7 @@ SELECT * FROM vehicle_sensor_resolution;
       
       // Executes the elimination for each existing protocol communication of the vehicle
       foreach($results as $result) {
-        deleteVehicleCommunication($result['$communication_id']);
+        deleteVehicleCommunication($result['communication_id']);
       }
     }
     

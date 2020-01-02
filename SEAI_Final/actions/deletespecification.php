@@ -7,6 +7,9 @@
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
 
+  if(isset($_POST['vehicle_name']))
+    $_SESSION['vehicle_name_temp'] = $_POST['vehicle_name'];
+
   $specification_id = $_POST['spec_id'];
   $active = FALSE;
 

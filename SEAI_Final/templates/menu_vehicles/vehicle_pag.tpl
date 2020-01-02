@@ -28,6 +28,24 @@
     <p>Vehicle information not publicly available.</p>
   {else}
 
+  <!-- EDIT/REMOVE VEHICLE -->
+  <form id="{$generalInfo['vehicle_name']}_editVehicle" method="post" action="{$BASE_URL}pages/editvehicle.php">
+    <input type="hidden" name="vehicle_id"   value="{$generalInfo['vehicle_id']}">
+    <input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
+    <input type="hidden" name="localization" value="{$generalInfo['vehicle_localization']}">
+    <input type="hidden" name="comments" value="{$generalInfo['vehicle_comments']}">
+    {if $generalInfo['vehicle_public']}
+    <input type="hidden" name="vehicle_public" value="y">
+    {else}
+    <input type="hidden" name="vehicle_public" value="n">
+    {/if}
+  </form>
+  <form id="{$generalInfo['vehicle_name']}_deleteVehicle" method="post" action="{$BASE_URL}actions/deletevehicle.php">
+    <input type="hidden" name="vehicle_id" value="{$generalInfo['vehicle_id']}">
+    <input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
+  </form>
+  <!------------------------->
+
 	<article>
 		<p><label class="vehicle_info_label">Entity Name</label>{$generalInfo['provider_username']}</p>
 		<p><label class="vehicle_info_label">Localization</label>{$generalInfo['vehicle_localization']}</p>
@@ -37,6 +55,17 @@
 		  <p><label class="vehicle_info_label">Public</label> {if $generalInfo['vehicle_public']}Yes{else}No{/if}</p>
     {/if}
 	</article>
+
+  <!-- TABLE WITH EDIT / REMOVE VEHICLE -->
+  <table>
+    <tr>
+      <td>
+        <a href="#" onclick="document.getElementById('{$generalInfo['vehicle_name']}_editVehicle').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Vehicle</a>
+        <a href="#" onclick="document.getElementById('{$generalInfo['vehicle_name']}_deleteVehicle').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Vehicle</a>
+      </td>
+    </tr>
+  </table>
+  <!-------------------------------------->
 
 	<article>
 		<table class="vehicle_titulo_table">
@@ -84,6 +113,7 @@
 	          </form>
 						<form id="{$specification['spec_id']}_deleteSpecification" method="post" action="{$BASE_URL}actions/deletespecification.php">
 	            <input type="hidden" name="spec_id" value="{$specification['spec_id']}">
+					    <input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
 	          </form>
 						<a href="#" onclick="document.getElementById('{$specification['spec_id']}_editSpecification').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Specification</a>
 						<a href="#" onclick="document.getElementById('{$specification['spec_id']}_deleteSpecification').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Specification</a>
@@ -124,6 +154,7 @@
           <td>
             <form id="{$communication['communication_id']}_deleteCommunication" method="post" action="{$BASE_URL}actions/deletecommunication.php">
               <input type="hidden" name="communication_id" value="{$communication['communication_id']}">
+					    <input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
             </form>
             <a href="#" onclick="document.getElementById('{$communication['communication_id']}_deleteCommunication').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Communication</a>
           </td>
@@ -167,6 +198,7 @@
 						</form>
 						<form id="{$sensor['sensor_id']}_deleteSensor" method="post" action="{$BASE_URL}actions/deletesensor.php">
 							<input type="hidden" name="sensor_id" value="{$sensor['sensor_id']}">
+					    <input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
 						</form>
 						<a href="#" onclick="document.getElementById('{$sensor['sensor_id']}_editSensor').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Sensor</a>
 						<a href="#" onclick="document.getElementById('{$sensor['sensor_id']}_deleteSensor').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Sensor</a>
@@ -245,6 +277,7 @@
 					          </form>
 										<form id="{$resolution['res_id']}_deleteResolution" method="post" action="{$BASE_URL}actions/deleteresolution.php">
 					            <input type="hidden" name="res_id" value="{$resolution['res_id']}">
+					            <input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
 					          </form>
 										<a href="#" onclick="document.getElementById('{$resolution['res_id']}_editResolution').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Resolution</a>
 										<a href="#" onclick="document.getElementById('{$resolution['res_id']}_deleteResolution').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Resolution</a>

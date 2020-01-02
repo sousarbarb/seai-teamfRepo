@@ -9,6 +9,9 @@
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
 
+  if(isset($_POST['vehicle_name']))
+    $_SESSION['vehicle_name_temp'] = $_POST['vehicle_name'];
+
   $communication_id = $_POST['communication_id'];
 
   deleteVehicleCommunication($communication_id);
