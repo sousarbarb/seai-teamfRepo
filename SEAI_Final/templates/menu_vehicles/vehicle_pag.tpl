@@ -29,6 +29,7 @@
   {else}
 
   <!-- EDIT/REMOVE VEHICLE -->
+	{if $sameprovider}
   <form id="{$generalInfo['vehicle_name']}_editVehicle" method="post" action="{$BASE_URL}pages/editvehicle.php">
     <input type="hidden" name="vehicle_id"   value="{$generalInfo['vehicle_id']}">
     <input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
@@ -44,6 +45,7 @@
     <input type="hidden" name="vehicle_id" value="{$generalInfo['vehicle_id']}">
     <input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
   </form>
+	{/if}
   <!------------------------->
 
 	<article>
@@ -57,6 +59,7 @@
 	</article>
 
   <!-- TABLE WITH EDIT / REMOVE VEHICLE -->
+	{if $sameprovider}
   <table>
     <tr>
       <td>
@@ -65,6 +68,7 @@
       </td>
     </tr>
   </table>
+	{/if}
   <!-------------------------------------->
 
 	<article>

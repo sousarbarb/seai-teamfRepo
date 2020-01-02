@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2020-01-02 03:47:19
+/* Smarty version 3.1.33, created on 2020-01-02 17:26:38
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_Final\templates\menu_vehicles\vehicle_pag.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5e0d59b77451f5_61153206',
+  'unifunc' => 'content_5e0e19be59bac0_45184177',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2f2372a67c5086ce45015e0783f9470268ee4bb7' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_Final\\templates\\menu_vehicles\\vehicle_pag.tpl',
-      1 => 1577933234,
+      1 => 1577982387,
       2 => 'file',
     ),
   ),
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:common/footer-short.tpl' => 1,
   ),
 ),false)) {
-function content_5e0d59b77451f5_61153206 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e0e19be59bac0_45184177 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:common/navbar_logged_in.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:common/logout.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
@@ -74,6 +74,36 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
     <p>Vehicle information not publicly available.</p>
   <?php } else { ?>
 
+  <!-- EDIT/REMOVE VEHICLE -->
+	<?php if ($_smarty_tpl->tpl_vars['sameprovider']->value) {?>
+  <form id="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
+_editVehicle" method="post" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+pages/editvehicle.php">
+    <input type="hidden" name="vehicle_id"   value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_id'];?>
+">
+    <input type="hidden" name="vehicle_name" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
+">
+    <input type="hidden" name="localization" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_localization'];?>
+">
+    <input type="hidden" name="comments" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_comments'];?>
+">
+    <?php if ($_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_public']) {?>
+    <input type="hidden" name="vehicle_public" value="y">
+    <?php } else { ?>
+    <input type="hidden" name="vehicle_public" value="n">
+    <?php }?>
+  </form>
+  <form id="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
+_deleteVehicle" method="post" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
+actions/deletevehicle.php">
+    <input type="hidden" name="vehicle_id" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_id'];?>
+">
+    <input type="hidden" name="vehicle_name" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
+">
+  </form>
+	<?php }?>
+  <!------------------------->
+
 	<article>
 		<p><label class="vehicle_info_label">Entity Name</label><?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['provider_username'];?>
 </p>
@@ -86,6 +116,21 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 		  <p><label class="vehicle_info_label">Public</label> <?php if ($_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_public']) {?>Yes<?php } else { ?>No<?php }?></p>
     <?php }?>
 	</article>
+
+  <!-- TABLE WITH EDIT / REMOVE VEHICLE -->
+	<?php if ($_smarty_tpl->tpl_vars['sameprovider']->value) {?>
+  <table>
+    <tr>
+      <td>
+        <a href="#" onclick="document.getElementById('<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
+_editVehicle').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Vehicle</a>
+        <a href="#" onclick="document.getElementById('<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
+_deleteVehicle').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Vehicle</a>
+      </td>
+    </tr>
+  </table>
+	<?php }?>
+  <!-------------------------------------->
 
 	<article>
 		<table class="vehicle_titulo_table">
@@ -156,6 +201,8 @@ _deleteSpecification" method="post" action="<?php echo $_smarty_tpl->tpl_vars['B
 actions/deletespecification.php">
 	            <input type="hidden" name="spec_id" value="<?php echo $_smarty_tpl->tpl_vars['specification']->value['spec_id'];?>
 ">
+					    <input type="hidden" name="vehicle_name" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
+">
 	          </form>
 						<a href="#" onclick="document.getElementById('<?php echo $_smarty_tpl->tpl_vars['specification']->value['spec_id'];?>
 _editSpecification').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Specification</a>
@@ -195,48 +242,38 @@ _addcommunication').submit()" class= "button4 submitAsBtn button_provider_hist2"
 		<?php } else { ?>
 			<p class="vehicle_res">Numbers of results found: <?php echo count($_smarty_tpl->tpl_vars['communications']->value);?>
 </p>
-			<?php
+			<table>
+				<tr>
+					<td><label class="vehicle_info_label">Type:</td>
+        </tr>
+        <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['communications']->value, 'communication');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['communication']->value) {
 ?>
-			<table>
-				<tr>
-					<td><label class="vehicle_info_label">Type: </label><?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_type'];?>
-</td>
-					<?php if ($_smarty_tpl->tpl_vars['sameprovider']->value) {?>
-					<td>
-						<form id="<?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_id'];?>
+        <tr>
+          <td><ul><li><?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_type'];?>
+</li><ul></td>
+          <?php if ($_smarty_tpl->tpl_vars['sameprovider']->value) {?>
+          <td>
+            <form id="<?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_id'];?>
 _deleteCommunication" method="post" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 actions/deletecommunication.php">
-							<input type="hidden" name="communication_id" value="<?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_id'];?>
+              <input type="hidden" name="communication_id" value="<?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_id'];?>
 ">
-						</form>
-						<a href="#" onclick="document.getElementById('<?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_id'];?>
+					    <input type="hidden" name="vehicle_name" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
+">
+            </form>
+            <a href="#" onclick="document.getElementById('<?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_id'];?>
 _deleteCommunication').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Communication</a>
-					</td>
-					<?php }?>
-				</tr>
-				<tr>
-					<td><label class="vehicle_info_label">Type: </label><?php echo $_smarty_tpl->tpl_vars['sensor']->value['sensor_type'];?>
-</td>
-				</tr>
-				<tr>
-					<td><label class="vehicle_info_label">Comments: </label><?php echo $_smarty_tpl->tpl_vars['sensor']->value['sensor_comments'];?>
-</td>
-				</tr>
-			</table>
-
-
-
-				<ul>
-					<li><?php echo $_smarty_tpl->tpl_vars['communication']->value['communication_type'];?>
-</li>
-				</ul>
-			<?php
+          </td>
+          <?php }?>
+        </tr>
+        <?php
 }
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+			</table>
 		<?php }?>
 	</article>
 
@@ -292,6 +329,8 @@ pages/editsensor.php">
 _deleteSensor" method="post" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 actions/deletesensor.php">
 							<input type="hidden" name="sensor_id" value="<?php echo $_smarty_tpl->tpl_vars['sensor']->value['sensor_id'];?>
+">
+					    <input type="hidden" name="vehicle_name" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
 ">
 						</form>
 						<a href="#" onclick="document.getElementById('<?php echo $_smarty_tpl->tpl_vars['sensor']->value['sensor_id'];?>
@@ -421,6 +460,8 @@ pages/editresolution.php">
 _deleteResolution" method="post" action="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 actions/deleteresolution.php">
 					            <input type="hidden" name="res_id" value="<?php echo $_smarty_tpl->tpl_vars['resolution']->value['res_id'];?>
+">
+					            <input type="hidden" name="vehicle_name" value="<?php echo $_smarty_tpl->tpl_vars['generalInfo']->value['vehicle_name'];?>
 ">
 					          </form>
 										<a href="#" onclick="document.getElementById('<?php echo $_smarty_tpl->tpl_vars['resolution']->value['res_id'];?>
