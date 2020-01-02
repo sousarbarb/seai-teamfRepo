@@ -22,6 +22,23 @@ if( !$_POST['vehicle_service_username'] || !$_POST['vehicle_name'] ||
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
 
+// Test vehicle name
+if(empty($_POST['vehicle_name'])){
+  $_SESSION['error_messages'][]="Vehicle name required";
+  $_SESSION['form_values']=$_POST;
+  die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+}
+if(ctype_space($_POST['vehicle_name']) || strpos($_POST['vehicle_name'], ' ') !== FALSE){
+  $_SESSION['error_messages'][]="Vehicle name can not have white spaces";
+  $_SESSION['form_values']=$_POST;
+  die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+}
+if(strlen(test_input($_POST['vehicle_name'])) < 2){
+  $_SESSION['error_messages'][]="Vehicle name should contain more than 2 characters";
+  $_SESSION['form_values']=$_POST;
+  die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+}
+
 // Test inputs to prevent scripts execution
 $provider_username = test_input($_POST['vehicle_service_username']);
 $vehicle_name      = test_input($_POST['vehicle_name']);
