@@ -18,4 +18,9 @@ $(document).ready(function() {
   $('input[type=checkbox][id=resolutions_filter]').change(function() {
       $('input[type=submit][name=vehicles_submit]').click();
   });
+
+  //Vehicles Page
+  $(".button_form_cancel").click(function() {
+    $('.form_cancel').submit();
+  });
 });

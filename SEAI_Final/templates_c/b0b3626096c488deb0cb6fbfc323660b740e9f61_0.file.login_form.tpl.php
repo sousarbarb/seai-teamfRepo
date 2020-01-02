@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-30 11:21:04
+/* Smarty version 3.1.33, created on 2020-01-01 14:50:24
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_Final\templates\common\login_form.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5e09cf904ba900_98409969',
+  'unifunc' => 'content_5e0ca3a03118c9_42948471',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b0b3626096c488deb0cb6fbfc323660b740e9f61' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_Final\\templates\\common\\login_form.tpl',
-      1 => 1577701262,
+      1 => 1577703000,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5e09cf904ba900_98409969 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e0ca3a03118c9_42948471 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!LOGIN FORM>
     <button onclick="document.getElementById('id01').style.display='block'" class= "logbutton button4 "style="width:auto;">Login / Sign-Up</button>
     <div id="id01" class="modal">

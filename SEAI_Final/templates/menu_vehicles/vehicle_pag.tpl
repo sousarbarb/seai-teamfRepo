@@ -6,10 +6,21 @@
 <div class="vehicle_text">
 
 
-	<h2 class="display-4 text-white">{$generalInfo['vehicle_name']}</h2>
+	<h2 class="display-4 text-white">{if !($extinct)}{$generalInfo['vehicle_name']}{/if}</h2>
 	<p class="lead text-white mb-0">Information about vehicle</p>
 	<div class="separator">
 	</div>
+	{if (isset($success_messages))}
+    {foreach $success_messages as $success}
+      <div class="msg_success"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$success}</div>
+    {/foreach}
+  {/if}
+  {if (isset($error_messages))}
+    {foreach $error_messages as $error}
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+    {/foreach}
+  {/if}
+
 	{if $extinct}
     <p>This vehicle doesn't exist.</p>
   {else}
@@ -34,7 +45,7 @@
 			{if $sameprovider}
 			<td>
 			<form id="{$generalInfo['vehicle_name']}_addspecification" method="post" action="{$BASE_URL}pages/addspecification.php">
-				<input type="hidden" name="vehicle_name" value="$generalInfo['vehicle_name']">
+				<input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
 			</form>
 			<a href="#" onclick="document.getElementById('{$generalInfo['vehicle_name']}_addspecification').submit()" class= "button4 submitAsBtn button_provider_hist2" style="color:white;width: auto;">Add New Specification</a>
 	  	</td>
@@ -64,17 +75,18 @@
 					<td>{$specification['spec_comments']}</td>
 					{if $sameprovider}
 					<td>
-						<form id="{$specification['spec_id']}_edit" method="post" action="{$BASE_URL}pages/editspecification.php">
-	            <input type="hidden" name="spec_id" value="{$specification['spec_id']}">
+						<form id="{$specification['spec_id']}_editSpecification" method="post" action="{$BASE_URL}pages/editspecification.php">
+							<input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
+							<input type="hidden" name="spec_id" value="{$specification['spec_id']}">
 							<input type="hidden" name="spec_valuemin" value="{$specification['spec_valuemin']}">
 							<input type="hidden" name="spec_valuemax" value="{$specification['spec_valuemax']}">
 							<input type="hidden" name="spec_comments" value="{$specification['spec_comments']}">
 	          </form>
-						<form id="{$specification['spec_id']}_delete" method="post" action="{$BASE_URL}pages/deletespecification.php">
+						<form id="{$specification['spec_id']}_deleteSpecification" method="post" action="{$BASE_URL}actions/deletespecification.php">
 	            <input type="hidden" name="spec_id" value="{$specification['spec_id']}">
 	          </form>
-						<a href="#" onclick="document.getElementById('{$specification['spec_id']}_edit').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Specification</a>
-						<a href="#" onclick="document.getElementById('{$specification['spec_id']}_delete').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Specification</a>
+						<a href="#" onclick="document.getElementById('{$specification['spec_id']}_editSpecification').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Specification</a>
+						<a href="#" onclick="document.getElementById('{$specification['spec_id']}_deleteSpecification').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Specification</a>
 					</td>
 					{/if}
 				</tr>
@@ -90,7 +102,7 @@
 			{if $sameprovider}
 			<td>
 				<form id="{$generalInfo['vehicle_name']}_addcommunication" method="post" action="{$BASE_URL}pages/addcommunication.php">
-					<input type="hidden" name="vehicle_name" value="$generalInfo['vehicle_name']">
+					<input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
 				</form>
 				<a href="#" onclick="document.getElementById('{$generalInfo['vehicle_name']}_addcommunication').submit()" class= "button4 submitAsBtn button_provider_hist2" style="color:white;width: auto;">Add New Communication</a>
 	  	</td>
@@ -107,10 +119,10 @@
 					<td><label class="vehicle_info_label">Type: </label>{$communication['communication_type']}</td>
 					{if $sameprovider}
 					<td>
-						<form id="{$communication['communication_id']}_delete" method="post" action="{$BASE_URL}pages/deletecommunication.php">
+						<form id="{$communication['communication_id']}_deleteCommunication" method="post" action="{$BASE_URL}actions/deletecommunication.php">
 							<input type="hidden" name="communication_id" value="{$communication['communication_id']}">
 						</form>
-						<a href="#" onclick="document.getElementById('{$communication['communication_id']}_delete').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Communication</a>
+						<a href="#" onclick="document.getElementById('{$communication['communication_id']}_deleteCommunication').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Communication</a>
 					</td>
 					{/if}
 				</tr>
@@ -138,7 +150,7 @@
 			{if $sameprovider}
 			<td>
 				<form id="{$generalInfo['vehicle_name']}_addsensor" method="post" action="{$BASE_URL}pages/addsensor.php">
-					<input type="hidden" name="vehicle_name" value="$generalInfo['vehicle_name']">
+					<input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
 				</form>
 				<a href="#" onclick="document.getElementById('{$generalInfo['vehicle_name']}_addsensor').submit()" class= "button4 submitAsBtn button_provider_hist2" style="color:white;width: auto;">Add New Sensor</a>
 	  	</td>
@@ -155,17 +167,18 @@
 					<td><label class="vehicle_info_label">Name: </label>{$sensor['sensor_name']}</td>
 					{if $sameprovider}
 					<td>
-						<form id="{$sensor['sensor_id']}_edit" method="post" action="{$BASE_URL}pages/editsensor.php">
+						<form id="{$sensor['sensor_id']}_editSensor" method="post" action="{$BASE_URL}pages/editsensor.php">
+							<input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
 							<input type="hidden" name="sensor_id" value="{$sensor['sensor_id']}">
 							<input type="hidden" name="sensor_type" value="{$sensor['sensor_type']}">
 							<input type="hidden" name="sensor_name" value="{$sensor['sensor_name']}">
 							<input type="hidden" name="sensor_comments" value="{$sensor['sensor_comments']}">
 						</form>
-						<form id="{$sensor['sensor_id']}_delete" method="post" action="{$BASE_URL}pages/deletesensor.php">
+						<form id="{$sensor['sensor_id']}_deleteSensor" method="post" action="{$BASE_URL}actions/deletesensor.php">
 							<input type="hidden" name="sensor_id" value="{$sensor['sensor_id']}">
 						</form>
-						<a href="#" onclick="document.getElementById('{$sensor['sensor_id']}_edit').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Sensor</a>
-						<a href="#" onclick="document.getElementById('{$sensor['sensor_id']}_delete').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Sensor</a>
+						<a href="#" onclick="document.getElementById('{$sensor['sensor_id']}_editSensor').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Sensor</a>
+						<a href="#" onclick="document.getElementById('{$sensor['sensor_id']}_deleteSensor').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Sensor</a>
 					</td>
 					{/if}
 				</tr>
@@ -192,10 +205,11 @@
 				<td class="vehicle_titulo">Resolutions</td>
 				{if $sameprovider}
 				<td>
-					<form id="{$sensor['sensor_id']}_add" method="post" action="{$BASE_URL}pages/addresolution.php">
+					<form id="{$sensor['sensor_id']}_addresolution" method="post" action="{$BASE_URL}pages/addresolution.php">
 						<input type="hidden" name="sensor_id" value="{$sensor['sensor_id']}">
+						<input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
 					</form>
-					<a href="#" onclick="document.getElementById('{$sensor['sensor_id']}_add').submit()" class= "button4 submitAsBtn button_provider_hist2" style="color:white;width: auto;">Add New Resolution</a>
+					<a href="#" onclick="document.getElementById('{$sensor['sensor_id']}_addresolution').submit()" class= "button4 submitAsBtn button_provider_hist2" style="color:white;width: auto;">Add New Resolution</a>
 		  	</td>
 				{/if}
 			</tr>
@@ -228,8 +242,9 @@
 									<td>{$resolution['res_comments']}</td>
 									{if $sameprovider}
 									<td>
-										<form id="{$resolution['res_id']}_edit" method="post" action="{$BASE_URL}pages/editresolution.php">
-					            <input type="hidden" name="res_id" value="{$resolution['res_id']}">
+										<form id="{$resolution['res_id']}_editResolution" method="post" action="{$BASE_URL}pages/editresolution.php">
+											<input type="hidden" name="vehicle_name" value="{$generalInfo['vehicle_name']}">
+											<input type="hidden" name="res_id" value="{$resolution['res_id']}">
 											<input type="hidden" name="res_value" value="{$resolution['res_value']}">
 											<input type="hidden" name="res_consumption" value="{$resolution['res_consumption']}">
 											<input type="hidden" name="res_velocity" value="{$resolution['res_velocity']}">
@@ -237,11 +252,11 @@
 											<input type="hidden" name="res_swath" value="{$resolution['res_swath']}">
 											<input type="hidden" name="res_comments" value="{$resolution['res_comments']}">
 					          </form>
-										<form id="{$resolution['res_id']}_delete" method="post" action="{$BASE_URL}pages/deleteresolution.php">
+										<form id="{$resolution['res_id']}_deleteResolution" method="post" action="{$BASE_URL}actions/deleteresolution.php">
 					            <input type="hidden" name="res_id" value="{$resolution['res_id']}">
 					          </form>
-										<a href="#" onclick="document.getElementById('{$resolution['res_id']}_edit').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Resolution</a>
-										<a href="#" onclick="document.getElementById('{$resolution['res_id']}_delete').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Resolution</a>
+										<a href="#" onclick="document.getElementById('{$resolution['res_id']}_editResolution').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Edit Resolution</a>
+										<a href="#" onclick="document.getElementById('{$resolution['res_id']}_deleteResolution').submit()" class= "button4 submitAsBtn button_provider_hist3" style="color:white;width: auto;">Delete Resolution</a>
 									</td>
 									{/if}
 								</tr>

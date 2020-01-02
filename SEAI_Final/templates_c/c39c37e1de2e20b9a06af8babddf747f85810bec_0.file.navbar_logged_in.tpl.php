@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-30 11:17:36
+/* Smarty version 3.1.33, created on 2020-01-02 00:43:24
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_Final\templates\common\navbar_logged_in.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5e09cec0e845d9_92018234',
+  'unifunc' => 'content_5e0d2e9c5166f3_30404593',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'c39c37e1de2e20b9a06af8babddf747f85810bec' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_Final\\templates\\common\\navbar_logged_in.tpl',
-      1 => 1577626608,
+      1 => 1577705700,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5e09cec0e845d9_92018234 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e0d2e9c5166f3_30404593 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
 <body>
@@ -101,7 +101,7 @@ pages/map.php">New</a>
             <a class="dropdown-in" href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 pages/menu_requests_pendingoffers.php">Pending Offers</a>
             <a class="dropdown-in" href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
-pages/menu_requests_waiting.php">Waiting Offers</a>
+pages/menu_requests_available.php">Available Requests</a>
             <a class="dropdown-in" href="<?php echo $_smarty_tpl->tpl_vars['BASE_URL']->value;?>
 pages/menu_requests_progress.php">In Progess</a>
           </div>

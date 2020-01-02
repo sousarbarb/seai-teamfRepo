@@ -8,12 +8,9 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
     if($_POST) {
       $vehicle_name = $_POST['vehicle_name'];
       $smarty->assign('vehicle_name', $vehicle_name);
-
-      $sensor_id = $_POST['sensor_id'];
-      $smarty->assign('sensor_id', $sensor_id);
     }
     $smarty->assign('menu', '3');
-    $smarty->display('menu_vehicles/addresolution.tpl');
+    $smarty->display('menu_vehicles/addcommunication.tpl');
     }
 
 ?>

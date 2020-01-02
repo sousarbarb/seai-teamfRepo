@@ -4,7 +4,7 @@
 
 <body>
 <div class="menusLogin p-5">
-  <h2 class="display-4 text-white">ADD SENSOR</h2>
+  <h2 class="display-4 text-white">ADD COMMUNICATION</h2>
   <div class="separator"></div>
 
   {if (isset($success_messages))}
@@ -19,19 +19,11 @@
   {/if}
 
     <div class="myacc">
-    <form method="post" action="../actions/addsensor.php">
+    <form method="post" action="../actions/addcommunication.php">
     <table class="text-white">
-    <tr><td class="gg">
-    Name: </td><td class="register"><input type="text" name="name"
-              value="{if (isset($form_values))}{$form_values.name}{/if}">
-    </tr>
     <tr><td class="gg">
     Type: </td><td class="register"><input type="text" name="type"
               value="{if (isset($form_values))}{$form_values.type}{/if}">
-    </tr>
-    <tr><td>
-    Comments: </td><td class="register"><input type="text" name="comments"
-              value="{if (isset($form_values))}{$form_values.comments}{/if}">
     </tr>
 
     <input type="hidden" name="vehicle_name"

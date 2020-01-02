@@ -2,7 +2,7 @@
 session_start();
 
 $BASE_DIR = dirname(__DIR__) . "/" ;
-$BASE_URL = 'https://gnomo.fe.up.pt/~up201503070/SEAI_Final/';
+$BASE_URL = 'http://localhost/seai-teamfRepo/SEAI_Final/';
 
 //********************SMARTY*********************
 include_once($BASE_DIR . 'lib/smarty/Smarty.class.php');

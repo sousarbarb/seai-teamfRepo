@@ -284,6 +284,14 @@ footer {
   padding: 70px;
 }
 
+.footer-initial { 
+  bottom: 0px; 
+  margin-left: 0rem; 
+  border-style: solid; 
+  border-color: white; 
+  border-width: thin; 
+}
+
 .footer-short {
   bottom: 0px;
   margin-left: 14rem;

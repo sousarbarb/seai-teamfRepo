@@ -10,17 +10,9 @@ function test_input($data) {
     return $data;
 }
 
-if ((empty($_POST["value"])) || (ctype_space($_POST['value']))) {
-    $_SESSION['error_messages'][]="Value required";
-    $_SESSION['form_values']=$_POST;
-    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
-}
-else {
-    $value = test_input($_POST["value"]);
-}
 
 if ((empty($_POST["vel_sampling"])) || (ctype_space($_POST['vel_sampling']))) {
-    $_SESSION['error_messages'][]="Val sampling min required";
+    $_SESSION['error_messages'][]="Val sampling required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
@@ -61,27 +53,18 @@ else {
     $sensor_id = test_input($_POST['sensor_id']);
 
     //guardar na DB todos os dados
-    $result = createNewResolutionAssociatedWithSensor($value, $vel_sampling, $consumption, $swath, $cost, $comments, $sensor_id);
+    $result = editResolution($sensor_id, $vel_sampling, $consumption, $swath, $cost, $comments);
 
 
     switch ($result) {
         case -1:
-            $_SESSION['error_messages'][] = 'Resolution is active';
-            break;
-        case -2:
             $_SESSION['error_messages'][] = 'Updating was not completed successfully';
             break;
-         case -3:
-            $_SESSION['error_messages'][] = 'Insertion was not completed successfully';
-            break;
-        case 1:
-            $_SESSION['success_messages'][] = 'Updating an existing resolution but inactive was successfully';
-            break;
-        case 2:
-            $_SESSION['success_messages'][] = 'Inserting a new resolution was completed successfully';
+        case 0:
+            $_SESSION['success_messages'][] = 'Updating was successful';
             break;
     }
-    if( $result > 0 ){
+    if($result == 0 ){
         $_SESSION['form_values']=$_POST;
         die(header('Location: ' . $_SERVER['HTTP_REFERER']));
     }

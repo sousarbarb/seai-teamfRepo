@@ -1,8 +1,9 @@
-{include file='../common/header.tpl'}
+{include file='common/header.tpl'}
+{include file='common/navbar_logged_in.tpl'}
+{include file='common/logout.tpl'}
 
 <body>
-<a class="logbutton button4 submitAsBtn" href='{$BASE_URL}pages/vehicle_pag.php' style="width:auto;text-decoration:none;color:white;"> Go Back </a>
-<div class="page-content p-5" id="content">
+<div class="menusLogin p-5">
   <h2 class="display-4 text-white">ADD RESOLUTION</h2>
   <div class="separator"></div>
 
@@ -17,8 +18,9 @@
     {/foreach}
   {/if}
 
-    <form class="formulario" id="form_provider" method="post" action="../actions/addsensor.php" enctype="multipart/form-data">
-    <table class="tab">
+    <div class="myacc">
+    <form method="post" action="../actions/addresolution.php">
+    <table class="text-white">
     <tr><td class="gg">
     Value: </td><td class="register"><input type="text" name="value"
               value="{if (isset($form_values))}{$form_values.value}{/if}">
@@ -27,6 +29,7 @@
     Vel sampling: </td><td class="register"><input type="text" name="vel_sampling"
               value="{if (isset($form_values))}{$form_values.vel_sampling}{/if}">
     </tr>
+
     <tr><td class="gg">
     Consumption: </td><td class="register"><input type="text" name="consumption"
               value="{if (isset($form_values))}{$form_values.consumption}{/if}">
@@ -43,17 +46,27 @@
     Comments: </td><td class="register"><input type="text" name="comments"
               value="{if (isset($form_values))}{$form_values.comments}{/if}">
     </tr>
-    
-    <input type="hidden" name="vehicle_id" value="{$vehicle_id}">
+
+    <input type="hidden" name="sensor_id"
+        value="{if (isset($form_values))}{$form_values.sensor_id}{else}{$sensor_id}{/if}">
+
+    <input type="hidden" name="vehicle_name"
+        value="{if (isset($form_values))}{$form_values.vehicle_name}{else}{$vehicle_name}{/if}">
 
     <tr><td>
     <input type="hidden" name="selectform" value="provider">
     <input class="btn btn-info" type="submit" name="submit" value="Add">
+    <a href="javascript:void(0)" class="btn btn-info button_form_cancel" style="text-decoration:none;color:white;margin-left:30em;"> Cancel </a>
     </td></tr>
     </table>
     </form>
-
+    <form method="post" action="{$BASE_URL}pages/vehicle_pag.php" name="form_cancel" class="form_cancel">
+    <input type="hidden" class="form_post" name="vehicle_name" value="{if isset($form_values)}{$form_values.vehicle_name}{else}{$vehicle_name}{/if}">
+    <input type="submit" style="display: none;">
+    </form>
+    </div>
+<br><br>
 
 </div>
 
-{include file='../common/footer.tpl'}
+{include file='../common/footer-short.tpl'}
