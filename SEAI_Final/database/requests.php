@@ -558,10 +558,10 @@ function getAllStoredAreas(){
     // Fomulation of string for area definition
     if($area == NULL)
       return -8;
-    if($area['polygonsVertLatLng']['numerodevertices'] < 3)
+    if($area['polygonsVertLatLng'][0]['numberVertices'] < 3)
       return -9;
 
-    $polygon = processAreaGetString($area);
+    $polygon = processPolygonGetString($area);
 
 
     // ----------------------------------------
@@ -581,7 +581,7 @@ function getAllStoredAreas(){
     // Create a new area
     $stm = $conn->prepare("
       INSERT INTO area ( polygon )
-      VALUES    ( ? )
+      VALUES    ST_GeographyFromText( ? )
       RETURNING id
     ");
     try{
@@ -595,40 +595,81 @@ function getAllStoredAreas(){
 
     // ----------------------------------------
     // Create a new request
-    $stm = $conn->prepare("
-      INSERT INTO request (
-        deadline          ,
-        area_id           ,
-        client_id         ,
-        comments          ,
-        sensor_type       ,
-        resolution_type   ,
-        agreement_provider,
-        agreement_client  ,
-        restricted
-      )
-      VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? )
-      RETURNING id
-    ");
-    try{
-      $stm->execute(array($deadline==NULL? NULL:getDateTimeToTimestampString($deadline),
-                          $area_id,
-                          $client_id,
-                          $comments,
-                          $sensor_type,
-                          $resolution_value,
-                          'FALSE',
-                          'FALSE',
-                          $restricted? 'TRUE':'FALSE'
-      ));
-    } catch(PDOexception $e) {
-      // Eliminates the area already created
+    if($deadline == NULL){
       $stm = $conn->prepare("
-        DELETE FROM area
-        WHERE  id = ?
+        INSERT INTO request (
+          area_id           ,
+          client_id         ,
+          comments          ,
+          sensor_type       ,
+          resolution_type   ,
+          agreement_provider,
+          agreement_client  ,
+          restricted
+        )
+        VALUES ( ? , ? , ? , ? , ? , ? , ? , ? )
+        RETURNING id
       ");
-      $stm->execute(array($area_id));
-      return -11;
+      try{
+        $stm->execute(array($area_id,
+                            $client_id,
+                            $comments,
+                            $sensor_type,
+                            $resolution_value,
+                            'FALSE',
+                            'FALSE',
+                            $restricted? 'TRUE':'FALSE'
+        ));
+      } catch(PDOexception $e) {
+        // Eliminates the area already created
+        $stm = $conn->prepare("
+          DELETE FROM area
+          WHERE  id = ?
+        ");
+        $stm->execute(array($area_id));
+        return -11;
+      }
+    }
+    else {
+      $deadline_day    = getDayFromDateTime($deadline);
+      $deadline_month  = getMonthFromDateTime($deadline);
+      $deadline_year   = getYearFromDateTime($deadline);
+
+      $stm = $conn->prepare("
+        INSERT INTO request (
+          TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ),
+          area_id           ,
+          client_id         ,
+          comments          ,
+          sensor_type       ,
+          resolution_type   ,
+          agreement_provider,
+          agreement_client  ,
+          restricted
+        )
+        VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? )
+        RETURNING id
+      ");
+      try{
+        $stm->execute(array("$deadline_day $deadline_month $deadline_year 20",
+                            $area_id,
+                            $client_id,
+                            $comments,
+                            $sensor_type,
+                            $resolution_value,
+                            'FALSE',
+                            'FALSE',
+                            $restricted? 'TRUE':'FALSE'
+        ));
+      } catch(PDOexception $e) {
+        // Eliminates the area already created
+        $stm = $conn->prepare("
+          DELETE FROM area
+          WHERE  id = ?
+        ");
+        $stm->execute(array($area_id));
+        return -11;
+      }
     }
     $results    = $stm->fetch();
     $request_id = $results['id'];
@@ -664,34 +705,6 @@ function getAllStoredAreas(){
 
     // Returns 0 in case of success
     return 0;
-  }
-  function processAreaGetString($area){
-    // Initial string necessary for query
-    $polygon = "ST_GeographyFromText( 'POLYGON( ( ";
-
-    // Add to polygon the points vertices defined by the user
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
-    $polygon .= "   ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
-
-    for($i = 1 ; $i < $area['polygonsVertLatLng']['numerodevertices'] ; $i++){
-      $polygon .= " , ";
-      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['long'];
-      $polygon .= "   ";
-      $polygon .= $area['polygonsVertLatLng']['vertices'][$i]['lat'];
-    }
-
-    // Closing polygon
-    $polygon .= " , ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['long'];
-    $polygon .= "   ";
-    $polygon .= $area['polygonsVertLatLng']['vertices'][0]['lat'];
-
-    // Clossing string
-    $polygon .= ") ) ' )";
-
-    // Returns string
-    return $polygon;
   }
   function selectPossibleServiceProvidersToApplyForRequest($request_id, $area_id, $sensor_type, $resolution_value){
     // Global variable: connection to the database
@@ -1098,11 +1111,16 @@ function getAllStoredAreas(){
 
     // ----------------------------------------
     // Inserts into table mission a new entry
-    $stm = $conn->prepare("
+    $sql_prepare = [];
+    $sql = "
       INSERT INTO mission (
         status,
-        est_starting_time,
-        est_finished_time,
+    ";
+    if($est_starting_time!=NULL)
+      $sql .= " est_starting_time, ";
+    if($est_finished_time!=NULL)
+      $sql .= " est_finished_time, ";
+    $sql .= "
         price,
         provider_id,
         resolution_id,
@@ -1111,22 +1129,31 @@ function getAllStoredAreas(){
       )
       VALUES ( 
         ? , 
-        TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) , 
-        TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) , 
-        ? , ? , ? , ? , ? )
-      RETURNING id
-    ");
+    ";
+    array_push($sql_prepare,'Proposal');
+    if($est_starting_time!=NULL){
+      $sql .= " TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) , ";
+      array_push($sql_prepare,"$start_day  $start_month  $start_year  20");
+    }
+    if($est_finished_time!=NULL){
+      $sql .= " TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) , ";
+      array_push($sql_prepare,"$finish_day $finish_month $finish_year 20");
+    }
+    $sql .= " ? , ? , ? , ? , ? ) RETURNING id";
+    array_push($sql_prepare,$price);
+    array_push($sql_prepare,$provider_id);
+    array_push($sql_prepare,$resolution_id);
+    array_push($sql_prepare,$area_id);
+    array_push($sql_prepare,$path_pdf);
+
+    print_r($sql_prepare);
+
+    $stm = $conn->prepare($sql);
     try{
-      $stm->execute(array('Proposal',
-                          $est_starting_time==NULL? NULL:"$start_day  $start_month  $start_year  20",
-                          $est_finished_time==NULL? NULL:"$finish_day $finish_month $finish_year 20",
-                          $price,
-                          $provider_id,
-                          $resolution_id,
-                          $area_id,
-                          $path_pdf
-      ));
+      $stm->execute($sql_prepare);
     } catch(PDOexception $e) {
+      echo $e->getMessage();
+      echo $sql;
       return -16;
     }
 
@@ -1791,7 +1818,7 @@ function getAllStoredAreas(){
         ON service_client.user_id = users.username
       WHERE users.username = ?
     ");
-    $conn->execute(array($client_username));
+    $stm->execute(array($client_username));
     $results = $stm->fetch();
 
     // Returns Service Client information
@@ -1903,7 +1930,7 @@ function getAllStoredAreas(){
     $stm = $conn->prepare("
       SELECT CURRENT_TIMESTAMP < TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) AS date_validation;
     ");
-    $stm->execute(array( "$day $month $year" ));
+    $stm->execute(array( "$day $month $year 20" ));
     $results = $stm->fetch();
     if( $results['date_validation'] == FALSE )
       return -2;
@@ -1936,7 +1963,7 @@ function getAllStoredAreas(){
     // String formating
     $date_time_array = explode( '/' , $date_time , 3 );
     // -> year
-    $year  = $date_time_array[2];
+    return $date_time_array[2];
   }
 
   /****************************************************************************************************
