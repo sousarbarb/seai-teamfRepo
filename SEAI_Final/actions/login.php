@@ -9,6 +9,7 @@
     return $data;
   }
 
+
   if (!$_POST['user'] || !$_POST['password']) {
     $_SESSION['error_messages'][] = 'Invalid login';
     $_SESSION['form_values'] = $_POST;
@@ -36,10 +37,12 @@ try {
 
   if (empty($login_data)) {
     $_SESSION['error_messages'][] = 'Username Not Registered in the Platform';
+	$_SESSION['l_count']= $_SESSION['l_count']+1;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
   if (sha1($password) != $login_data['password']) {
     $_SESSION['error_messages'][] = 'Incorrect password';
+	$_SESSION['l_count']= $_SESSION['l_count']+1;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
   //if (1) { $acc_type = 'provider';
@@ -87,6 +90,7 @@ try {
   }*/
   $_SESSION['login'] = $user;
   $_SESSION['success_messages'][] = 'Login Successful';
+  $_SESSION['l_count']=0;
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 } catch (PDOException $e) {
   $_SESSION['error_messages'][] = 'Login Failed';

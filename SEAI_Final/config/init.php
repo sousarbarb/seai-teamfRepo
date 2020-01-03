@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if(!isset($_SESSION['l_count'])) {
+	$_SESSION['l_count']=0;
+}
+
 $BASE_DIR = dirname(__DIR__) . "/" ;
 $BASE_URL = 'http://localhost/seai-teamfRepo/SEAI_Final/';
 

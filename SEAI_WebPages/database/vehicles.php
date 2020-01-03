@@ -3,31 +3,31 @@
 /****************************************************************************************************
    ***** CREATEVEHICLE
    ****************************************************************************************************
-   * Creates a new vehicle in the database. Also, this function does not creates new sensors, 
+   * Creates a new vehicle in the database. Also, this function does not creates new sensors,
    * protocols, etc..., but only adds to the database the basic information about the vehicle.
-   * 
+   *
    * PARAMETERS:
    * name            : UNIQUE KEY that defines the vehicle name;
    * localization    : string that defines where the vehicle is;
    * comments        : text with comments described by the service_provuder that owns the vehicle;
-   * public          : boolean variable to define if the vehicle can be visualized by other users or 
+   * public          : boolean variable to define if the vehicle can be visualized by other users or
    *                   not;
-   * service_provider: username of service provider. In the service_provider table, this variable can 
+   * service_provider: username of service provider. In the service_provider table, this variable can
    *                   be used to search which id is associated with the service_provider.
-   * 
+   *
    * OBSERVATION: it is not required to return vehicle id in the querie because vehicle_name is also
    * an unique key (and candidate to primary key), so in the following queries you only need to pass
    * vehicle_name to the functions.
-   * 
+   *
    * SUCCESS RETURNS CONSIDERED:
    *  1: updating an existing vehicle but inactive was completed successfully;
    *  2: insertion of a new vehicle was completed successfully.
-   * 
+   *
    * ERRORS CONSIDERED:
    * -1: service_provider isn't approved by an administrator;
    * -2: service_provider isn't registed in the platform;
    * -3: the vehicle already exists but service_provider does not own that vehicle;
-   * -4: the vehicle is owned by service_provider but it is an active vehicle (so can not be created 
+   * -4: the vehicle is owned by service_provider but it is an active vehicle (so can not be created
    *     with the same name);
    * -5: updating an existing vehicle but inactive was not completed successfully;
    * -6: insertion was not completed successfully.
@@ -43,7 +43,7 @@
       WHERE  user_id = ?
     ");
     $stm->execute(array($service_provider));
-    
+
     // Error checking for service_provider search
     $results = $stm->fetch();
     if( $results != FALSE ){  // service_provider is registed in the platform
@@ -58,7 +58,7 @@
     }
     else
       return -2;
-    
+
     // Check if this name of vehicle already exists
     $stm = $conn->prepare("
       SELECT *
@@ -187,21 +187,21 @@
    ***** CREATENEWSPECIFICATIONASSOCIATEDWITHVEHICLE
    ****************************************************************************************************
    * Creates a new specification and associates with a specific vehicle, specified by it's name. The
-   * combination between VALUE, SPECIFICATION_TYPE and VEHICLE_ID forms an unique key in the 
+   * combination between VALUE, SPECIFICATION_TYPE and VEHICLE_ID forms an unique key in the
    * specification table.
-   * 
+   *
    * PARAMETERS:
    * type        : string that defines the type of vehicle specification to create;
    * value_min   : string that defines the minimum value of specification;
    * value_max   : string that defines the maximum value of specification;
-   * comments    : text with comments described for this specification by the service_provuder that 
+   * comments    : text with comments described for this specification by the service_provuder that
    *               owns the vehicle;
    * vehicle_name: UNIQUE KEY that defines the vehicle name.
-   * 
+   *
    * SUCCESS RETURNS CONSIDERED:
    *  1: updating an existing specification but inactive was completed successfully;
    *  2: insertion of a new specification was completed successfully.
-   * 
+   *
    * ERRORS CONSIDERED:
    * -1: the vehicle specified by vehicle_name isn't an active vehicle;
    * -2: the vehicle specified by vehicle_name isn't defined in the database;
@@ -224,7 +224,7 @@
     // Error checking for vehicle search
     $results = $stm->fetch();
     if( $results != FALSE ){  // vehicle is defined in the platform
-      // If vehicle is active... 
+      // If vehicle is active...
       // (does not need to be approved because, in the meantime, the service_provider can define new specifications)
       if( $results['active'] == TRUE )
         $vehicle_id = $results['id'];
@@ -259,8 +259,8 @@
                  value_max = ?,
                  active    = ?,
                  comments  = ?
-          WHERE  specification_id = ? AND
-                 vehicle_id       = ?
+          WHERE  id         = ? AND
+                 vehicle_id = ?
         ");
         try {
           $stm->execute(array($value_min,
@@ -315,18 +315,18 @@
    * This function creates a new sensor and associates with a certain vehicle. If the sensor
    * is already created, only in the case where this is inactive that it's info is updated and the
    * sensors returns to an active state.
-   * 
+   *
    * PARAMETERS:
    * name        : string containing the sensor's name;
    * type        : string that defines the type of sensor to create;
    * comments    : text with comments described for this sensor by the service_provider that owns the
    *               vehicle;
    * vehicle_name: UNIQUE KEY that defines the vehicle name.
-   * 
+   *
    * SUCCESS RETURNS CONSIDERED:
    *  1: updating an existing sensor but inactive was completed successfully;
    *  2: insertion of a new sensor was completed successfully.
-   * 
+   *
    * ERRORS CONSIDERED:
    * -1: the vehicle specified by vehicle_name isn't an active vehicle;
    * -2: the vehicle specified by vehicle_name isn't defined in the database;
@@ -349,7 +349,7 @@
     // Error checking for vehicle search
     $results = $stm->fetch();
     if( $results != FALSE ){  // vehicle is defined in the platform
-      // If vehicle is active... 
+      // If vehicle is active...
       // (does not need to be approved because, in the meantime, the service_provider can define new specifications)
       if( $results['active'] == TRUE )
         $vehicle_id = $results['id'];
@@ -359,7 +359,7 @@
     }
     else
       return -2;
-    
+
     // Check if this sensor already exists associated to vehicle
     $stm = $conn->prepare("
       SELECT *
@@ -436,7 +436,7 @@
    * This function creates a new resolution and associates with a certain sensor. If the resolution
    * is already created, only in the case where this is inactive that it's info is updated and the
    * resolution returns to an active state.
-   * 
+   *
    * PARAMETERS:
    * value       : resolution value;
    * vel_sampling: nominal velocity that the vehicle can run at X resolution;
@@ -445,13 +445,13 @@
    * cost        : cost in terms of MONETARY UNIT / TIME UNIT of running the sensor at X resolution;
    * comments    : text with comments described for this resolution by the service_provider that owns
    *               the vehicle;
-   * sensor_id   : UNIQUE KEY that defines which sensor is to be associated with the specified 
+   * sensor_id   : UNIQUE KEY that defines which sensor is to be associated with the specified
    *               resolution.
-   * 
+   *
    * SUCCESS RETURNS CONSIDERED:
    *  1: updating an existing resolution but inactive was completed successfully;
    *  2: insertion of a new resolution was completed successfully.
-   * 
+   *
    * ERRORS CONSIDERED:
    * -1: resolution already exists and is active;
    * -2: updating an existing resolution but inactive was not completed successfully;
@@ -490,11 +490,11 @@
           WHERE  id = ?
         ");
         try {
-          $stm->execute(array($vel_sampling, 
-                              $consumption, 
-                              $swath, 
-                              'TRUE', 
-                              $cost, 
+          $stm->execute(array($vel_sampling,
+                              $consumption,
+                              $swath,
+                              'TRUE',
+                              $cost,
                               $comments,
                               $resolution_id
           ));
@@ -544,15 +544,15 @@
    ***** CREATENEWRESOLUTIONASSOCIATEDWITHSENSOR
    ****************************************************************************************************
    * Creates a new communication or already links with existing ones.
-   * 
+   *
    * PARAMETERS:
    * type        : communication type;
    * vehicle_name: UNIQUE KEY that defines the vehicle name.
-   * 
+   *
    * SUCCESS RETURNS CONSIDERED:
    *  1: communication already exists and is already linked with the vehicle;
    *  2: inserting new communication was successfully created.
-   * 
+   *
    * ERRORS CONSIDERED:
    * -1: the vehicle specified by vehicle_name isn't an active vehicle;
    * -2: the vehicle specified by vehicle_name isn't defined in the database;
@@ -572,7 +572,7 @@
     // Error checking for vehicle search
     $results = $stm->fetch();
     if( $results != FALSE ){  // vehicle is defined in the platform
-      // If vehicle is active... 
+      // If vehicle is active...
       // (does not need to be approved because, in the meantime, the service_provider can define new specifications)
       if( $results['active'] == TRUE )
         $vehicle_id = $results['id'];
@@ -582,7 +582,7 @@
     }
     else
       return -2;
-    
+
     // Checks if this type of communication already exists
     $stm = $conn->prepare("
       SELECT *
@@ -615,7 +615,7 @@
       $communication_exists  = FALSE;
       $commun_linked_vehicle = FALSE;
     }
-    
+
     // Creation of communication
     if( !$communication_exists ){
       $stm = $conn->prepare("
@@ -709,7 +709,7 @@
   /****************************************************************************************************
    ***** GETALLVEHICLESSPECIFICATIONSTYPES
    ****************************************************************************************************
-   * Get all distinct specification types of all vehicles. This is useful for creating a new 
+   * Get all distinct specification types of all vehicles. This is useful for creating a new
    * specification to show up options with already defined specification types.
    * Returns all distinct specification types.
    ****************************************************************************************************/
@@ -817,7 +817,7 @@
   /****************************************************************************************************
    ***** GETALLCOMMUNICATIONTYPES
    ****************************************************************************************************
-   * Get all communications defined in the database. Also, it orders alphabeticaly by 
+   * Get all communications defined in the database. Also, it orders alphabeticaly by
    * communication_type.
    ****************************************************************************************************/
   function getAllCommunicationTypes() {
@@ -839,7 +839,7 @@
   /****************************************************************************************************
    ***** GETALLACTIVEDISTINCTSENSORTYPES
    ****************************************************************************************************
-   * Get all distinct sensor types and active declared in the database. Also, it orders alphabeticaly 
+   * Get all distinct sensor types and active declared in the database. Also, it orders alphabeticaly
    * by sensor_type.
    ****************************************************************************************************/
   function getAllActiveDistinctSensorTypes() {
@@ -862,7 +862,7 @@
   /****************************************************************************************************
    ***** GETALLACTIVEDISTINCTRESOLUTIONVALUES
    ****************************************************************************************************
-   * Get all distinct resolution values and active declared in the database. Also, it orders 
+   * Get all distinct resolution values and active declared in the database. Also, it orders
    * alphabeticaly by value.
    ****************************************************************************************************/
   function getAllActiveDistinctResolutionValues() {
@@ -911,9 +911,9 @@ WITH vehicle_sensor_resolution AS (
   ORDER BY vehicle_name    ASC,
           sensor_type      ASC,
           resolution_value ASC
-) SELECT * FROM vehicle_sensor_resolution;        
+) SELECT * FROM vehicle_sensor_resolution;
 
-   * 
+   *
    * --> processing communications:
 WITH vehicle_sensor_resolution AS (
   SELECT vehicle.id                       AS vehicle_id        ,
@@ -949,11 +949,11 @@ WITH vehicle_sensor_resolution AS (
 )
 SELECT * FROM vehicle_sensor_resolution;
    ****************************************************************************************************/
-  function searchVehiclesWithFilters($VEHICLE_ACTIVE, $VEHICLE_APPROVAL, $VEHICLE_PUBLIC, 
+  function searchVehiclesWithFilters($VEHICLE_ACTIVE, $VEHICLE_APPROVAL, $VEHICLE_PUBLIC,
                                     $service_providers_selected, $specifications_selected, $communications_selected, $sensors_selected, $resolutions_selected) {
     // Global variable: connection to the database
     global $conn;
-    
+
     // --------------------------------------------------------------------------------
     // PROCESSING FILTERS
     $sql_prepare = [];
@@ -974,9 +974,9 @@ SELECT * FROM vehicle_sensor_resolution;
         WHERE vehicle.id        = sensor.vehicle_id    AND
               sensor.id         = resolution.sensor_id AND
               sensor.active     = 'TRUE'               AND
-              resolution.active = 'TRUE'               
+              resolution.active = 'TRUE'
     ";
-    
+
     // Sensors Types filtering
     if(!empty($sensors_selected)){
       $sql .= " AND (";
@@ -1004,7 +1004,7 @@ SELECT * FROM vehicle_sensor_resolution;
       ORDER BY vehicle_name    ASC,
               sensor_type      ASC,
               resolution_value ASC
-      ) , 
+      ) ,
       vehicle_communication_filter AS (
         SELECT vehicle.id                      AS vehicle_id        ,
               vehicle.vehicle_name             AS vehicle_name      ,
@@ -1016,7 +1016,7 @@ SELECT * FROM vehicle_sensor_resolution;
         FROM  vehicle, vehicle_communication, communication
         WHERE vehicle_communication.vehicle_id       = vehicle.id       AND
               vehicle_communication.communication_id = communication.id    ";
-    
+
     if(!empty($communications_selected)){
       $sql .= " AND (";
       foreach($communications_selected as $selected){
@@ -1031,7 +1031,7 @@ SELECT * FROM vehicle_sensor_resolution;
     $sql .= "
         ORDER BY vehicle_name      ASC,
                 communication_type ASC
-      ) , 
+      ) ,
       vehicle_specification_filter AS (
         SELECT vehicle.id                      AS vehicle_id          ,
               vehicle.vehicle_name             AS vehicle_name        ,
@@ -1043,9 +1043,9 @@ SELECT * FROM vehicle_sensor_resolution;
               specification.active             AS specification_active
         FROM  vehicle, specification
         WHERE specification.vehicle_id = vehicle.id AND
-              specification.active     = 'TRUE' 
+              specification.active     = 'TRUE'
     ";
-    
+
     if(!empty($specifications_selected)){
       $sql .= " AND (";
       foreach($specifications_selected as $selected){
@@ -1079,7 +1079,7 @@ SELECT * FROM vehicle_sensor_resolution;
         vehicle.localization AS vehicle_localization,
         vehicle.active       AS vehicle_active      ,
         vehicle.approval     AS vehicle_approval    ,
-        vehicle.public       AS vehicle_public  
+        vehicle.public       AS vehicle_public
       FROM users, service_provider, vehicle
     ";
     // Intersecting tables
@@ -1107,7 +1107,7 @@ SELECT * FROM vehicle_sensor_resolution;
     $sql .= "
       WHERE
         service_provider.user_id = users.username              AND
-        service_provider.id      = vehicle.service_provider_id    
+        service_provider.id      = vehicle.service_provider_id
     ";
 
     // Process Service Providers
@@ -1140,7 +1140,7 @@ SELECT * FROM vehicle_sensor_resolution;
       $sql .= " AND ( vehicle.public = ? ) ";
       array_push( $sql_prepare , $VEHICLE_PUBLIC? 'TRUE':'FALSE' );
     }
-    
+
     // --------------------------------------------------------------------------------
     // EXECUTING QUERIE
     $stm = $conn->prepare($sql);
@@ -1287,7 +1287,7 @@ SELECT * FROM vehicle_sensor_resolution;
         sensor.sensor_name AS sensor_name    ,
         sensor.active      AS sensor_active  ,
         sensor.comments    AS sensor_comments,
-        
+
         resolution.id           AS res_id         ,
         resolution.value        AS res_value      ,
         resolution.consumption  AS res_consumption,
@@ -1429,10 +1429,10 @@ SELECT * FROM vehicle_sensor_resolution;
                public       = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($name, 
-                          $localization, 
-                          $comments, 
-                          $public? 'TRUE':'FALSE', 
+      $stm->execute(array($name,
+                          $localization,
+                          $comments,
+                          $public? 'TRUE':'FALSE',
                           $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
@@ -1456,7 +1456,7 @@ SELECT * FROM vehicle_sensor_resolution;
         SET    approval = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($approval? 'TRUE':'FALSE', 
+      $stm->execute(array($approval? 'TRUE':'FALSE',
                           $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
@@ -1466,7 +1466,7 @@ SELECT * FROM vehicle_sensor_resolution;
     // If approval it's TRUE, the service provider it's notified.
     if($approval)
       notifyProviderVehicleApproval( $id );
-    
+
     // Updating was successful
     return 0;
   }
@@ -1476,7 +1476,8 @@ SELECT * FROM vehicle_sensor_resolution;
 
     // Get service provider given a vehicle id
     $provider_username = getVehicleServiceProvider($vehicle_id);
-    if( $provider_username )
+    $vehicle_name      = getVehicleName($vehicle_id);
+    if( $provider_username == NULL || $vehicle_name == NULL )
       return -1;                // Error because vehicle_id invalid
 
     // Notification text
@@ -1507,7 +1508,7 @@ SELECT * FROM vehicle_sensor_resolution;
   function deleteAllVehiclesServiceProvider($username) {
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get all vehicles of a specific service provider
     $stm = $conn->prepare("
       SELECT vehicle.id                   AS vehicle_id     ,
@@ -1521,7 +1522,7 @@ SELECT * FROM vehicle_sensor_resolution;
     ");
     $stm->execute(array($username));
     $vehicles = $stm->fetchAll();
-    
+
     // Deactivate each vehicle from service_provider
     foreach($vehicles as $vehicle){
       editVehicleActive($vehicle['vehicle_id'], FALSE);
@@ -1541,18 +1542,36 @@ SELECT * FROM vehicle_sensor_resolution;
         SET    active = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($active? 'TRUE':'FALSE', 
+      $stm->execute(array($active? 'TRUE':'FALSE',
                           $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    
+
     // In case active = FALSE...
     if($active == FALSE){
       // If a vehicle is no longer active, loses the administrator approval
       editVehicleApproval($id, FALSE);
-      
+
+      // Searches all notifications related with vehicle
+      $stm = $conn->prepare("
+        SELECT  *
+        FROM  notification
+        WHERE vehicle_id = ?
+      ");
+      $stm->execute(array($id));
+      $results = $stm->fetchAll();
+      if( $results != FALSE ){
+        foreach( $results as $result ){
+          $stm = $conn->prepare("
+            DELETE FROM notification
+            WHERE id = ?
+          ");
+          $stm->execute(array($result['id']));
+        }
+      }
+
       // Search active sensors
       $stm = $conn->prepare("
         SELECT  *
@@ -1562,7 +1581,7 @@ SELECT * FROM vehicle_sensor_resolution;
       ");
       $stm->execute(array($id, 'TRUE'));
       $results = $stm->fetchAll();
-      
+
       // Executes the deactivation for each sensor (and, recursing, each active resolution)
       foreach($results as $result) {
         editSensorActive($result['id'], FALSE);
@@ -1577,12 +1596,12 @@ SELECT * FROM vehicle_sensor_resolution;
       ");
       $stm->execute(array($id, 'TRUE'));
       $results = $stm->fetchAll();
-      
+
       // Executes the deactivation for each active specification
       foreach($results as $result) {
         editSpecificationActive($result['id'], FALSE);
       }
-      
+
       // Delete all current communications protocols
       $stm = $conn->prepare("
         SELECT  *
@@ -1591,13 +1610,13 @@ SELECT * FROM vehicle_sensor_resolution;
       ");
       $stm->execute(array($id));
       $results = $stm->fetchAll();
-      
+
       // Executes the elimination for each existing protocol communication of the vehicle
       foreach($results as $result) {
-        deleteVehicleCommunication($result['vehicle_id'], $result['$communication_id']);
+        deleteVehicleCommunication($result['communication_id']);
       }
     }
-    
+
     // Updating was successful
     return 0;
   }
@@ -1617,15 +1636,15 @@ SELECT * FROM vehicle_sensor_resolution;
                value_max = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($comments, 
-                          $value_min, 
-                          $value_max, 
+      $stm->execute(array($comments,
+                          $value_min,
+                          $value_max,
                           $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    
+
     // Updating was successful
     return 0;
   }
@@ -1643,13 +1662,13 @@ SELECT * FROM vehicle_sensor_resolution;
         SET    active = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($active? 'TRUE':'FALSE', 
-                          $id)); 
+      $stm->execute(array($active? 'TRUE':'FALSE',
+                          $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    
+
     // Updating was successful
     return 0;
   }
@@ -1664,18 +1683,18 @@ SELECT * FROM vehicle_sensor_resolution;
     // Updates sensor
     $stm = $conn->prepare("
         UPDATE sensor
-        SET    name     = ?,
+        SET    sensor_name     = ?,
                comments = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($name, 
-                          $comments, 
+      $stm->execute(array($name,
+                          $comments,
                           $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    
+
     // Updating was successful
     return 0;
   }
@@ -1693,13 +1712,13 @@ SELECT * FROM vehicle_sensor_resolution;
         SET    active = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($active? 'TRUE':'FALSE', 
-                          $id)); 
+      $stm->execute(array($active? 'TRUE':'FALSE',
+                          $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    
+
     // In case active = FALSE...
     if($active == FALSE){
       // Search active resolutions
@@ -1711,13 +1730,13 @@ SELECT * FROM vehicle_sensor_resolution;
       ");
       $stm->execute(array($id, 'TRUE'));
       $results = $stm->fetchAll();
-      
+
       // Executes the deactivation for each active resolution associated with sensor
       foreach($results as $result) {
         editResolutionActive($result['id'], FALSE);
-      }        
+      }
     }
-    
+
     // Updating was successful
     return 0;
   }
@@ -1739,17 +1758,17 @@ SELECT * FROM vehicle_sensor_resolution;
                comments     = ?
         WHERE  id = ?");
     try{
-      $stm->execute(array($vel_sampling, 
+      $stm->execute(array($vel_sampling,
                           $consumption,
-                          $swath, 
-                          $cost, 
-                          $comments, 
+                          $swath,
+                          $cost,
+                          $comments,
                           $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    
+
     // Updating was successful
     return 0;
   }
@@ -1766,13 +1785,13 @@ SELECT * FROM vehicle_sensor_resolution;
         UPDATE resolution
         SET    active = ?
         WHERE  id = ?");
-    try{$stm->execute(array($active? 'TRUE':'FALSE', 
+    try{$stm->execute(array($active? 'TRUE':'FALSE',
                             $id));
     } catch(PDOexception $e) {
       // Updating was not completed successfully
       return -1;
     }
-    
+
     // Updating was successful
     return 0;
   }
@@ -1780,7 +1799,7 @@ SELECT * FROM vehicle_sensor_resolution;
   /****************************************************************************************************
    ***** DELETEVEHICLECOMMUNICATION
    ****************************************************************************************************/
-  function deleteVehicleCommunication($vehicle_id, $communication_id){
+  function deleteVehicleCommunication($communication_id){
     // Global variable: connection to the database
     global $conn;
 
@@ -1788,10 +1807,9 @@ SELECT * FROM vehicle_sensor_resolution;
     $stm = $conn->prepare("
       DELETE
       FROM  vehicle_communication
-      WHERE vehicle_id       = ? AND
-            communication_id = ?
+      WHERE communication_id = ?
     ");
-    $stm->execute(array($vehicle_id, $communication_id));
+    $stm->execute(array($communication_id));
   }
 
   /****************************************************************************************************
@@ -1800,7 +1818,7 @@ SELECT * FROM vehicle_sensor_resolution;
   function getVehicleId($vehicle_name){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the vehicle id
     $stm = $conn->prepare("
       SELECT  id
@@ -1823,7 +1841,7 @@ SELECT * FROM vehicle_sensor_resolution;
   function getVehicleName($vehicle_id){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the vehicle id
     $stm = $conn->prepare("
       SELECT  vehicle_name
@@ -1846,7 +1864,7 @@ SELECT * FROM vehicle_sensor_resolution;
   function getVehicleServiceProvider($vehicle_id){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the service provider username
     $stm = $conn->prepare("
       SELECT  vehicle.id                   AS vehicle_id       ,

@@ -878,12 +878,23 @@ function verifyEmailExistance($email){
       WHERE e_mail = ?
     ");
     $stm->execute(array($email));
-    $results = $stm->fetch();
-    if( $results != FALSE )
-        return 1;
-      else
-        return -1;
+	if ($stm->fetch() != FALSE)
+		return 1;
+	else
+		return -1;
 }
+
+function updateUsersWaitingEmail($email){
+  global $conn;
+  $stm = $conn->prepare("
+    UPDATE users
+    SET status = ?
+    WHERE e_mail = ?
+  ");
+  $stm->execute(array('Waiting e-mail confirmation', $email));
+  return 0;
+}
+
 
 function changePassword ( $mail, $newPass ) {
     // Global variable: connection to the database
@@ -902,4 +913,12 @@ function changePassword ( $mail, $newPass ) {
       // Sucess 1  
     return $stm->rowCount();
   }
+  function editUserStatusWithMail($e_mail, $status){  
+	  global $conn;       // Update status (assuming that the e_mail is valid!)    
+	  $stm = $conn->prepare("    UPDATE users    SET status = ?    WHERE e_mail = ?    ");    
+	  $stm->execute(array($status, $e_mail));        // Sucess 1 
+	  return $stm->rowCount();    
+  }
+  
+  
 ?>

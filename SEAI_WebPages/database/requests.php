@@ -236,14 +236,14 @@
   }
   function processPolygonGetString($area){
     // Initial string necessary for query
-    $polygon = "'POLYGON( ( ";
-	$n_poly =$area['numberPolygons'];
+    $polygon = "POLYGON( ( ";
+	  $n_poly =$area['numberPolygons'];
     // Add to polygon the points vertices defined by the user
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
     $polygon .= "   ";
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
-    for($i = 1 ; $i < $area['polygonsVertLatLng'][$n_poly-1]['numerodevertices'] ; $i++){
+    for($i = 1 ; $i < $area['polygonsVertLatLng'][$n_poly-1]['numberVertices'] ; $i++){
       $polygon .= " , ";
       $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['long'];
       $polygon .= "   ";
@@ -257,7 +257,7 @@
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
     // Clossing string
-    $polygon .= ") ) '";
+    $polygon .= ") ) ";
 
     // Returns string
     return $polygon;
@@ -324,7 +324,7 @@
       FROM  mission
       WHERE id = ?
     ");
-    $conn->execute(array($mission_id));
+    $stm->execute(array($mission_id));
     $results = $stm->fetch();
 
     if($results == FALSE)
@@ -351,7 +351,7 @@
             request.sensor_type     IS NOT NULL AND
             mission.id = ?
     ");
-    $conn->execute(array($mission_id));
+    $stm->execute(array($mission_id));
     $results = $stm->fetch();
 
     if($results == FALSE)
@@ -673,8 +673,8 @@
     // Get DEPTH MIN and DEPTH MAX relative to request area
     $results = getMinMaxDepthAreaSelected($area_id);
 
-    $value_min = $results['depth_min'];
-    $value_max = $results['depth_max'];
+    $value_min = floatval($results['depth_min']);
+    $value_max = floatval($results['depth_max']);
 
     // ----------------------------------------
     // Get possible service providers capable of satisfying the request in question
@@ -709,17 +709,17 @@
               resolution.active         = true AND
               specification.active      = true AND
               sensor.sensor_type        =   ?  AND
-              resolution.value          =   ?  AND
-              specification.specification_type = 'depth'             AND
-              CAST(specification.value_min AS double precision) <= ? AND
-              CAST(specification.value_max AS double precision) >= ?
+              CAST(resolution.value AS double precision)         = CAST(? AS double precision) AND
+              specification.specification_type = 'Depth'             AND
+              CAST(specification.value_min AS double precision) <= CAST(? AS double precision) AND
+              CAST(specification.value_max AS double precision) >= CAST(? AS double precision)
       )
       SELECT DISTINCT
         filtersensorresolution.provider_username,
         filtersensorresolution.provider_id
       FROM filtersensorresolution
     ");
-    $stm->execute(array($sensor_type, $resolution_value, $value_min, $value_max));
+    $stm->execute(array($sensor_type, strval($resolution_value), strval($value_min), strval($value_max)));
     $results = $stm->fetchAll();
 
     if( $results == FALSE ) // There isn't no Service Providers capable of executing that request
@@ -754,8 +754,8 @@
         WHERE
           area.id = ?              AND
           ST_Intersects(
-            ?         :: geography,
-            land_poly :: geography
+            depth_grid.grid_item :: geography,
+            area.polygon         :: geography
           )                        = 'TRUE'
       )
       SELECT
@@ -783,7 +783,8 @@
     $stm->execute();
     $result   = $stm->fetch();
     $LANDPOLY = $result['land_poly_count'];
-    if( $LANDPOLY == 0 )
+    print_r($result);
+    if( $LANDPOLY === 0 )
       return TRUE;                // Without any extra information, we assume area is OK
 
     // Get number of TRUE and FALSE intersections with land
@@ -807,10 +808,11 @@
     $stm->execute($sql_prepare);
     $result        = $stm->fetch();
     $TRUEINTERSECT = $result['true_count'];
+    print_r($result);
 
     // Returns TRUE OR FALSE
-    if( $TRUEINTERSECT == 0 || $TRUEINTERSECT == $LANDPOLY )
-      return TRUE;                // Area is either in sea or in land
+    if( $TRUEINTERSECT == 0 )
+      return TRUE;                // Area is either on sea
     else
       return FALSE;               // Area is between land and sea
   }
@@ -881,7 +883,7 @@
    *      the mission isn't satisfied;
    * -12: the sensor specified isn't active;
    * -13: the resolution required for the request doesn't match with the selected one by provider;
-   * -14: the resolution doesn't math with sensor specified;
+   * -14: the resolution doesn't match with sensor specified;
    * -15: the resolution selected isn't active;
    * -16: inserting the new mission was not possible;
    * -17: relating the mission with the request was not possible;
@@ -920,7 +922,7 @@
       $stm = $conn->prepare("
         SELECT ? < ? AS date_validation;
       ");
-      $stm     = $conn->execute(array(getDateTimeToTimestampString($est_starting_time),
+      $stm->execute(array(getDateTimeToTimestampString($est_starting_time),
                                       getDateTimeToTimestampString($est_finished_time)
       ));
       $results = $stm->fetch();
@@ -981,7 +983,7 @@
             sensor.sensor_type = ?
     ");
     $stm->execute(array($sensor_name, $vehicle_id, $sensor_type_wanted));
-
+    $results = $stm->fetch();
 
     if( $results == FALSE )
       return -11;
@@ -997,10 +999,12 @@
       WHERE sensor_id = ? AND
             value     = ?
     ");
+    echo "<p>sensor_id: $sensor_id</p>";
+    echo "<p>res_value: $resolution_value</p>";
     $stm->execute(array($sensor_id, $resolution_value));
     $results = $stm->fetch();
 
-    if( $resolution_value_wanted != $resolution_value )           // [resolution] = cm
+    if( floatval($resolution_value_wanted) != floatval($resolution_value) )           // [resolution] = cm
       return -13;
     if( $results == FALSE )
       return -14;
@@ -1039,12 +1043,12 @@
       INNER JOIN specification
         ON specification.vehicle_id = vehicle.id
       WHERE
-        specification.specification_type = 'depth' AND
+        specification.specification_type = 'Depth' AND
         vehicle.id                       = ?       AND
-        specification.value_min          < ?       AND
-        specification.value_max          > ?
+        CAST(specification.value_min AS double precision) <= CAST( ? AS double precision) AND
+        CAST(specification.value_max AS double precision) >= CAST( ? AS double precision)
     ");
-    $stm->execute(array($vehicle_id, $depth_min, $depth_max));
+    $stm->execute(array($vehicle_id, strval($depth_min), strval($depth_max)));
     $results = $stm->fetch();
     if( $results == FALSE )
       return -20;
@@ -1712,7 +1716,7 @@
         ON service_client.user_id = users.username
       WHERE users.username = ?
     ");
-    $conn->execute(array($client_username));
+    $stm->execute(array($client_username));
     $results = $stm->fetch();
 
     // Error returning
@@ -1776,7 +1780,7 @@
         ON service_provider.user_id = users.username
       WHERE users.username = ?
     ");
-    $conn->execute(array($provider_username));
+    $stm->execute(array($provider_username));
     $results = $stm->fetch();
 
     // Error returning
@@ -1806,7 +1810,7 @@
         ON service_provider.user_id = users.username
       WHERE users.username = ?
     ");
-    $conn->execute(array($provider_username));
+    $stm->execute(array($provider_username));
 
     // Returns Service Provider information
     return $stm->fetch();
@@ -1851,9 +1855,9 @@
       return -1;
 
     $stm = $conn->prepare("
-      SELECT CURRENT_TIMESTAMP < ? AS date_validation;
+      SELECT CURRENT_TIMESTAMP < TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) AS date_validation;
     ");
-    $stm     = $conn->execute(array( "TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')" ));
+    $stm->execute(array( "$day $month $year" ));
     $results = $stm->fetch();
     if( $results['date_validation'] == FALSE )
       return -2;
@@ -1876,6 +1880,33 @@
 
     // Return string to time stamp (needed in SQL)
     return "TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')";
+  }
+  function getDayFromDateTime($date_time){
+    // Global variable: connection to the database
+    global $conn;
+
+    // String formating
+    $date_time_array = explode( '/' , $date_time , 3 );
+    // -> day
+    return $date_time_array[0];
+  }
+  function getMonthFromDateTime($date_time){
+    // Global variable: connection to the database
+    global $conn;
+
+    // String formating
+    $date_time_array = explode( '/' , $date_time , 3 );
+    // -> month
+    return $date_time_array[1];
+  }
+  function getYearFromDateTime($date_time){
+    // Global variable: connection to the database
+    global $conn;
+
+    // String formating
+    $date_time_array = explode( '/' , $date_time , 3 );
+    // -> year
+    $year  = $date_time_array[2];
   }
 
   /****************************************************************************************************
