@@ -12,7 +12,7 @@
         <button type="submit" class="button4 submitAsBtn"> Confirm </button>
       </div>
       <div class="container">
-        <span class="psw"> <a href="#" class="button4 submitAsBtn" style="text-decoration:none;color:white;">Forgot password?</a></span>
+        <span class="psw"> <a href="{$BASE_URL}pages/fpass.php" class="button4 submitAsBtn" style="text-decoration:none;color:white;">Forgot password?</a></span>
         <p class="psw"><a href="{$BASE_URL}pages/register.php" class="button4 submitAsBtn" style="text-decoration:none;color:white;">Sign-Up Here </a></p>
       </div>
       </form>
