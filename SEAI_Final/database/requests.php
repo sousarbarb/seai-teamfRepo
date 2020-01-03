@@ -100,6 +100,31 @@
     return $stm->fetchAll();
   }
 
+function getAllStoredAreas(){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all areas relative to data already present in database
+    $stm = $conn->prepare("
+      SELECT
+        ST_AsText(area.polygon)       AS area_polygon
+      FROM request
+      INNER JOIN area
+        ON  area.id = request.area_id
+      INNER JOIN data
+        ON  data.id = area.data_id
+      WHERE
+        request.restricted      = 'FALSE'   AND
+        request.sensor_type     IS NOT NULL AND
+        request.resolution_type IS NOT NULL AND
+        area.data_id            IS NOT NULL
+    ");
+    $stm->execute();
+
+    // Return results
+    return $stm->fetchAll();
+  }
+
 
   /****************************************************************************************************
    ****** SEARCHDATAWITHFILTER
