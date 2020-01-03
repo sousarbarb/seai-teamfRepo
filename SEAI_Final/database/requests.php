@@ -162,7 +162,6 @@ function getAllStoredAreas(){
     if($area['polygonsVertLatLng'][0]['numberVertices'] < 3)
       return -2;
     $polygon = processPolygonGetString($area);
-	//echo "<p>$polygon</p>";
 
     // --------------------------------------------------------------------------------
     // PROCESSING FILTERS
@@ -254,8 +253,6 @@ function getAllStoredAreas(){
 
     // --------------------------------------------------------------------------------
     // EXECUTING QUERY
-	//echo "<p>$sql</p>";
-	//print_r($sql_prepare);
     $stm = $conn->prepare($sql);
     $stm->execute($sql_prepare);
 
@@ -581,7 +578,7 @@ function getAllStoredAreas(){
     // Create a new area
     $stm = $conn->prepare("
       INSERT INTO area ( polygon )
-      VALUES    ST_GeographyFromText( ? )
+      VALUES    ( ? )
       RETURNING id
     ");
     try{
@@ -637,7 +634,7 @@ function getAllStoredAreas(){
 
       $stm = $conn->prepare("
         INSERT INTO request (
-          TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ),
+          deadline          ,
           area_id           ,
           client_id         ,
           comments          ,
@@ -647,7 +644,7 @@ function getAllStoredAreas(){
           agreement_client  ,
           restricted
         )
-        VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? )
+        VALUES ( TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) , ? , ? , ? , ? , ? , ? , ? , ? )
         RETURNING id
       ");
       try{
@@ -683,19 +680,19 @@ function getAllStoredAreas(){
     // Checks if service provider is present in table PROVIDER_REQUEST relative to the request in question
     $results = selectPossibleServiceProvidersToApplyForRequest($request_id, $area_id, $sensor_type, $resolution_value);
     if( $results < 0 ){
-      // Eliminates the area already created
-      $stm = $conn->prepare("
-        DELETE FROM area
-        WHERE  id = ?
-      ");
-      $stm->execute(array($area_id));
-
       // Eliminates the request already created
       $stm = $conn->prepare("
         DELETE FROM request
         WHERE  id = ?
       ");
       $stm->execute(array($request_id));
+
+      // Eliminates the area already created
+      $stm = $conn->prepare("
+        DELETE FROM area
+        WHERE  id = ?
+      ");
+      $stm->execute(array($area_id));
 
       // Returns errors
       return $results - 11;
@@ -1146,14 +1143,10 @@ function getAllStoredAreas(){
     array_push($sql_prepare,$area_id);
     array_push($sql_prepare,$path_pdf);
 
-    print_r($sql_prepare);
-
     $stm = $conn->prepare($sql);
     try{
       $stm->execute($sql_prepare);
     } catch(PDOexception $e) {
-      echo $e->getMessage();
-      echo $sql;
       return -16;
     }
 
@@ -1819,7 +1812,6 @@ function getAllStoredAreas(){
       WHERE users.username = ?
     ");
     $stm->execute(array($client_username));
-    $results = $stm->fetch();
 
     // Returns Service Client information
     return $stm->fetch();
