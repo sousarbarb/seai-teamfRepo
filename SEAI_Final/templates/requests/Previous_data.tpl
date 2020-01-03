@@ -4,7 +4,7 @@
 <div class="menusLogin p-5">
 	<h2 class="display-4 text-white">New Request - Existent Data</h2>
 	<div class="separator"></div>
-	<form action="{$BASE_URL}actions/buy_request.php" name="league" method="post">
+	<form action="{$BASE_URL}actions/manage_request.php" name="league" method="post"><input id ="rid" name="rid" type="hidden"/>
 	<table class='pd_filt' id="fil">
 		<td>
 			<table class='table_pd' id="foo">
@@ -14,13 +14,18 @@
 			<th style="text-align: center">Date</th>
 			<th style="text-align: center">Price</th>
 			<th style="text-align: center">Price per square meter</th>
+			<th></th>
 			</tr>
 			{foreach $requests as $request}
-				<tr>
-				<td>{number_format ($request.area_ratio*100, 4)}%</td><td>{$request.provider_name} ({$request.provider_username})</td><td>{$request.data_date}</td><td>{$request.data_price}€</td><td>{number_format ($request.price_area_ratio,5)}€/m</td>
+				<tr id={$request.request_id}>
+				<td>{number_format ($request.area_ratio*100, 4)}%</td>
+				<td>{$request.provider_name} ({$request.provider_username})</td>
+				<td>{$request.data_date}</td><td>{$request.data_price}€</td>
+				<td>{number_format ($request.price_area_ratio,5)}€/m</td>
+				<td><button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="doFunction(this);">See Details</button></td>
 				</tr>
 				<tr>
-				<td div class="info" colspan="6" >{$request.request_id}</td>
+				<td class="info" colspan="6" >{$request.request_id}</td>
 				</tr>
 			{/foreach}
 			</table>
