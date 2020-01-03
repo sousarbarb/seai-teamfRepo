@@ -79,7 +79,7 @@
             Consult
           </a>
           <div class="dropdown-container" aria-labelledby="navbarDropdown">
-            <a class="dropdown-in" href="{$BASE_URL}pages/accounts_manage.php">Manage Accounts</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/users_manage.php">Manage Users</a>
             <a class="dropdown-in" href="{$BASE_URL}pages/vehicles_manage.php">Manage Vehicles</a>
           </div>
         </li>
