@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-12-18 12:51:56
+/* Smarty version 3.1.33, created on 2019-12-31 18:14:30
   from 'C:\xampp\htdocs\seai-teamfRepo\SEAI_WebPages\templates\inicial\inicial.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5dfa12dc770a95_87706283',
+  'unifunc' => 'content_5e0b81f62c08e7_24045441',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1e2f2c38701d1f3e611eb42922ad2bd2ae7c6435' => 
     array (
       0 => 'C:\\xampp\\htdocs\\seai-teamfRepo\\SEAI_WebPages\\templates\\inicial\\inicial.tpl',
-      1 => 1576627992,
+      1 => 1577734307,
       2 => 'file',
     ),
   ),
@@ -20,11 +20,11 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
     'file:../common/header.tpl' => 1,
     'file:../common/login_form.tpl' => 1,
-    'file:../common/slideshow.tpl' => 1,
+    'file:../inicial/slideshow.tpl' => 1,
     'file:../common/footer.tpl' => 1,
   ),
 ),false)) {
-function content_5dfa12dc770a95_87706283 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e0b81f62c08e7_24045441 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:../common/header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/login_form.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
@@ -74,26 +74,26 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
         </p>
         <p class="lead"> All the data present in the platform is managed by the users that acquired it - Service Providers.</p>
         <p class="lead">Regarding the requests for new mission plans or access to past data, these actions are preformed by the Service Client.</p>
-
+        <p class="lead"> For more information on how to login in the website, check the following videos.</p>
       </div>
       <div class="col-lg-6">
+        <p class="lead text-white mb-0"> Registering as Service Provider</p>
+        <div class="modal-body"  align="center">
+          <iframe width="70%" height="200" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+        <!--<p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>-->
 
-        <p class="lead"> For more information on how to login in the website, check the following videos.</p>
-        <p class="lead text-white mb-0"> Service Provider</p>
-        <div class="bg-white p-5 rounded shadow-sm">
-        <p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>
-        </div>
-        <p class= "lead my-5"></p>
-        <p class="lead text-white mb-0"> Service Client</p>
-        <div class="bg-white p-5 rounded shadow-sm">
-        <p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>
-        </div>
+        <p class="lead text-white mb-0"> Registering as Service Client</p>
+          <div class="modal-body"  align="center">
+            <iframe width="70%" height="200" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+          </div>
+        <!--<p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>-->
       </div>
     </div>
 
   </div>
 
-<?php $_smarty_tpl->_subTemplateRender('file:../common/slideshow.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+<?php $_smarty_tpl->_subTemplateRender('file:../inicial/slideshow.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender('file:../common/footer.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 }
 }
