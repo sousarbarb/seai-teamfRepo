@@ -4,7 +4,7 @@
 <div class="menusLogin p-5">
 	<h2 class="display-4 text-white">New Request - Existent Data</h2>
 	<div class="separator"></div>
-	<form action="{$BASE_URL}actions/buy_request.php" method="post">
+	<form action="{$BASE_URL}actions/buy_request.php" name="league" method="post">
 	<table class='pd_filt' id="fil">
 		<td>
 			<table class='table_pd' id="foo">
@@ -12,29 +12,17 @@
 			<th style="text-align: center">Area covered</th>
 			<th style="text-align: center">Service Provider</th>
 			<th style="text-align: center">Date</th>
-			<th style="text-align: center">Price</th><th></th>
+			<th style="text-align: center">Price</th>
+			<th style="text-align: center">Price per square meter</th>
 			</tr>
-			<!-- {foreach $requests as $request}{
+			{foreach $requests as $request}
 				<tr>
-				<td>{$request.area}</td><td>{$request.sp}</td><td>{$request.date}</td><td>{$request.price}</td><td><input type="checkbox" name="check" value="{$request.id}"></td>
+				<td>{number_format ($request.area_ratio*100, 4)}%</td><td>{$request.provider_name} ({$request.provider_username})</td><td>{$request.data_date}</td><td>{$request.data_price}€</td><td>{number_format ($request.price_area_ratio,5)}€/m</td>
 				</tr>
 				<tr>
-				<td div class="info" colspan="6" ></td>
+				<td div class="info" colspan="6" >{$request.request_id}</td>
 				</tr>
 			{/foreach}
-			 -->
-			 <tr>
-			 <td>90%</td><td>lsts</td><td>4/12</td><td>100$</td><td><input type="checkbox" name="check" value="3"></td>
-			 </tr>
-			 <tr>
-			 <td div class="info" colspan="6" >555.555.555</td>
-			 </tr>
-			 <tr>
-			 <td>70%</td><td>seai</td><td>4/12</td><td>100$</td><td><input type="checkbox" name="check" value="3"></td>
-			 </tr>
-			 <tr>
-			 <td div class="info" colspan="6" >radddwadqwqdq</td>
-			 </tr>
 			</table>
 
 		<td>

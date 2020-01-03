@@ -159,9 +159,10 @@ function getAllStoredAreas(){
     // PROCESS AREA
     if($area == NULL)
       return -1;
-    if($area['polygonsVertLatLng']['numerodevertices'] < 3)
+    if($area['polygonsVertLatLng'][0]['numberVertices'] < 3)
       return -2;
     $polygon = processPolygonGetString($area);
+	//echo "<p>$polygon</p>";
 
     // --------------------------------------------------------------------------------
     // PROCESSING FILTERS
@@ -189,7 +190,7 @@ function getAllStoredAreas(){
         ST_Area(ST_Intersection( ?::geography , area.polygon::geography )::geography, true)
         /
         ST_Area( ?::geography,true )  AS area_ratio         ,
-        data.price
+        CAST(data.price AS double precision)
         / ST_Area( area.polygon::geography, true )
                                       AS price_area_ratio
       FROM  mission
@@ -212,7 +213,7 @@ function getAllStoredAreas(){
         ST_Intersects(
           ?            :: geography,
           area.polygon :: geography
-        )                        = 'TRUE'   AND
+        )                        = 'TRUE' 
     ";
     array_push( $sql_prepare , $polygon );
     array_push( $sql_prepare , $polygon );
@@ -253,6 +254,8 @@ function getAllStoredAreas(){
 
     // --------------------------------------------------------------------------------
     // EXECUTING QUERY
+	//echo "<p>$sql</p>";
+	//print_r($sql_prepare);
     $stm = $conn->prepare($sql);
     $stm->execute($sql_prepare);
 
@@ -264,20 +267,20 @@ function getAllStoredAreas(){
     $polygon = "POLYGON( ( ";
 	  $n_poly =$area['numberPolygons'];
     // Add to polygon the points vertices defined by the user
-    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lng'];
     $polygon .= "   ";
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
     for($i = 1 ; $i < $area['polygonsVertLatLng'][$n_poly-1]['numberVertices'] ; $i++){
       $polygon .= " , ";
-      $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['long'];
+      $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['lng'];
       $polygon .= "   ";
       $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['lat'];
     }
 
     // Closing polygon
     $polygon .= " , ";
-    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
+    $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lng'];
     $polygon .= "   ";
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
