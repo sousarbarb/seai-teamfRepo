@@ -15,7 +15,6 @@
   }
   else if ( isset($_SESSION['vehicle_name_temp']) ) {
     $vehicle_name = $_SESSION['vehicle_name_temp'];
-    unset( $_SESSION['vehicle_name_temp'] );
   }
   else {
     $_SESSION['error_messages'][]="Vehicle name not found";

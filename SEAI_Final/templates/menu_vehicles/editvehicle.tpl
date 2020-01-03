@@ -86,8 +86,6 @@
 
       <input type="hidden" name="vehicle_id"
             value="{if isset($form_values)}{$form_values.vehicle_id}{else}{$vehicle_id}{/if}">
-      <input type="hidden" name="vehicle_name"
-            value="{if isset($form_values)}{$form_values.vehicle_name}{else}{$vehicle_name}{/if}">
 
       <tr><td>
       {if empty($success_messages)}
