@@ -236,14 +236,14 @@
   }
   function processPolygonGetString($area){
     // Initial string necessary for query
-    $polygon = "'POLYGON( ( ";
-	$n_poly =$area['numberPolygons'];
+    $polygon = "POLYGON( ( ";
+	  $n_poly =$area['numberPolygons'];
     // Add to polygon the points vertices defined by the user
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['long'];
     $polygon .= "   ";
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
-    for($i = 1 ; $i < $area['polygonsVertLatLng'][$n_poly-1]['numerodevertices'] ; $i++){
+    for($i = 1 ; $i < $area['polygonsVertLatLng'][$n_poly-1]['numberVertices'] ; $i++){
       $polygon .= " , ";
       $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][$i]['long'];
       $polygon .= "   ";
@@ -257,7 +257,7 @@
     $polygon .= $area['polygonsVertLatLng'][$n_poly-1]['vertices'][0]['lat'];
 
     // Clossing string
-    $polygon .= ") ) '";
+    $polygon .= ") ) ";
 
     // Returns string
     return $polygon;
@@ -783,7 +783,8 @@
     $stm->execute();
     $result   = $stm->fetch();
     $LANDPOLY = $result['land_poly_count'];
-    if( $LANDPOLY == 0 )
+    print_r($result);
+    if( $LANDPOLY === 0 )
       return TRUE;                // Without any extra information, we assume area is OK
 
     // Get number of TRUE and FALSE intersections with land
@@ -807,10 +808,11 @@
     $stm->execute($sql_prepare);
     $result        = $stm->fetch();
     $TRUEINTERSECT = $result['true_count'];
+    print_r($result);
 
     // Returns TRUE OR FALSE
-    if( $TRUEINTERSECT == 0 || $TRUEINTERSECT == $LANDPOLY )
-      return TRUE;                // Area is either in sea or in land
+    if( $TRUEINTERSECT == 0 )
+      return TRUE;                // Area is either on sea
     else
       return FALSE;               // Area is between land and sea
   }
