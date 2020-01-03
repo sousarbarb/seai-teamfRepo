@@ -21,7 +21,6 @@ if(!empty($smarty->getTemplateVars('login'))) {
   //$_SESSION['acc_info']=$acc_info; //para aceder na página de modificação
   $smarty->display('menu_account/menu_my_account.tpl');
 } else {
-  echo $_SESSION['l_count'];
   $smarty->assign('l_count', $_SESSION['l_count']);
   $smarty->display('initial/initial.tpl');
 }
