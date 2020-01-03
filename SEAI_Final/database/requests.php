@@ -783,7 +783,6 @@
     $stm->execute();
     $result   = $stm->fetch();
     $LANDPOLY = $result['land_poly_count'];
-    print_r($result);
     if( $LANDPOLY === 0 )
       return TRUE;                // Without any extra information, we assume area is OK
 
@@ -808,7 +807,6 @@
     $stm->execute($sql_prepare);
     $result        = $stm->fetch();
     $TRUEINTERSECT = $result['true_count'];
-    print_r($result);
 
     // Returns TRUE OR FALSE
     if( $TRUEINTERSECT == 0 )
@@ -920,10 +918,16 @@
     }
     if(($est_starting_time != NULL) && ($est_finished_time != NULL)){
       $stm = $conn->prepare("
-        SELECT ? < ? AS date_validation;
+        SELECT TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) < TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) AS date_validation;
       ");
-      $stm->execute(array(getDateTimeToTimestampString($est_starting_time),
-                                      getDateTimeToTimestampString($est_finished_time)
+      $start_day    = getDayFromDateTime($est_starting_time);
+      $start_month  = getMonthFromDateTime($est_starting_time);
+      $start_year   = getYearFromDateTime($est_starting_time);
+      $finish_day   = getDayFromDateTime($est_finished_time);
+      $finish_month = getMonthFromDateTime($est_finished_time);
+      $finish_year  = getYearFromDateTime($est_finished_time);
+      $stm->execute(array("$start_day $start_month $start_year 20",
+                          "$finish_day $finish_month $finish_year 20"
       ));
       $results = $stm->fetch();
       if( $results['date_validation'] == FALSE )
@@ -943,6 +947,7 @@
     if($results == FALSE)
       return -7;
 
+    $client_id               = $results['client_id'];
     $area_id                 = $results['area_id'];
     $sensor_type_wanted      = $results['sensor_type'];
     $resolution_value_wanted = $results['resolution_type'];
@@ -999,8 +1004,6 @@
       WHERE sensor_id = ? AND
             value     = ?
     ");
-    echo "<p>sensor_id: $sensor_id</p>";
-    echo "<p>res_value: $resolution_value</p>";
     $stm->execute(array($sensor_id, $resolution_value));
     $results = $stm->fetch();
 
@@ -1078,13 +1081,17 @@
         area_id,
         path_pdf
       )
-      VALUES ( ? , ? , ? , ? , ? , ? , ? , ? )
+      VALUES ( 
+        ? , 
+        TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) , 
+        TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) , 
+        ? , ? , ? , ? , ? )
       RETURNING id
     ");
     try{
       $stm->execute(array('Proposal',
-                          $est_starting_time==NULL? NULL:getDateTimeToTimestampString($est_starting_time),
-                          $est_finished_time==NULL? NULL:getDateTimeToTimestampString($est_finished_time),
+                          $est_starting_time==NULL? NULL:"$start_day  $start_month  $start_year  20",
+                          $est_finished_time==NULL? NULL:"$finish_day $finish_month $finish_year 20",
                           $price,
                           $provider_id,
                           $resolution_id,
@@ -1117,7 +1124,7 @@
 
     // ----------------------------------------
     // Notifies the client of new proposal available
-    $stm = $prepare("
+    $stm = $conn->prepare("
       SELECT  *
       FROM    service_client
       WHERE   id = ?
@@ -1140,7 +1147,7 @@
     // Send to service client that a new proposal is available
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
-      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? , ? )
     ");
     try{
       $stm->execute(array($notification_info,
@@ -1151,7 +1158,7 @@
       ));
     } catch (PDOexception $e) {
       // Error creating the new notification
-      return -1;
+      $string = $e->getMessage();
     }
 
     // Success creating the new notification
@@ -1171,9 +1178,9 @@
     ");
     $stm->execute(array($area_id));
     $results = $stm->fetch();
-    $area = floatval($results['area_metersquare']);
-    $swath = floatval($resolution_swath);
-    $velocity = floatval($resolution_velocity);
+    $area     = floatval($results['area_metersquare']); //m^2
+    $swath    = floatval($resolution_swath);            //m
+    $velocity = floatval($resolution_velocity);         //m/2
 
     // ALGORITHM
     $total_distance = ceil( sqrt( $area ) / $swath) * sqrt( $area )
@@ -1182,27 +1189,40 @@
 
     // Verifies if it's okay
     if($est_starting_time != NULL){
+      // Convert DD/MM/YYYY to numbers
+      $start_day    = getDayFromDateTime($est_starting_time);
+      $start_month  = getMonthFromDateTime($est_starting_time);
+      $start_year   = getYearFromDateTime($est_starting_time);
+      $finish_day   = getDayFromDateTime($est_finished_time);
+      $finish_month = getMonthFromDateTime($est_finished_time);
+      $finish_year  = getYearFromDateTime($est_finished_time);
+
       $stm = $conn->prepare("
         SELECT
-          ?
+          TO_TIMESTAMP( ? , 'DD MM YYYY HH24' )
           >
-          ? + INTERVAL '1 hour' * DOUBLE PRECISION ?
+          TO_TIMESTAMP( ? , 'DD MM YYYY HH24' ) + INTERVAL '1 hour' * CAST( ? AS double precision)
           AS validation
       ");
-      $stm->execute(array(getDateTimeToTimestampString($est_finished_time),
-                          getDateTimeToTimestampString($est_starting_time),
+      $stm->execute(array("$finish_day $finish_month $finish_year 20",
+                          "$start_day  $start_month  $start_year  20",
                           strval($estimated_duration)
       ));
     }
     else{
+      // Convert DD/MM/YYYY to numbers
+      $finish_day   = getDayFromDateTime($est_finished_time);
+      $finish_month = getMonthFromDateTime($est_finished_time);
+      $finish_year  = getYearFromDateTime($est_finished_time);
+
       $stm = $conn->prepare("
         SELECT
           ?
           >
-          CURRENT_TIMESTAMP(0) + INTERVAL '1 hour' * DOUBLE PRECISION ?
+          CURRENT_TIMESTAMP(0) + INTERVAL '1 hour' *DOUBLE PRECISION CAST( ? AS double precision)
           AS validation
       ");
-      $stm->execute(array(getDateTimeToTimestampString($est_finished_time),
+      $stm->execute(array("$finish_day $finish_month $finish_year 20",
                           strval($estimated_duration)
       ));
     }
@@ -1826,8 +1846,6 @@
    *  0: date_time ok;
    * -1: date format isn't valid. The correct one is 'DD/MM/AAAA';
    * -2: date after today;
-   ****************************************************************************************************
-   ****** GETDATETIMETOTIMESTAMPSTRING
    ****************************************************************************************************/
   function verifyDateTimeValidation($date_time){
     // Global variable: connection to the database
@@ -1864,22 +1882,6 @@
 
     // Returns 0 if date_time is OK
     return 0;
-  }
-  function getDateTimeToTimestampString($date_time){
-    // Global variable: connection to the database
-    global $conn;
-
-    // String formating
-    $date_time_array = explode( '/' , $date_time , 3 );
-    // -> day
-    $day   = $date_time_array[0];
-    // -> month
-    $month = $date_time_array[1];
-    // -> year
-    $year  = $date_time_array[2];
-
-    // Return string to time stamp (needed in SQL)
-    return "TO_TIMESTAMP('$day $month $year 20' , 'DD MM YYYY HH24')";
   }
   function getDayFromDateTime($date_time){
     // Global variable: connection to the database
