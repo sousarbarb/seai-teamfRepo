@@ -57,15 +57,16 @@
           {if $acc_type=="client"}
           <div class="dropdown-container" aria-labelledby="navbarDropdown">
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_history.php">History</a>
-            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_waiting.php">Waiting Offers</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_waiting.php">Waiting Proposals</a>
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_progress.php">In Progess</a>
             <!--<div class="dropdown-divider"></div>-->
             <a class="dropdown-in" href="{$BASE_URL}pages/map.php">New</a>
           </div>
           {elseif $acc_type=="provider"}
           <div class="dropdown-container" aria-labelledby="navbarDropdown">
-            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_pendingoffers.php">Pending Offers</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_history.php">History</a>
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_available.php">Available Requests</a>
+            <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_pendingoffers.php">Pending Offers</a>
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_requests_progress.php">In Progess</a>
           </div>
           {/if}
