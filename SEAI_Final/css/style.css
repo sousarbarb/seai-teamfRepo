@@ -284,12 +284,12 @@ footer {
   padding: 70px;
 }
 
-.footer-initial { 
-  bottom: 0px; 
-  margin-left: 0rem; 
-  border-style: solid; 
-  border-color: white; 
-  border-width: thin; 
+.footer-initial {
+  bottom: 0px;
+  margin-left: 0rem;
+  border-style: solid;
+  border-color: white;
+  border-width: thin;
 }
 
 .footer-short {
@@ -997,4 +997,13 @@ opacity: 0.8;
   padding-right: 1em;
   padding-top: 1em;
   font-size: 16px;
+}
+
+/*------------------------- Admin ------------------------------------*/
+.manage_green {
+  background-color: green;
+}
+
+.manage_red {
+  background-color: red;
 }
