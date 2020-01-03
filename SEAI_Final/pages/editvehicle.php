@@ -5,9 +5,6 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
   die(header('Location: index.php'));
 } else {
   if($_POST){
-    if(isset($_POST['vehicle_name']))
-      $_SESSION['vehicle_name_temp'] = $_POST['vehicle_name'];
-
     $vehicle_id   = $_POST['vehicle_id'];  
     $vehicle_name = $_POST['vehicle_name'];
     $localization = $_POST['localization'];   
