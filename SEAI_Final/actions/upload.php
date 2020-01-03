@@ -1,4 +1,5 @@
 <?php
+include_once('../config/init.php');
 $target_dir = "../files/";
 $target_file = $target_dir . basename($_FILES["real-file"]["name"]);
 
