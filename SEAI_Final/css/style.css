@@ -931,7 +931,11 @@ opacity: 0.8;
 .show {
   display: table-cell;
 }
-
+ .Highlight
+    {
+      background-color: #31ACF7;
+      cursor: pointer;
+    }
 /*------------------------ Plan New Mission ----------------------------------*/
 .confirm{
  width:10em;
