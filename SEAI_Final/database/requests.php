@@ -1,5 +1,56 @@
 <?php
   /****************************************************************************************************
+   ***** GETPENDINGMISSIONSPROPOSALS
+   ****************************************************************************************************
+   ***** SERVICEPROVIDERIGNOREAVAILABLEREQUEST
+   ****************************************************************************************************/
+  function getPendingMissionsProposals( $provider_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all missions waiting client acceptance ou refused
+    $stm = $conn->prepare("
+      SELECT
+        service_client.client_name AS client_name    ,
+        service_client.user_id     AS client_username,
+        request.id              AS request_id         ,
+        request.deadline        AS request_deadline   ,
+        request.sensor_type     AS request_sensor_type,
+        request.resolution_type AS request_res_value  ,
+        request.comments        AS request_comments   ,
+        request.restricted      AS request_restricted ,
+        mission.est_starting_time AS mission_start_time ,
+        mission.est_finished_time AS mission_finish_time,
+        mission.path_pdf          AS mission_path_pdf
+      FROM request
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN request_mission
+        ON request_mission.request_id = request.id
+      INNER JOIN mission
+        ON mission.id = request_mission.mission_id
+      WHERE mission.status      = 'Proposal' AND
+            mission.provider_id = ?
+    ");
+    $stm->execute(array($provider_id));
+
+    // Return all request
+    return $stm->fetchAll();
+  }
+  function serviceProviderIgnoreAvailableRequest( $request_id, $provider_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Delete line from provider_request
+    $stm = $conn->prepare("
+      DELETE FROM provider_request
+      WHERE request_id  = ? AND
+            provider_id = ?
+    ");
+    $stm->execute(array($request_id, $provider_id));
+  }
+
+  /****************************************************************************************************
    ***** GETREQUESTINFO
    ****************************************************************************************************/
   function getRequestInfo( $request_id ){
@@ -129,18 +180,6 @@
 
     // Return results
     return $stm->fetchAll();
-  }
-  function ServiceProviderIgnoreAvailableRequest( $request_id, $provider_id ){
-    // Global variable: connection to the database
-    global $conn;
-
-    // Delete line from provider_request
-    $stm = $conn->prepare("
-      DELETE FROM provider_request
-      WHERE request_id  = ? AND
-            provider_id = ?
-    ");
-    $stm->execute(array($request_id, $provider_id));
   }
 
   /****************************************************************************************************
