@@ -765,6 +765,8 @@ function getAllStoredAreas(){
 
     $value_min = floatval($results['depth_min']);
     $value_max = floatval($results['depth_max']);
+	
+	
 
     // ----------------------------------------
     // Get possible service providers capable of satisfying the request in question

@@ -978,12 +978,19 @@ opacity: 0.8;
 
 .table_plan_new_mission {
   table-layout: fixed ;
+  margin: 1em auto;
+  table-layout: auto;
+  border-collapse: collapse;
+  Font-size:20px;
+  margin-bottom: 2em;
   width: 100% ;
 }
 .table_plan_new_mission td {
-  width: 25% ;
+  width: auto ;
 }
-
+.table_plan_new_mission tr {
+ margin-bottom: 2em;
+}
 .button_provider_hist {
   font-size:14px;
   width: auto;
