@@ -35,6 +35,7 @@
 </div>
 	
 			<div class="text-white vehicles_sideText">
+			<label class="vehicle_filtro_lbl" style="font-size:25px; text-decoration: underline;">Filters</label><br>
 			<form method="post" action="{$BASE_URL}pages/show_previous_data.php">
       <label class="vehicle_filtro_lbl">Sensors</label><br>
           {foreach $sensors as $sensor_type}
