@@ -507,11 +507,17 @@
     // ----------------------------------------
     // Checks variable $mission_id
     $stm = $conn->prepare("
-      SELECT  id,
-              status,
-              restricted
+      SELECT  mission.id,
+              mission.status,
+			  request.restricted
       FROM  mission
-      WHERE id = ?
+	  INNER JOIN request_mission
+	    ON request_mission.mission_id = mission.id
+	  INNER JOIN request
+	    ON request.id = request_mission.request_id
+      WHERE request.sensor_type     IS NOT NULL AND
+	        request.resolution_type IS NOT NULL AND
+	        mission.id = ?
     ");
     $stm->execute(array($mission_id));
     $results = $stm->fetch();
