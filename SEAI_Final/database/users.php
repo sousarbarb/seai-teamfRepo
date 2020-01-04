@@ -315,7 +315,7 @@
     // If the service provider is approved or the username does not exist in service_provider...
     if( $results == FALSE )
       return 0;                   // The administrators aren't notified because username isn't a service_provider.
-    
+
     // Gets all platform administrators
     $entity_name = $results['entity_name'];
     $stm = $conn->prepare("
@@ -382,7 +382,7 @@
 
     // Return the number of affected rows in this query (!! it works !!)
     return $stm->rowCount();
-  }  
+  }
   function notifyProviderAccountApproval($provider_username){             // !!!!! NOTIFICATION !!!!!
     // Global variable: connection to the database
     global $conn;
@@ -643,14 +643,14 @@
   /****************************************************************************************************
    ***** GETALLNOTINACTIVEUSERS
    ****************************************************************************************************
-   * This function returns all users that are active or waiting e-mail confirmation by the admin. A 
+   * This function returns all users that are active or waiting e-mail confirmation by the admin. A
    * suggestion is to do a foreach that prints the different information depending which type of user.
    * A table in the webpage could look like this:
-   * 
+   *
    *   Username | E-mail | Status | Name | Admin Approval
    * -----------|--------|--------|------|-----------------
    *     ...    |   ...  |   ...  |  ... |        ...
-   * 
+   *
    * To print the information, we could do the following (NOT TESTED):
    * - no ficheiro php:
    *     ...
@@ -686,7 +686,7 @@
   function getAllNotInactiveUsers(){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get all not inactive users
     $stm = $conn->prepare("
       SELECT
@@ -702,6 +702,34 @@
       FULL OUTER JOIN service_client
         ON service_client.user_id   = users.username
       WHERE users.status             <> 'Inactive'  AND
+        (service_client.client_name  IS NOT NULL    OR
+        service_provider.entity_name IS NOT NULL  )
+      ORDER BY admin_approval ASC, user_username ASC
+    ");
+    $stm->execute();
+
+    // Return all active ou waiting e-mail confirmation users
+    return $stm->fetchAll();
+  }
+  function getAllInactiveUsers(){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all not inactive users
+    $stm = $conn->prepare("
+      SELECT
+        users.username               AS user_username ,
+        users.e_mail                 AS user_email    ,
+        users.status                 AS user_status   ,
+        service_client.client_name   AS client_name   ,
+        service_provider.entity_name AS entity_name   ,
+        service_provider.approval    AS admin_approval
+      FROM users
+      FULL OUTER JOIN service_provider
+        ON service_provider.user_id = users.username
+      FULL OUTER JOIN service_client
+        ON service_client.user_id   = users.username
+      WHERE users.status             = 'Inactive'  AND
         (service_client.client_name  IS NOT NULL    OR 
         service_provider.entity_name IS NOT NULL  )
       ORDER BY user_username ASC
@@ -721,10 +749,10 @@
   function getServiceProviderUsername($entity_name){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the service provider username
     $stm = $conn->prepare("
-      SELECT  user_id 
+      SELECT  user_id
       FROM    service_provider
       WHERE   entity_name = ?
     ");
@@ -747,10 +775,10 @@
   function getServiceProviderEntityName($username){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the service provider entity name
     $stm = $conn->prepare("
-      SELECT  entity_name 
+      SELECT  entity_name
       FROM    service_provider
       WHERE   user_id = ?
     ");
@@ -773,10 +801,10 @@
   function getServiceProviderId($username){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the service provider id
     $stm = $conn->prepare("
-      SELECT  id 
+      SELECT  id
       FROM    service_provider
       WHERE   user_id = ?
     ");
@@ -799,10 +827,10 @@
   function getServiceClientUsername($client_name){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the service client username
     $stm = $conn->prepare("
-      SELECT  user_id 
+      SELECT  user_id
       FROM    service_client
       WHERE   client_name = ?
     ");
@@ -825,10 +853,10 @@
   function getServiceClientName($username){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the service client name
     $stm = $conn->prepare("
-      SELECT  client_name 
+      SELECT  client_name
       FROM    service_client
       WHERE   user_id = ?
     ");
@@ -851,10 +879,10 @@
   function getServiceClientId($username){
     // Global variable: connection to the database
     global $conn;
-    
+
     // Get the service client id
     $stm = $conn->prepare("
-      SELECT  id 
+      SELECT  id
       FROM    service_client
       WHERE   user_id = ?
     ");
@@ -867,7 +895,7 @@
     else
       return NULL;
   }
-  
+
 function verifyEmailExistance($email){
   global $conn;
     // Validation of service client credentials
@@ -906,18 +934,18 @@ function changePassword ( $mail, $newPass ) {
     SET    password = ?
     WHERE  e_mail = ?"
   );
-  
+
   $stm->execute( array( sha1( $newPass ), $mail ) );
 
   // Return the number of affected rows in this query (!! it works !!)
-    // Sucess 1  
+    // Sucess 1
   return $stm->rowCount();
 }
-function editUserStatusWithMail($e_mail, $status){  
-  global $conn;       // Update status (assuming that the e_mail is valid!)    
-  $stm = $conn->prepare("    UPDATE users    SET status = ?    WHERE e_mail = ?    ");    
-  $stm->execute(array($status, $e_mail));        // Sucess 1 
-  return $stm->rowCount();    
+function editUserStatusWithMail($e_mail, $status){
+  global $conn;       // Update status (assuming that the e_mail is valid!)
+  $stm = $conn->prepare("    UPDATE users    SET status = ?    WHERE e_mail = ?    ");
+  $stm->execute(array($status, $e_mail));        // Sucess 1
+  return $stm->rowCount();
 }
 
 function getUserType($username){
@@ -952,6 +980,6 @@ function getUserType($username){
     return 'admin';
   return 'error';
 }
-  
-  
+
+
 ?>
