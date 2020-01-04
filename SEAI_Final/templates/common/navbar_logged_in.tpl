@@ -17,7 +17,7 @@
                     My Account
                 </a>
         </li>
-        {if $acc_type=="client" || $acc_type=="provider"}
+        {*if $acc_type=="client" || $acc_type=="provider"}
         <li class="nav-item dropdown">
           <a class="nav-link text-dark font-italic dropdown-toggle menu-highlight {if $menu=="2"} menu-highlight-active {/if}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
@@ -28,7 +28,7 @@
             <a class="dropdown-in" href="{$BASE_URL}pages/menu_data.php">Full List</a>
           </div>
         </li>
-        {/if}
+        {/if*}
         {if $acc_type=="client"}
         <li class="nav-item">
           <a href="{$BASE_URL}pages/menu_vehicles.php" class="nav-link text-dark font-italic menu-highlight {if $menu=="3"} menu-highlight-active {/if}">
