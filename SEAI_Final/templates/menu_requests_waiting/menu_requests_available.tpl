@@ -4,9 +4,18 @@
 
 <div class="menusLogin p-5">
     <h2 class="display-4 text-white">Available Requests</h2>
-    <br>
-
-    <table class='table_pd'>
+    <div class="separator"></div>
+    {if (isset($success_messages))}
+      {foreach $success_messages as $success}
+        <div class="msg_success">{$success} <a class="msg_close" href="#"  style="text-decoration:none;">&#215;</a></div>
+      {/foreach}
+    {/if}
+    {if (isset($error_messages))}
+      {foreach $error_messages as $error}
+        <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+      {/foreach}
+    {/if}
+    <table class='table_avail'>
     <tr>
     <th>Request ID</th><th>User</th><th>Sensor Type</th><th>Resolution</th><th>Comments</th>
     </tr>
@@ -22,12 +31,12 @@
             <input type="hidden" name="request_sensor_type" value="{$request['request_sensor_type']}">
             <input type="hidden" name="request_res_value" value="{$request['request_res_value']}">
         </form>
-        
+
         <td><a href="#" onclick="document.getElementById('{$request['request_id']}').submit()" class= "button4 submitAsBtn button_provider_hist" style="color:white;width: auto;">Accept</a></td>
 
-        <td><a href="{$BASE_URL}actions/delete_request.php?id_request=".{$request['request_id']}."">Ignorar</a></td>
+        <td><a href="{$BASE_URL}actions/delete_request.php?id_request=".{$request['request_id']}."">Ignore</a></td>
         </tr>
-        
+
 
     {/foreach}
 

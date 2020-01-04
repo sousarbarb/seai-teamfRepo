@@ -936,6 +936,33 @@ opacity: 0.8;
       background-color: #31ACF7;
       cursor: pointer;
     }
+
+/*------------------------ Available Requests --------------------------------*/
+.table_avail {
+  width: 95%;
+  margin: 1em auto;
+  table-layout: auto;
+  border-collapse: collapse;
+  Font-size:20px;
+  margin-right:20em;
+  margin-bottom: 25em;
+}
+
+.table_avail th {
+  text-align:center;
+  border:solid  0.1em;
+  border-color:#ffffff;
+  color: #ffffff;
+  padding: 8px 8px;
+}
+.table_avail td{
+	text-align:center;
+	border:solid  0.1em;
+	border-color:#ffffff;
+	color: #ffffff;
+  padding: 8px 8px;
+}
+
 /*------------------------ Plan New Mission ----------------------------------*/
 .confirm{
  width:10em;
