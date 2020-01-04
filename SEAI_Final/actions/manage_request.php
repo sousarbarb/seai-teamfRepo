@@ -13,7 +13,7 @@ if (isset($_POST['back'])) {
 
 else{
 	$_SESSION["r_id"]=$_POST['rid'];
-	echo $_SESSION["r_id"];
-	//header("Location:  $BASE_URL" . 'pages/show_previous_data.php');
+	//echo $_SESSION["r_id"];
+	header("Location:  $BASE_URL" . 'pages/request_pag.php');
 }
 ?>

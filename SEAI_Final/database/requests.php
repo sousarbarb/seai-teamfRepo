@@ -56,7 +56,7 @@
     $stm->execute(array($request_id));
 
     // Return all requests
-    return $stm->fetchAll();
+    return $stm->fetch();
   }
 
   /****************************************************************************************************
