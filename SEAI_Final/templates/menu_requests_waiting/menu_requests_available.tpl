@@ -26,15 +26,19 @@
 
         {*<td><a href="???">See Details</a></td>*}
 
-        <form id="{$request['request_id']}" method="post" action="form_proposalnewmission.php">
+        <form id="{$request['request_id']}_accept" method="post" action="form_proposalnewmission.php">
             <input type="hidden" name="request_id" value="{$request['request_id']}">
             <input type="hidden" name="request_sensor_type" value="{$request['request_sensor_type']}">
             <input type="hidden" name="request_res_value" value="{$request['request_res_value']}">
         </form>
 
-        <td><a href="#" onclick="document.getElementById('{$request['request_id']}').submit()" class= "button4 submitAsBtn button_provider_hist" style="color:white;width: auto;">Accept</a></td>
+        <td><a href="#" onclick="document.getElementById('{$request['request_id']}_accept').submit()" class= "button4 submitAsBtn button_provider_hist" style="color:white;width: auto;">Accept</a></td>
 
-        <td><a href="{$BASE_URL}actions/delete_request.php?id_request=".{$request['request_id']}."">Ignore</a></td>
+        <form id="{$request['request_id']}_ignore" method="post" action="{$BASE_URL}actions/ignore_availablerequest.php">
+            <input type="hidden" name="request_id" value="{$request['request_id']}">
+        </form>
+
+        <td><a href="#" onclick="document.getElementById('{$request['request_id']}_ignore').submit()" class= "button4 submitAsBtn button_provider_hist" style="color:white;width: auto;">Ignore</a></td>
         </tr>
 
 

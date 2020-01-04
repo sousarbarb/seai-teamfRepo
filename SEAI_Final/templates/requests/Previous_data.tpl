@@ -4,6 +4,16 @@
 <div class="menusLogin p-5">
 	<h2 class="display-4 text-white">New Request - Existent Data</h2>
 	<div class="separator"></div>
+	{if (isset($success_messages))}
+    {foreach $success_messages as $success}
+      <div class="msg_success"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$success}</div>
+    {/foreach}
+  {/if}
+  {if (isset($error_messages))}
+    {foreach $error_messages as $error}
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+    {/foreach}
+  {/if}
 	<div class="grid-vehicles">
       <div class="text-white">
 	<form action="{$BASE_URL}actions/manage_request.php" name="league" method="post"><input id ="rid" name="rid" type="hidden"/>
@@ -15,6 +25,7 @@
 			<th style="text-align: center">Price</th>
 			<th style="text-align: center">Price per square meter</th>
 			<th></th>
+			<th></th>
 			</tr>
 			{foreach $requests as $request}
 				<tr id={$request.request_id}>
@@ -23,6 +34,7 @@
 				<td>{$request.data_date}</td><td>{$request.data_price}€</td>
 				<td>{number_format ($request.price_area_ratio,5)}€/m</td>
 				<td><button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="doFunction(this);">See Details</button></td>
+				<td><input type="radio" name="check" value="{$request.request_id},{$request.mission_id}"></td>
 				</tr>
 				<tr>
 				<td class="info" colspan="6" >{$request.request_id}</td>
@@ -31,6 +43,7 @@
 			</table>
 			<input type="submit" name="back" class="comfirm" value="Go back to Map" >
 			<input type="submit" name="Plan" class="comfirm" value="Plan new Mission" >
+			<input type="submit" name="buy" class="comfirm" value="Buy Request" >
 			</form>
 </div>
 	
