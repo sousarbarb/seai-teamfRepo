@@ -85,6 +85,7 @@
         request.sensor_type     IS NOT NULL AND
         request.resolution_type IS NOT NULL AND
         ( mission.status    = 'Proposal'    OR
+          mission.status    = 'Refused'     OR
           mission.status    IS NULL       ) AND
         request.client_id = ?
     ");
@@ -211,7 +212,7 @@
     return $stm->fetchAll();
   }
 
-function getAllStoredAreas(){
+  function getAllStoredAreas(){
     // Global variable: connection to the database
     global $conn;
 
@@ -408,7 +409,7 @@ function getAllStoredAreas(){
       FROM            data
       ORDER BY file_type ASC
     ");
-	$stm->execute();
+	  $stm->execute();
 
     // Return all distinct file types
     return $stm->fetchAll();
