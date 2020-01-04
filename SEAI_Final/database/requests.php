@@ -1,5 +1,65 @@
 <?php
   /****************************************************************************************************
+   ***** GETREQUESTINFO
+   ****************************************************************************************************/
+  function getRequestInfo( $request_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get request information
+    $stm = $conn->prepare("
+    WITH request_mission_link AS (
+      SELECT
+        request_mission.request_id   AS request_temp_id  ,
+        mission.id                   AS mission_id       ,
+        mission.status               AS mission_status   ,
+        mission.path_pdf             AS mission_path_pdf ,
+        service_provider.entity_name AS provider_name    ,
+        service_provider.user_id     AS provider_username
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+      WHERE
+        mission.status <> 'Proposal' AND
+        mission.status <> 'Refused'
+    )
+      SELECT
+        service_client.client_name AS client_name        ,
+        service_client.user_id     AS client_username    ,
+        request.id                 AS request_id         ,
+        request.sensor_type        AS request_sensor_type,
+        request.resolution_type    AS request_res_value  ,
+        request.comments           AS request_comments   ,
+        request.restricted         AS request_restricted ,
+        ST_AsText(area.polygon)    AS area_polygon       ,
+        data.price                 AS data_price         ,
+        data.date                  AS data_date          ,
+        data.file_type             AS data_file_type     ,
+        request_mission_link.mission_id        AS mission_id       ,
+        request_mission_link.mission_status    AS mission_status   ,
+        request_mission_link.mission_path_pdf  AS mission_details  ,
+        request_mission_link.provider_name     AS provider_name    ,
+        request_mission_link.provider_username AS provider_username
+      FROM request
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN area
+        ON area.id = request.area_id
+      LEFT JOIN data
+        ON data.id = area.data_id
+      FULL OUTER JOIN request_mission_link
+        ON request_mission_link.request_temp_id = request.id
+      WHERE request.id = ?
+    ");
+    $stm->execute(array($request_id));
+
+    // Return all requests
+    return $stm->fetchAll();
+  }
+
+  /****************************************************************************************************
    ***** GETREQUESTSWAITINGPROPOSALS
    ****************************************************************************************************/
   function getRequestsWaitingProposals( $client_id ){
