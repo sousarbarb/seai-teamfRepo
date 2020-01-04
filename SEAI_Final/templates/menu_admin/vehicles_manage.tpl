@@ -41,7 +41,12 @@
               <a href="#" onclick="document.getElementById('{$result['vehicle_name']}_seePage').submit()" style="color:white;">{$result['vehicle_name']}</a>
             </form>
           </td>
-          <td>{$result['provider_entityname']}</td>
+          <td>
+            <form id="{$result['provider_username']}_{$result['vehicle_name']}_seePersonnalPage" method="post" action="{$BASE_URL}pages/user_page.php">
+              <input type="hidden" name="userinfo_username" value="{$result['provider_username']}">
+              <a href="#" onclick="document.getElementById('{$result['provider_username']}_{$result['vehicle_name']}_seePersonnalPage').submit()" style="color:white;">{$result['provider_entityname']}</a>
+            </form>
+          </td>
           {if ($result['vehicle_active'])==TRUE}<td class="manage_green">Yes
           <form action="{$BASE_URL}actions/vehicles_manage_activation_status.php" method="post">
             <input type="hidden" name="vehicle_id_deactivate" value="{$result['vehicle_id']}">
