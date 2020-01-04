@@ -263,7 +263,7 @@ function getAllStoredAreas(){
         ST_Intersects(
           ?            :: geography,
           area.polygon :: geography
-        )                        = 'TRUE' 
+        )                        = 'TRUE'
     ";
     array_push( $sql_prepare , $polygon );
     array_push( $sql_prepare , $polygon );
@@ -765,6 +765,8 @@ function getAllStoredAreas(){
 
     $value_min = floatval($results['depth_min']);
     $value_max = floatval($results['depth_max']);
+	
+	
 
     // ----------------------------------------
     // Get possible service providers capable of satisfying the request in question
@@ -1176,8 +1178,8 @@ function getAllStoredAreas(){
         area_id,
         path_pdf
       )
-      VALUES ( 
-        ? , 
+      VALUES (
+        ? ,
     ";
     array_push($sql_prepare,'Proposal');
     if($est_starting_time!=NULL){
@@ -1235,7 +1237,7 @@ function getAllStoredAreas(){
     notifyServiceClientNewProposalAvailable($client_username, $provider_name, $provider_username, $request_id, $mission_id);
 
     // Returns 0 in case of success
-    return 0;
+    return $mission_id;
   }
   function notifyServiceClientNewProposalAvailable($client_username, $provider_name, $provider_username, $request_id, $mission_id){
     // Global variable: connection to the database
@@ -1328,7 +1330,12 @@ function getAllStoredAreas(){
     }
 
     $results = $stm->fetch();
-    return ($results['validation'] == TRUE );
+    if($results['validation'] == TRUE )
+      return TRUE;
+    else{
+      $_SESSION['error_messages'][] = "Estimated Mission Duration: " . ceil($estimated_duration) . " hours";
+      return FALSE;
+    }
   }
 
   /****************************************************************************************************
@@ -1951,15 +1958,15 @@ function getAllStoredAreas(){
     global $conn;
 
     // Checks date_time format
-    $date_time_array = explode( '/' , $date_time , 3 );
+    $date_time_array = explode( '-' , $date_time , 3 );
     if( count($date_time_array) != 3 )  // Date isn't in right format
       return -1;
     // -> day
-    $day   = $date_time_array[0];
+    $day   = $date_time_array[2];
     // -> month
     $month = $date_time_array[1];
     // -> year
-    $year  = $date_time_array[2];
+    $year  = $date_time_array[0];
 
     // Check values validation
     if( (intval($day) <= 0) || (intval($month) <= 0) || (intval($year) <= 0) )
@@ -1987,16 +1994,16 @@ function getAllStoredAreas(){
     global $conn;
 
     // String formating
-    $date_time_array = explode( '/' , $date_time , 3 );
+    $date_time_array = explode( '-' , $date_time , 3 );
     // -> day
-    return $date_time_array[0];
+    return $date_time_array[2];
   }
   function getMonthFromDateTime($date_time){
     // Global variable: connection to the database
     global $conn;
 
     // String formating
-    $date_time_array = explode( '/' , $date_time , 3 );
+    $date_time_array = explode( '-' , $date_time , 3 );
     // -> month
     return $date_time_array[1];
   }
@@ -2005,9 +2012,9 @@ function getAllStoredAreas(){
     global $conn;
 
     // String formating
-    $date_time_array = explode( '/' , $date_time , 3 );
+    $date_time_array = explode( '-' , $date_time , 3 );
     // -> year
-    return $date_time_array[2];
+    return $date_time_array[0];
   }
 
   /****************************************************************************************************
