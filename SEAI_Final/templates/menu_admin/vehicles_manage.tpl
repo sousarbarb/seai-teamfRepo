@@ -35,7 +35,12 @@
 
       {foreach $search_results_unapproved as $result}
         <tr>
-          <td>{$result['vehicle_name']}</td>
+          <td>
+            <form id="{$result['vehicle_name']}_seePage" method="post" action="{$BASE_URL}pages/vehicle_pag.php">
+              <input type="hidden" name="vehicle_name" value="{$result['vehicle_name']}">
+              <a href="#" onclick="document.getElementById('{$result['vehicle_name']}_seePage').submit()" style="color:white;">{$result['vehicle_name']}</a>
+            </form>
+          </td>
           <td>{$result['provider_entityname']}</td>
           {if ($result['vehicle_active'])==TRUE}<td class="manage_green">Yes
           <form action="{$BASE_URL}actions/vehicles_manage_activation_status.php" method="post">
@@ -57,7 +62,12 @@
       {/foreach}
       {foreach $search_results_approved as $result}
         <tr>
-          <td>{$result['vehicle_name']}</td>
+          <td>
+            <form id="{$result['vehicle_name']}_seePage" method="post" action="{$BASE_URL}pages/vehicle_pag.php">
+              <input type="hidden" name="vehicle_name" value="{$result['vehicle_name']}">
+              <a href="#" onclick="document.getElementById('{$result['vehicle_name']}_seePage').submit()" style="color:white;">{$result['vehicle_name']}</a>
+            </form>
+          </td>
           <td>{$result['provider_entityname']}</td>
           {if ($result['vehicle_active'])==TRUE}<td class="manage_green">Yes
           <form action="{$BASE_URL}actions/vehicles_manage_activation_status.php" method="post">

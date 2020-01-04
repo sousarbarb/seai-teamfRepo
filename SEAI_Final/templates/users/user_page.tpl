@@ -1,6 +1,6 @@
-{include file='common/header.tpl'}
-{include file='common/navbar_logged_in.tpl'}
-{include file='common/logout.tpl'}
+{include file='../common/header.tpl'}
+{include file='../common/navbar_logged_in.tpl'}
+{include file='../common/logout.tpl'}
 
 <div class="menusLogin p-5">
   {if $type=="provider"}
@@ -70,4 +70,4 @@
 
 </div>
 
-{include file='common/footer-short.tpl'}
+{include file='../common/footer-short.tpl'}
