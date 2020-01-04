@@ -60,7 +60,7 @@
         <a href="{$BASE_URL}pages/menu_vehicles_add.php" class="button4 buttonsAcc" style="text-decoration:none;color:white;"> Add Vehicle </a>
         <br><br>
         {/if}
-
+        <label class="vehicle_filtro_lbl" style="font-size:25px; text-decoration: underline;">Filters</label><br> 
         <form method="post" action="{$BASE_URL}pages/menu_vehicles.php">
 
         <label class="vehicle_filtro_lbl">Service Provider</label><br>

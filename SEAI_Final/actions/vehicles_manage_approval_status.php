@@ -12,8 +12,6 @@ if($_POST['vehicle_id_disapprove']) {
   $result = editVehicleApproval($vehicle_id, $status);
   $vehicle_name = getVehicleName($vehicle_id);
 
-  print_r(getVehicleServiceProvider($vehicle_id));
-
 } else {
   $_SESSION['error_messages'][]="Invalid Command";
   $_SESSION['form_values']=$_POST;
