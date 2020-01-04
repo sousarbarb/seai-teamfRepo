@@ -1,5 +1,40 @@
 <?php
   /****************************************************************************************************
+   ***** GETREQUESTSWAITINGPROPOSALS
+   ****************************************************************************************************/
+  function getRequestsWaitingProposals( $client_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get all request waiting proposals
+    $stm = $conn->prepare("
+      SELECT DISTINCT
+        request.id                 AS request_id         ,
+        request.deadline           AS request_deadline   ,
+        request.area_id            AS request_area_id    ,
+        request.comments           AS request_comments   ,
+        request.sensor_type        AS request_sensor_type,
+        request.resolution_type    AS request_res_value  ,
+        request.restricted         AS request_restricted
+      FROM request
+      FULL OUTER JOIN request_mission
+        ON request_mission.request_id = request.id
+      FULL OUTER JOIN mission
+        ON mission.id = request_mission.mission_id
+      WHERE
+        request.sensor_type     IS NOT NULL AND
+        request.resolution_type IS NOT NULL AND
+        ( mission.status    = 'Proposal'    OR
+          mission.status    IS NULL       ) AND
+        request.client_id = ?
+    ");
+    $stm->execute(array($client_id));
+
+    // Return results
+    return $stm->fetchAll();
+  }
+
+  /****************************************************************************************************
    ***** GETALLMISSIONROPOSAL
    ****************************************************************************************************/
   function getAllMissionsProposal( $request_id ){
