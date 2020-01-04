@@ -35,7 +35,7 @@ if($result){
   $ftype = getDataFilterFileType();
   $smarty->assign('file_type', $ftype);
   
-  $result=searchDataWithFilters($_SESSION["area"],
+  $result=searchDataWithFilters($smarty->getTemplateVars('user_id'),$_SESSION["area"],
   isset($sensors_selected)?           $sensors_selected           : NULL,
   isset($resolutions_selected)?       $resolutions_selected       : NULL,
   isset($file_type_selected)?    $file_type_selected    : NULL
