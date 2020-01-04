@@ -26,5 +26,5 @@
   $smarty->assign('PREVIOUSPAGE', $_SERVER['HTTP_REFERER']);
   $smarty->assign('type', $type);
   $smarty->assign('acc_info', $acc_info);
-  $smarty->display('user_page.tpl');
+  $smarty->display('users/user_page.tpl');
 ?>
