@@ -130,6 +130,18 @@
     // Return results
     return $stm->fetchAll();
   }
+  function ServiceProviderIgnoreAvailableRequest( $request_id, $provider_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Delete line from provider_request
+    $stm = $conn->prepare("
+      DELETE FROM provider_request
+      WHERE request_id  = ? AND
+            provider_id = ?
+    ");
+    $stm->execute(array($request_id, $provider_id));
+  }
 
   /****************************************************************************************************
    ***** GETALLREQUESTS
