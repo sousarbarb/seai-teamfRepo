@@ -4,10 +4,10 @@
 <div class="menusLogin p-5">
 	<h2 class="display-4 text-white">New Request - Existent Data</h2>
 	<div class="separator"></div>
+	<div class="grid-vehicles">
+      <div class="text-white">
 	<form action="{$BASE_URL}actions/manage_request.php" name="league" method="post"><input id ="rid" name="rid" type="hidden"/>
-	<table class='pd_filt' id="fil">
-		<td>
-			<table class='table_pd' id="foo">
+	<table class='table_pd' id="foo">
 			<tr>
 			<th style="text-align: center">Area covered</th>
 			<th style="text-align: center">Service Provider</th>
@@ -29,50 +29,75 @@
 				</tr>
 			{/foreach}
 			</table>
-
-		<td>
+			<input type="submit" name="back" class="comfirm" value="Go back to Map" >
+			<input type="submit" name="Plan" class="comfirm" value="Plan new Mission" >
+			</form>
+</div>
+	
 			<div class="text-white vehicles_sideText">
-				{if ($acc_type=="provider")}
-				&nbsp;&nbsp;
-				<a href="{$BASE_URL}pages/menu_vehicles_add.php" class="button4 buttonsAcc" style="text-decoration:none;color:white;"> Add Vehicle </a>
-				<br><br>
-				{/if}
-				<label class="vehicle_filtro_lbl">Filter type 1</label><br>
-				<form method="get" action="{$BASE_URL}actions/vehicles_filter_public.php">
-				  <input type="checkbox" name="map_filter1" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter1=='all'))}checked="checked"{/if}> All</input><br>
-				  <input type="checkbox" name="map_filter1" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter1'))}checked="checked"{/if}> Filter1</input><br>
-				  <input type="checkbox" name="map_filter1" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter2'))}checked="checked"{/if}> Filter2</input><br>
-				  <input type="checkbox" name="map_filter1" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter3'))}checked="checked"{/if}> Filter3</input><br>
-				  <input type="checkbox" name="map_filter1" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter4'))}checked="checked"{/if}> Filter4</input><br>
-				  <input type="checkbox" name="map_filter1" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter1=='filter5'))}checked="checked"{/if}> Filter5</input><br>
-				<br>
-				<label class="vehicle_filtro_lbl">Filter type 2</label><br>
-				  <input type="checkbox" name="map_filter2" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter2=='all'))}checked="checked"{/if}> All</input><br>
-				  <input type="checkbox" name="map_filter2" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter1'))}checked="checked"{/if}> Filter1</input><br>
-				  <input type="checkbox" name="map_filter2" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter2'))}checked="checked"{/if}> Filter2</input><br>
-				  <input type="checkbox" name="map_filter2" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter3'))}checked="checked"{/if}> Filter3</input><br>
-				  <input type="checkbox" name="map_filter2" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter4'))}checked="checked"{/if}> Filter4</input><br>
-				  <input type="checkbox" name="map_filter2" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter2=='filter5'))}checked="checked"{/if}> Filter5</input><br>
-				<br>
-				<label class="vehicle_filtro_lbl">Filter type 3</label><br>
-				  <input type="checkbox" name="map_filter3" value="all" {if (!(isset($form_values)) || ($form_values.vehicles_filter3=='all'))}checked="checked"{/if}> All</input><br>
-				  <input type="checkbox" name="map_filter3" value="filter1" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter1'))}checked="checked"{/if}> Filter1</input><br>
-				  <input type="checkbox" name="map_filter3" value="filter2" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter2'))}checked="checked"{/if}> Filter2</input><br>
-				  <input type="checkbox" name="map_filter3" value="filter3" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter3'))}checked="checked"{/if}> Filter3</input><br>
-				  <input type="checkbox" name="map_filter3" value="filter4" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter4'))}checked="checked"{/if}> Filter4</input><br>
-				  <input type="checkbox" name="map_filter3" value="filter5" {if (isset($form_values) && ($form_values.vehicles_filter3=='filter5'))}checked="checked"{/if}> Filter5</input><br>
-				  <input type="submit" name="map_submit" style="display:none" value=""></input>
+			<form method="post" action="{$BASE_URL}pages/show_previous_data.php">
+      <label class="vehicle_filtro_lbl">Sensors</label><br>
+          {foreach $sensors as $sensor_type}
+            <input  type="checkbox"
+                    name="sensors_array[]"
+                    id="sensors_filter"
+                    value="{$sensor_type['sensor_type']}"
+                    {if !empty($sensors_selected)}
+                      {foreach $sensors_selected as $selected}
+                        {if $sensor_type['sensor_type'] == $selected}
+                          checked
+                        {/if}
+                      {/foreach}
+                    {/if}
+                    >
+            {$sensor_type['sensor_type']}<br>
+          {/foreach}
+        <br>
+
+        <label class="vehicle_filtro_lbl">Resolutions</label><br>
+          {foreach $resolutions as $res_value}
+            <input  type="checkbox"
+                    name="resolutions_array[]"
+                    id="resolutions_filter"
+                    value="{$res_value['value']}"
+                    {if !empty($resolutions_selected)}
+                      {foreach $resolutions_selected as $selected}
+                        {if $res_value['value'] == $selected}
+                          checked
+                        {/if}
+                      {/foreach}
+                    {/if}
+                    >
+            {$res_value['value']}<br>
+          {/foreach}
+        <br>
+		<label class="vehicle_filtro_lbl">File types</label><br>
+          {foreach $file_type as $tfile}
+                 <input  type="checkbox"
+                    name="file_type_array[]"
+                    id="filetype_filter"
+                    value="{$tfile['file_type']}"
+                    {if !empty($file_type_selected)}
+                      {foreach $file_type_selected as $selected}
+                        {if $tfile['file_type'] == $selected}
+                          checked
+                        {/if}
+                      {/foreach}
+                    {/if}
+                    >
+            {$tfile['file_type']}<br>
+          {/foreach}
+        <br>
+		  <input type="submit" name="vehicles_submit" style="display:none" value=""></input>
 				</form>
 			</div>
-		</td>
 
-	</table>
 	<br>
-	<input type="submit" name="back" class="comfirm" value="Go back to Map" >
-	<input type="submit" name="Plan" class="comfirm" value="Plan new Mission" >
-	</form>
-</td>
+	
+
 
 <br>
+</div>
+</div>
 </div>
 </div>
