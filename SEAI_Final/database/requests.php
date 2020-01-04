@@ -860,6 +860,41 @@ function getAllStoredAreas(){
     // Return results
     return $stm->fetch();
   }
+  function getMinMaxDepthAreaFromStructure($area){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get string that defines a area
+    $polygon = processPolygonGetString($area);
+
+    // Get min and max depth
+    $stm = $conn->prepare("
+      WITH grid_intersections AS (
+        SELECT
+          ST_Intersects(
+            depth_grid.grid_item :: geography,
+            ?                    :: geography
+          )                AS intersection_areas,
+          depth_grid.depth AS depth_area
+        FROM
+          area, depth_grid
+        WHERE
+          area.id = ?              AND
+          ST_Intersects(
+            depth_grid.grid_item :: geography,
+            ?                    :: geography
+          )                        = 'TRUE'
+      )
+      SELECT
+        MIN(depth_area) AS depth_min,
+        MAX(depth_area) AS depth_max
+      FROM  grid_intersections
+    ");
+    $stm->execute(array($polygon, $area_id));
+
+    // Return results
+    return $stm->fetch();
+  }
   function verifyLandOrSeaRestriction($area){
     // Global variable: connection to the database
     global $conn;
