@@ -1885,4 +1885,46 @@ SELECT * FROM vehicle_sensor_resolution;
     else
       return NULL;
   }
+
+  function getAllProviderVehiclesNamesMission($provider_id, $sensor_type, $resolution_value){
+    global $conn;
+
+    $stm = $conn->prepare("
+      SELECT DISTINCT vehicle.vehicle_name AS vehicle_name
+      FROM vehicle
+      INNER JOIN sensor
+        ON sensor.vehicle_id = vehicle.id
+      INNER JOIN resolution
+        ON resolution.sensor_id = sensor.id
+      WHERE vehicle.approval = true AND
+            vehicle.active = true AND
+            vehicle.service_provider_id = ? AND
+            sensor.sensor_type = ? AND 
+            resolution.value = ?
+      ORDER BY vehicle_name ASC
+    ");
+    $stm->execute(array($provider_id, $sensor_type, $resolution_value));
+
+    return $stm->fetchAll();
+  }
+
+  function getSensorNameForMission($vehicle_name, $sensor_type, $resolution_value){
+    global $conn;
+
+    $stm = $conn->prepare("
+      SELECT sensor_name AS sensor_name
+      FROM vehicle
+        INNER JOIN sensor
+      ON sensor.vehicle_id = vehicle.id
+        INNER JOIN resolution
+      ON resolution.sensor_id = sensor.id
+   WHERE  vehicle.vehicle_name = ? AND
+  sensor.sensor_type = ? AND 
+  resolution.value = ?
+      ORDER BY vehicle_name ASC
+    ");
+    $stm->execute(array($provider_id, $sensor_type, $resolution_value));
+
+    return $stm->fetchAll();
+  }
 ?>
