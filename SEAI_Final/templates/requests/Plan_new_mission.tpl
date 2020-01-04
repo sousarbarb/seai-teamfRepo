@@ -85,6 +85,14 @@
 		    </tr>
 		  </thead>
 		  <tbody>
+		  <tr >
+				<td style="text-align: center"> Area min Depth </td>
+				<td style="text-align: center"> {$depth['depth_min']} </td>
+			</tr>
+			<tr >
+				<td style="text-align: center"> Area max Depth </td>
+				<td style="text-align: center"> {$depth['depth_max']} </td>
+			</tr>
 			<tr>
 				<td  style="text-align: center"> Sensor Type </td>
 				<td >

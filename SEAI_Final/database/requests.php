@@ -877,9 +877,8 @@ function getAllStoredAreas(){
           )                AS intersection_areas,
           depth_grid.depth AS depth_area
         FROM
-          area, depth_grid
+          depth_grid
         WHERE
-          area.id = ?              AND
           ST_Intersects(
             depth_grid.grid_item :: geography,
             ?                    :: geography
@@ -890,7 +889,7 @@ function getAllStoredAreas(){
         MAX(depth_area) AS depth_max
       FROM  grid_intersections
     ");
-    $stm->execute(array($polygon, $area_id));
+    $stm->execute(array($polygon,$polygon));
 
     // Return results
     return $stm->fetch();
