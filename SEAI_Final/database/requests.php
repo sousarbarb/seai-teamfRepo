@@ -348,6 +348,7 @@ function getAllStoredAreas(){
       FROM            data
       ORDER BY file_type ASC
     ");
+	$stm->execute();
 
     // Return all distinct file types
     return $stm->fetchAll();
