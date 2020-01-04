@@ -314,7 +314,7 @@
    ****************************************************************************************************
    ****** GETDATAFILTERFILETYPE
    ****************************************************************************************************/
-  function searchDataWithFilters($area, $sensors_selected, $resolutions_selected, $filetypes_selected){
+  function searchDataWithFilters($client_id, $area, $sensors_selected, $resolutions_selected, $filetypes_selected){
     // Global variable: connection to the database
     global $conn;
 
@@ -412,6 +412,33 @@
         array_push( $sql_prepare , $select_stripTags );
       }
       $sql .= " 'FALSE' ) ";
+    }
+
+    // ----------------------------------------
+    // Get data already buy the user
+    $stm = $conn->prepare("
+      SELECT
+        service_client.id          AS client_id      ,
+        service_client.user_id     AS client_username,
+        service_client.client_name AS client_name    ,
+        request.id             AS request_id     ,
+        area.id                AS area_id        ,
+        area.data_id           AS data_id
+      FROM service_client
+      INNER JOIN request
+        ON request.client_id = service_client.id
+      INNER JOIN area
+        ON area.id = request.area_id
+      WHERE
+        area.data_id      IS NOT NULL AND
+        service_client.id = ?
+    ");
+    $stm->execute(array($client_id));
+    $results = $stm->fetchAll();
+
+    foreach($results as $result){
+      $sql .= " AND area.id <> ? ";
+      array_push( $sql_prepare , $result['area_id'] );
     }
 
     // --------------------------------------------------------------------------------
