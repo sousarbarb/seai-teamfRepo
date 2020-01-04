@@ -299,6 +299,12 @@
 </article>
 {/if}
 {/if}
+<br><br>
+{if $sameprovider}
+  <a href="{$BASE_URL}pages/menu_my_vehicles.php" class="button4 submitAsBtn" style="text-decoration:none;color:white"> Back </a>
+{else}
+  <a href="{$PREVIOUSPAGE}" class="button4 submitAsBtn" style="text-decoration:none;color:white"> Back </a>
+{/if}
 <br><br><br>
 </div>
 </div>

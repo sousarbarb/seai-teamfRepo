@@ -57,6 +57,7 @@
   }
   $smarty->assign( 'resolutions_array' ,  $resolutions_array );
 
+  $smarty->assign('PREVIOUSPAGE', $_SERVER['HTTP_REFERER']);
   $smarty->assign('menu', '3');
   $smarty->display('menu_vehicles/vehicle_pag.tpl');
 
