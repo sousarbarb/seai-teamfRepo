@@ -897,28 +897,61 @@ function updateUsersWaitingEmail($email){
 
 
 function changePassword ( $mail, $newPass ) {
-    // Global variable: connection to the database
-    global $conn;
+  // Global variable: connection to the database
+  global $conn;
+
+  // Update pass (assuming that the mail is valid!)
+  $stm = $conn->prepare("
+    UPDATE users
+    SET    password = ?
+    WHERE  e_mail = ?"
+  );
   
-    // Update pass (assuming that the mail is valid!)
-    $stm = $conn->prepare("
-      UPDATE users
-      SET    password = ?
-      WHERE  e_mail = ?"
-    );
-    
-    $stm->execute( array( sha1( $newPass ), $mail ) );
- 
-    // Return the number of affected rows in this query (!! it works !!)
-      // Sucess 1  
-    return $stm->rowCount();
-  }
-  function editUserStatusWithMail($e_mail, $status){  
-	  global $conn;       // Update status (assuming that the e_mail is valid!)    
-	  $stm = $conn->prepare("    UPDATE users    SET status = ?    WHERE e_mail = ?    ");    
-	  $stm->execute(array($status, $e_mail));        // Sucess 1 
-	  return $stm->rowCount();    
-  }
+  $stm->execute( array( sha1( $newPass ), $mail ) );
+
+  // Return the number of affected rows in this query (!! it works !!)
+    // Sucess 1  
+  return $stm->rowCount();
+}
+function editUserStatusWithMail($e_mail, $status){  
+  global $conn;       // Update status (assuming that the e_mail is valid!)    
+  $stm = $conn->prepare("    UPDATE users    SET status = ?    WHERE e_mail = ?    ");    
+  $stm->execute(array($status, $e_mail));        // Sucess 1 
+  return $stm->rowCount();    
+}
+
+function getUserType($username){
+  // Global variable: connection to the database
+  global $conn;
+
+  // Get user type
+  $stm = $conn->prepare("
+    SELECT
+      users.username           AS username         ,
+      service_client.user_id   AS client_username  ,
+      service_provider.user_id AS provider_username,
+      admin.user_id            AS admin_username
+    FROM users
+    FULL OUTER JOIN service_client
+      ON service_client.user_id = users.username
+    FULL OUTER JOIN service_provider
+      ON service_provider.user_id = users.username
+    FULL OUTER JOIN admin
+      ON admin.user_id = users.username
+    WHERE users.username = ?
+  ");
+  $stm->execute(array($username));
+  $result = $stm->fetch();
+
+  // Process $username user type
+  if(isset($result['client_username']))
+    return 'client';
+  if(isset($result['provider_username']))
+    return 'provider';
+  if(isset($result['admin_username']))
+    return 'admin';
+  return 'error';
+}
   
   
 ?>
