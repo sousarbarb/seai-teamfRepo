@@ -44,7 +44,12 @@
             <a href="#" onclick="document.getElementById('{$result['vehicle_id']}').submit()" style="color:white;">{$result['vehicle_name']}</a>
           </form></td>
           <td>{$result['vehicle_localization']}</td>
-          <td>{$result['provider_entityname']}</td>
+          <td>
+            <form id="{$result['provider_username']}_{$result['vehicle_name']}_seePersonnalPage" method="post" action="{$BASE_URL}pages/user_page.php">
+              <input type="hidden" name="userinfo_username" value="{$result['provider_username']}">
+              <a href="#" onclick="document.getElementById('{$result['provider_username']}_{$result['vehicle_name']}_seePersonnalPage').submit()" style="color:white;">{$result['provider_entityname']}</a>
+            </form>
+          </td>
         </tr>
         {/foreach}
         </table>
