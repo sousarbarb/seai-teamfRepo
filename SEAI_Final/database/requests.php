@@ -1,55 +1,71 @@
 <?php
-
+  /****************************************************************************************************
+   ***** GETALLMISSIONROPOSAL
+   ****************************************************************************************************/
   function getAllMissionsProposal( $request_id ){
+    // Global variable: connection to the database
     global $conn;
 
     // Get all areas relative to data already present in database
     $stm = $conn->prepare("
       SELECT
-        mission.id                    AS mission_id,
-        service_provider.entity_name  AS entity_name,
-        mission.est_starting_time     AS est_starting_time  ,
-        mission.est_finished_time     AS est_finished_time  ,
-        mission.price                 AS price ,
-        mission.path_pdf              AS pdf
-
-      FROM mission, request, service_provider, provider_request, request_mission
-
-       WHERE (
-        mission.provider_id = service_provider.id  AND
-        mission.id = request_mission.mission_id    AND
-        request.id = request_mission.request_id    AND
-        request.id = ?)
-       ");
+        mission.id                   AS mission_id              ,
+        mission.est_starting_time    AS mission_estimated_start ,
+        mission.est_finished_time    AS mission_estimated_finish,
+        mission.price                AS mission_price           ,
+        mission.path_pdf             AS mission_path_pdf        ,
+        mission.provider_id          AS provider_id             ,
+        service_provider.entity_name AS provider_name           ,
+        service_provider.user_id     AS provider_username
+      FROM request
+      INNER JOIN request_mission
+        ON request_mission.request_id = request.id
+      INNER JOIN mission
+        ON mission.id = request_mission.mission_id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+      WHERE
+        mission.status            = 'Proposal' AND
+        service_provider.approval = TRUE       AND
+        request.id = ?
+    ");
     $stm->execute(array($request_id));
 
     // Return results
     return $stm->fetchAll();
   }
 
-
-  function getAllRequests( $id ) {
-      global $conn;
-
+  /****************************************************************************************************
+   ***** GETALLREQUESTS
+   ****************************************************************************************************/
+  function getAllRequests( $provider_id ) {
+    // Global variable: connection to the database
+    global $conn;
 
     // Get all areas relative to data already present in database
     $stm = $conn->prepare("
       SELECT
-        request.id                    AS request_id,
-        request.sensor_type           AS request_sensor_type,
-        request.resolution_type       AS request_res_value  ,
-        request.comments              AS request_comments   ,
-        service_client.client_name    AS client_name,
-        area.polygon                  AS polygon
-
-      FROM request, service_client, area, service_provider, provider_request
-      WHERE (
-        request.id = provider_request.request_id  AND
-        service_provider.id = ?          AND
-        request.area_id = area.id                         AND
-        request.client_id = service_client.id)
-       ");
-    $stm->execute(array($id));
+        request.id                 AS request_id         ,
+        request.deadline           AS request_deadline   ,
+        request.area_id            AS request_area_id    ,
+        request.comments           AS request_comments   ,
+        request.sensor_type        AS request_sensor_type,
+        request.resolution_type    AS request_res_value  ,
+        request.restricted         AS request_restricted ,
+        request.client_id          AS client_id          ,
+        service_client.client_name AS client_name        ,
+        service_client.user_id     AS client_username
+      FROM request
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN provider_request
+        ON provider_request.request_id = request.id
+      WHERE
+        request.sensor_type     IS NOT NULL AND
+        request.resolution_type IS NOT NULL AND
+        provider_request.provider_id   = ?
+    ");
+    $stm->execute(array($provider_id));
 
     // Return results
     return $stm->fetchAll();
