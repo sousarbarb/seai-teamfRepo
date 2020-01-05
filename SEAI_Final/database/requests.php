@@ -135,31 +135,35 @@
     global $conn;
     // Execute query
     $stm = $conn->prepare("
-      SELECT mission.id 					        AS mission_id,
-             request.id 					        AS request_id,
-             service_client.user_id       AS client_username,
-			 service_client.client_name	      AS client_name,
-             mission.starting_time        AS starting_time,
-             mission.finished_time        AS finished_time,
-             mission.path_pdf             AS mission_path,
-             data.path 					          AS data_path,
-             data.price 				          AS data_price
-      FROM mission
-      INNER JOIN request_mission
-        ON request_mission.mission_id = mission.id
-      INNER JOIN request
-        ON request_mission.request_id = request.id
-      INNER JOIN area
-        ON area.id = request.area_id
-      INNER JOIN data
-        ON data.id = area.data_id
-      INNER JOIN service_client
-        ON service_client.id = request.client_id
-      INNER JOIN service_provider
-        ON service_provider.id = mission.provider_id
-        WHERE service_provider.id = ?
-          AND (mission.status = 'Finish'
-            OR mission.status = 'Refused')
+      SELECT mission.id 			    AS mission_id,
+		service_provider.entity_name    AS provider_name,
+           request.id 					AS request_id,
+		   request.sensor_type          AS sensor_type,
+		   request.resolution_type      AS resolution_value,
+           service_client.user_id       AS client_username,
+		   service_client.client_name   AS client_name,
+           mission.starting_time        AS starting_time,
+           mission.finished_time        AS finished_time,
+           mission.path_pdf             AS mission_path,
+		   mission.price                AS mission_price,
+           data.path 					AS data_path,
+           data.price 				    AS data_price
+    FROM mission
+    INNER JOIN request_mission
+      ON request_mission.mission_id = mission.id
+    INNER JOIN request
+      ON request_mission.request_id = request.id
+    INNER JOIN area
+      ON area.id = request.area_id
+    INNER JOIN data
+      ON data.id = area.data_id
+    INNER JOIN service_client
+      ON service_client.id = request.client_id
+    INNER JOIN service_provider
+      ON service_provider.id = mission.provider_id
+      WHERE  service_provider.id = ?
+	  		AND	(mission.status = 'Finish'
+		      OR mission.status = 'Refused')
     ");
     $stm->execute(array($provider_id));
     // Return finished missions of that service provider
