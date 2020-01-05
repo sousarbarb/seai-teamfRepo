@@ -5,7 +5,17 @@
 <div class="menusLogin p-5">
     <h2 class="display-4 text-white">Requests in Progress</h2>
 	<div class="separator"></div>
-    <br>
+  {if (isset($success_messages))}
+    {foreach $success_messages as $success}
+      <div class="msg_success">{$success} <a class="msg_close" href="#"  style="text-decoration:none;">&#215;</a></div>
+    {/foreach}
+  {/if}
+  {if (isset($error_messages))}
+    {foreach $error_messages as $error}
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+    {/foreach}
+  {/if}
+  <br>
 	<p><label class="vehicle_info_label text-white" style="width:18rem; font-size:25px; text-decoration: underline; font-weight: bold;">New Data Requests</label></p>
     <table class='table_req' id="t_new">
     <tr>
@@ -50,9 +60,9 @@
       <input type="hidden" name="mid" value="{$request_n.mission_id}">
       <input type="hidden" name="rid" value="{$request_n.request_id}">
       <input type="hidden" name="c_name" value="{$request_n.client_name}">
-		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
     </form>
-		<td>
+    <td>
+		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
         {else}
 		<td>
         {/if}
@@ -70,10 +80,11 @@
 
 
 {foreach $requests_old as $request_o}
+	{$result=getSensorTypesResolutionValues($request_o.mission_id)}
         <tr>
         <td>{$request_o.request_id}</td>
-        <td>{$request_o.sensor_type}</td>
-		<td>{$request_o.resolution_type}</td>
+		<td>{$result.sensor_type}</td>
+		<td>{$result.resolution_type}</td>
 		<td>{$request_o.client_name}</td>
 		<td>{$request_o.mission_id}</td>
 		<td>{if $request_o['mission_pdf']}<a href="{$BASE_URL}{$request_o['mission_pdf']}" class="button">Click Me</a>{else} No file found {/if}</td>
@@ -103,9 +114,9 @@
       <input type="hidden" name="mid" value="{$request_n.mission_id}">
       <input type="hidden" name="rid" value="{$request_n.request_id}">
       <input type="hidden" name="c_name" value="{$request_n.client_name}">
-    <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
     </form>
     <td>
+    <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
         {else}
 		<td>
         {/if}

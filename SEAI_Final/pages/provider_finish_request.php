@@ -22,6 +22,6 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
     $smarty->assign('client_name', $client_name);
   }
   $smarty->assign('menu', '4');
-  $smarty->display('requests/form_proposalnewmission.tpl');
+  $smarty->display('menu_requests_in_progress/provider_finish_request.tpl');
 }
 ?>

@@ -27,15 +27,15 @@
 
     <div class="text-white">
 
-      <label class="myaccountlabel">Cost</label>
+      <label class="myaccountlabel" style="width:16em;">Cost</label>
       <input type="number" name="cost" class="lead" placeholder="Enter the total cost of the mission"
       value="{if isset($form_values)}{$form_values.cost}{/if}">
       <br>
-      <label class="myaccountlabel">Link to request data download</label>
+      <label class="myaccountlabel" style="width:16em;">Link to request data download</label>
       <input type="text" name="link" class="lead" placeholder="Enter the data link"
       value="{if isset($form_values)}{$form_values.link}{/if}">
       <br>
-      <label class="myaccountlabel">Select of write the data file type</label>
+      <label class="myaccountlabel" style="width:16em;">Select of write the data file type</label>
       <input type="text" list="file_types" name="file_type" class="lead" placeholder="Enter the file type"
       value="{if isset($form_values)}{$form_values.file_type}{/if}">
       <br>
