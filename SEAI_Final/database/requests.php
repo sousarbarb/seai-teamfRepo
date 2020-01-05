@@ -1784,7 +1784,7 @@
       INNER JOIN request
         ON  request.id = request_mission.request_id
       INNER JOIN service_client
-        ON  service_client.id = request.id
+        ON  service_client.id = request.client_id
       WHERE request.sensor_type     IS NOT NULL AND
             request.resolution_type IS NOT NULL AND
             mission.id   =   ?
@@ -1853,7 +1853,7 @@
       INNER JOIN request
         ON  request.id = request_mission.request_id
       INNER JOIN service_client
-        ON  service_client.id = request.id
+        ON  service_client.id = request.client_id
       WHERE request.sensor_type     IS NOT NULL AND
             request.resolution_type IS NOT NULL AND
             mission.id   =   ?
