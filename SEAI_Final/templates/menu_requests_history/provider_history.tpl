@@ -21,7 +21,7 @@
 		<td>{$request_n.finished_time}</td>
 		<td>{if $request_n['mission_path']}<a href="{$BASE_URL}{$request_n['mission_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
 		<td>{if $request_n['data_path']}<a href="{$BASE_URL}{$request_n['data_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
-		<td>{$request_n.data_price}</td>
+		<td>{if $request_n['sensor_type'] and $request_n['resolution_value']}{$request_n.mission_price}{else}{$request_n.data_price}</td>
         </td>
         </tr>
     {/foreach}
