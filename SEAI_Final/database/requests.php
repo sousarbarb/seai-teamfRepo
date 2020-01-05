@@ -365,7 +365,7 @@
         request.resolution_type IS NOT NULL AND
         ( mission.status    = 'Finish'            OR
           mission.status    = 'Waiting Agreement' OR
-          mission.status    = 'In Progress'       OR
+          mission.status    = 'In progress'       OR
           mission.status    = 'Expired'
         ) AND
         request.id = ?
