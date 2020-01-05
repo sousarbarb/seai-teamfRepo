@@ -30,7 +30,7 @@ if ($error) {
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
 
-$return = 0;//funcao();
+$return = associatedDataWithAArea($_POST['request_id'], $_POST['mission_id'], $_POST['link'], $_POST['cost'], $_POST['file_type']);
 
 if ($return<0) {
   $_SESSION['error_messages'][]="Error inserting in database";
