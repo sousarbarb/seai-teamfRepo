@@ -54,7 +54,7 @@
       DELETE FROM provider_request
       WHERE  request_id = ?
     ");
-    $stm->execute($request_id);
+    $stm->execute(array($request_id));
 
     // Return 0
     return 0;
@@ -303,15 +303,71 @@
 
     // Change mission status if needed
     if($result['agreement_provider'] == TRUE && $result['agreement_client'] == TRUE){
+      // --------------------------------------------------------------------------------
+      // Notifies the client that data is already available
+      // Get service client information
       $stm = $conn->prepare("
-        SELECT *
-        FROM   mission
-        WHERE  id = ?
+        SELECT  mission.id                 AS mission_id,
+                request.id                 AS request_id,
+                request.sensor_type        AS request_sensor_type,
+                request.resolution_type    AS request_res_value,
+                service_client.id          AS client_id,
+                service_client.client_name AS client_name,
+                service_client.user_id     AS client_username
+        FROM  mission
+        INNER JOIN request_mission
+          ON  request_mission.mission_id = mission.id
+        INNER JOIN request
+          ON  request.id = request_mission.request_id
+        INNER JOIN service_client
+          ON  service_client.id = request.client_id
+        WHERE request.sensor_type     IS NOT NULL AND
+              request.resolution_type IS NOT NULL AND
+              mission.id   =   ?
       ");
       $stm->execute(array($mission_id));
-      $result = $stm->fetch();
-      if( $result['status'] == 'Waiting Agreement' )
-        updateMissionStatus($mission_id, 'In progress');
+      $results_1 = $stm->fetch();
+
+      // Get service provider information
+      $stm = $conn->prepare("
+        SELECT  mission.id                   AS mission_id,
+                service_provider.id          AS provider_id,
+                service_provider.entity_name AS provider_name,
+                service_provider.user_id     AS provider_username
+        FROM  mission
+        INNER JOIN service_provider
+          ON  service_provider.id = mission.provider_id
+        WHERE mission.id = ?
+      ");
+      $stm->execute(array($mission_id));
+      $results_2 = $stm->fetch();
+
+      $client_name       = $results_1['client_name'];
+      $client_username   = $results_1['client_username'];
+      $provider_name     = $results_2['provider_name'];
+      $provider_username = $results_2['provider_username'];
+
+      // Send Service Provider Notification
+      $notification_info = "The data request relative to mission $mission_id performed by $provider_name ($provider_username) is available";
+
+      $stm = $conn->prepare("
+        INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
+        VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? , ? )
+      ");
+      try{
+        $stm->execute(array($notification_info,
+                            'FALSE',
+                            $provider_username,
+                            $mission_id,
+                            $request_id
+        ));
+      } catch (PDOexception $e) {
+        // Error creating the new notification
+        return -1;
+      }
+
+      // Returns 0 in case of success
+      return 0;
     }
   }
   function getInProgressRequestsNewDataServiceProvider( $provider_id ){
@@ -1143,6 +1199,69 @@
       ");
       $stm->execute(array($request_id));
       return -8;
+    }
+    
+    // --------------------------------------------------------------------------------
+    // Notifies Service Provider of new buy request for old data
+    // Get service client information
+    $stm = $conn->prepare("
+      SELECT  mission.id                 AS mission_id,
+              request.id                 AS request_id,
+              request.sensor_type        AS request_sensor_type,
+              request.resolution_type    AS request_res_value,
+              service_client.id          AS client_id,
+              service_client.client_name AS client_name,
+              service_client.user_id     AS client_username
+      FROM  mission
+      INNER JOIN request_mission
+        ON  request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON  request.id = request_mission.request_id
+      INNER JOIN service_client
+        ON  service_client.id = request.client_id
+      WHERE request.sensor_type     IS NOT NULL AND
+            request.resolution_type IS NOT NULL AND
+            mission.id   =   ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_1 = $stm->fetch();
+
+    // Get service provider information
+    $stm = $conn->prepare("
+      SELECT  mission.id                   AS mission_id,
+              service_provider.id          AS provider_id,
+              service_provider.entity_name AS provider_name,
+              service_provider.user_id     AS provider_username
+      FROM  mission
+      INNER JOIN service_provider
+        ON  service_provider.id = mission.provider_id
+      WHERE mission.id = ?
+    ");
+    $stm->execute(array($mission_id));
+    $results_2 = $stm->fetch();
+
+    $client_name       = $results_1['client_name'];
+    $client_username   = $results_1['client_username'];
+    $provider_name     = $results_2['provider_name'];
+    $provider_username = $results_2['provider_username'];
+
+    // Send Service Provider Notification
+    $notification_info = "$client_name made a new proposal (request id: $request_id) to acquire data from mission $mission_id";
+
+    $stm = $conn->prepare("
+      INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? , ? )
+    ");
+    try{
+      $stm->execute(array($notification_info,
+                          'FALSE',
+                          $provider_username,
+                          $mission_id,
+                          $request_id
+      ));
+    } catch (PDOexception $e) {
+      // Error creating the new notification
+      return -1;
     }
 
     // Returns 0 in case of success
