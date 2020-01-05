@@ -50,9 +50,9 @@
       <input type="hidden" name="mid" value="{$request_n.mission_id}">
       <input type="hidden" name="rid" value="{$request_n.request_id}">
       <input type="hidden" name="c_name" value="{$request_n.client_name}">
-		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
     </form>
-		<td>
+    <td>
+		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
         {else}
 		<td>
         {/if}
@@ -103,9 +103,9 @@
       <input type="hidden" name="mid" value="{$request_n.mission_id}">
       <input type="hidden" name="rid" value="{$request_n.request_id}">
       <input type="hidden" name="c_name" value="{$request_n.client_name}">
-    <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
     </form>
     <td>
+    <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
         {else}
 		<td>
         {/if}
