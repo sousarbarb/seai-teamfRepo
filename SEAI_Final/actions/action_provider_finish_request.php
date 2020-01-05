@@ -30,7 +30,7 @@ if ($error) {
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
 
-$return = //funcao();
+$return = 0;//funcao();
 
 if ($return<0) {
   $_SESSION['error_messages'][]="Error inserting in database";

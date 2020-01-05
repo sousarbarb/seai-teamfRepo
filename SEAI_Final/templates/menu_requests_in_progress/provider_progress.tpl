@@ -5,7 +5,17 @@
 <div class="menusLogin p-5">
     <h2 class="display-4 text-white">Requests in Progress</h2>
 	<div class="separator"></div>
-    <br>
+  {if (isset($success_messages))}
+    {foreach $success_messages as $success}
+      <div class="msg_success">{$success} <a class="msg_close" href="#"  style="text-decoration:none;">&#215;</a></div>
+    {/foreach}
+  {/if}
+  {if (isset($error_messages))}
+    {foreach $error_messages as $error}
+      <div class="msg_error"> <a class="msg_close" href="#" style="text-decoration:none;">&#215;</a>{$error}</div>
+    {/foreach}
+  {/if}
+  <br>
 	<p><label class="vehicle_info_label text-white" style="width:18rem; font-size:25px; text-decoration: underline; font-weight: bold;">New Data Requests</label></p>
     <table class='table_req' id="t_new">
     <tr>
