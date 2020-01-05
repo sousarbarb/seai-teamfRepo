@@ -44,7 +44,7 @@
 
     // Execute query
     $stm = $conn->prepare("
-      SELECT 
+      SELECT
         mission.id                   AS mission_id,
         request.id                   AS request_id,
         mission.price                AS price,
@@ -122,7 +122,7 @@
 
     // Execute query
     $stm = $conn->prepare("
-      SELECT 
+      SELECT
         mission.id                   AS mission_id,
         request.id                   AS request_id,
         mission.price                AS price,
@@ -1067,8 +1067,8 @@
 
     $value_min = floatval($results['depth_min']);
     $value_max = floatval($results['depth_max']);
-	
-	
+
+
 
     // ----------------------------------------
     // Get possible service providers capable of satisfying the request in question
@@ -1941,7 +1941,7 @@
 
     // Refuses all other missions
     $stm = $conn->prepare("
-      SELECT mission.id
+      SELECT mission.id AS mission_id
       FROM mission
       INNER JOIN request_mission
         ON request_mission.mission_id = mission.id
@@ -1952,7 +1952,7 @@
     $stm->execute(array($mission_id,$request_id));
     $results = $stm->fetchAll();
     foreach($results as $result){
-      updateMissionStatus($result['id'], 'Refused');
+      updateMissionStatus($result['mission_id'], 'Refused');
     }
 
     // Remove other providers from PROVIDER_REQUEST
@@ -1962,7 +1962,7 @@
         request_id   = ? AND
         provider_id <> ?
     ");
-    $stm->execute(array($request_id, $mission_id));
+    $stm->execute(array($request_id, $provider_id));
   }
   function serviceClientIgnoreMission($request_id, $mission_id, $provider_id){
     // Global variable: connection to the database
