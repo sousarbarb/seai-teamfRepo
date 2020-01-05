@@ -8,11 +8,26 @@
       UPDATE request
       SET    agreement_provider = TRUE
       WHERE  id = ?
+      RETURNING agreement_provider, agreement_client
     ");
     $stm->execute(array($request_id));
+    $result = $stm->fetch();
 
     // Notify Service Client
     notifyServiceClientOfServiceProviderAgreementStatus($mission_id, TRUE);
+
+    // Change mission status if needed
+    if($result['agreement_provider'] == TRUE && $result['agreement_client'] == TRUE){
+      $stm = $conn->prepare("
+        SELECT *
+        FROM   mission
+        WHERE  id = ?
+      ");
+      $stm->execute(array($mission_id));
+      $result = $stm->fetch();
+      if( $result['status'] == 'Waiting Agreement' )
+        updateMissionStatus($mission_id, 'In Progress');
+    }
   }
   function updateAgreementPaymentServiceClient($request_id, $mission_id){
     // Global variable: connection to the database
@@ -23,11 +38,25 @@
       UPDATE request
       SET    agreement_client = TRUE
       WHERE  id = ?
+      RETURNING agreement_provider, agreement_client
     ");
     $stm->execute(array($request_id));
 
     // Notify Service Client
     notifyServiceProviderOfServiceClientAgreementStatus($mission_id, TRUE);
+
+    // Change mission status if needed
+    if($result['agreement_provider'] == TRUE && $result['agreement_client'] == TRUE){
+      $stm = $conn->prepare("
+        SELECT *
+        FROM   mission
+        WHERE  id = ?
+      ");
+      $stm->execute(array($mission_id));
+      $result = $stm->fetch();
+      if( $result['status'] == 'Waiting Agreement' )
+        updateMissionStatus($mission_id, 'In Progress');
+    }
   }
   function getInProgressRequestsNewDataServiceProvider( $provider_id ){
     // Global variable: connection to the database
