@@ -1,4 +1,161 @@
 <?php
+  function getInProgressRequestsNewDataServiceProvider( $provider_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Execute query
+    $stm = $conn->prepare("
+      SELECT
+        mission.id                   AS mission_id,
+        request.id                   AS request_id,
+        mission.price                AS price,
+        request.sensor_type          AS sensor_type,
+        request.resolution_type      AS resolution_type,
+        mission.status               AS mission_status,
+        service_client.client_name   AS client_name,
+        service_client.user_id       AS client_username,
+        service_provider.entity_name AS provider_name,
+        service_provider.user_id     AS provider_username,
+        mission.starting_time        AS starting_time,
+        mission.est_finished_time    AS estimated_finished_time
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON request_mission.request_id = request.id
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+      WHERE service_provider.id = ?              AND
+          (mission.status = 'In progress'    OR
+           mission.status = 'Waiting Agreement') AND
+          request.sensor_type     IS NOT NULL    AND
+          request.resolution_type IS NOT NULL
+    ");
+    $stm->execute(array($provider_id));
+
+    // Return requests
+    return $stm->fetchAll();
+  }
+  function getInProgressRequestsOldDataServiceProvider( $provider_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Execute query
+    $stm = $conn->prepare("
+      SELECT 
+        mission.id                   AS mission_id,
+        request.id                   AS request_id,
+        mission.price                AS price,
+        request.sensor_type          AS sensor_type,
+        request.resolution_type      AS resolution_type,
+        mission.status               AS mission_status,
+        service_client.client_name   AS client_name,
+        service_client.user_id       AS client_username,
+        service_provider.entity_name AS provider_name,
+        service_provider.user_id     AS provider_username,
+        mission.starting_time        AS starting_time,
+        mission.est_finished_time    AS estimated_finished_time
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON request_mission.request_id = request.id
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+      WHERE service_provider.id   = ?              AND
+            request.sensor_type     IS NULL        AND
+            request.resolution_type IS NULL        AND
+            (request.agreement_provider <> TRUE OR
+             request.agreement_client   <> TRUE   )
+    ");
+    $stm->execute(array($provider_id));
+
+    // Return requests
+    return $stm->fetchAll();
+  }
+  function getInProgressRequestsNewDataServiceClient( $client_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Execute query
+    $stm = $conn->prepare("
+      SELECT
+        mission.id                   AS mission_id,
+        request.id                   AS request_id,
+        mission.price                AS price,
+        request.sensor_type          AS sensor_type,
+        request.resolution_type      AS resolution_type,
+        mission.status               AS mission_status,
+        service_client.client_name   AS client_name,
+        service_client.user_id       AS client_username,
+        service_provider.entity_name AS provider_name,
+        service_provider.user_id     AS provider_username,
+        mission.starting_time        AS starting_time,
+        mission.est_finished_time    AS estimated_finished_time
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON request_mission.request_id = request.id
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+      WHERE service_client.id = ?                AND
+          (mission.status = 'In progress'    OR
+           mission.status = 'Waiting Agreement') AND
+          request.sensor_type     IS NOT NULL    AND
+          request.resolution_type IS NOT NULL
+    ");
+    $stm->execute(array($client_id));
+
+    // Return requests
+    return $stm->fetchAll();
+  }
+  function getInProgressRequestsOldDataServiceClient( $client_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Execute query
+    $stm = $conn->prepare("
+      SELECT 
+        mission.id                   AS mission_id,
+        request.id                   AS request_id,
+        mission.price                AS price,
+        request.sensor_type          AS sensor_type,
+        request.resolution_type      AS resolution_type,
+        mission.status               AS mission_status,
+        service_client.client_name   AS client_name,
+        service_client.user_id       AS client_username,
+        service_provider.entity_name AS provider_name,
+        service_provider.user_id     AS provider_username,
+        mission.starting_time        AS starting_time,
+        mission.est_finished_time    AS estimated_finished_time
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON request_mission.request_id = request.id
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+      WHERE service_client.id   = ?                AND
+            request.sensor_type     IS NULL        AND
+            request.resolution_type IS NULL        AND
+            (request.agreement_provider <> TRUE OR
+             request.agreement_client   <> TRUE   )
+    ");
+    $stm->execute(array($client_id));
+
+    // Return requests
+    return $stm->fetchAll();
+  }
+
   /****************************************************************************************************
    ***** GETPENDINGMISSIONSPROPOSALS
    ****************************************************************************************************
