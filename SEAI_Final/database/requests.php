@@ -243,19 +243,6 @@
     ");
     $stm->execute(array($request_id));
     $result = $stm->fetch();
-
-    // Change mission status if needed
-    if($result['agreement_provider'] == TRUE && $result['agreement_client'] == TRUE){
-      $stm = $conn->prepare("
-        SELECT *
-        FROM   mission
-        WHERE  id = ?
-      ");
-      $stm->execute(array($mission_id));
-      $result = $stm->fetch();
-      if( $result['status'] == 'Waiting Agreement' )
-        updateMissionStatus($mission_id, 'In progress');
-    }
   }
   function updateAgreementPaymentServiceClient($request_id, $mission_id){
     // Global variable: connection to the database
@@ -307,25 +294,15 @@
       // Notifies the client that data is already available
       // Get service client information
       $stm = $conn->prepare("
-        SELECT  mission.id                 AS mission_id,
-                request.id                 AS request_id,
-                request.sensor_type        AS request_sensor_type,
-                request.resolution_type    AS request_res_value,
-                service_client.id          AS client_id,
+        SELECT  service_client.id          AS client_id,
                 service_client.client_name AS client_name,
                 service_client.user_id     AS client_username
-        FROM  mission
-        INNER JOIN request_mission
-          ON  request_mission.mission_id = mission.id
-        INNER JOIN request
-          ON  request.id = request_mission.request_id
+        FROM  request
         INNER JOIN service_client
           ON  service_client.id = request.client_id
-        WHERE request.sensor_type     IS NOT NULL AND
-              request.resolution_type IS NOT NULL AND
-              mission.id   =   ?
+        WHERE request.id   =   ?
       ");
-      $stm->execute(array($mission_id));
+      $stm->execute(array($request_id));
       $results_1 = $stm->fetch();
 
       // Get service provider information
@@ -347,7 +324,7 @@
       $provider_name     = $results_2['provider_name'];
       $provider_username = $results_2['provider_username'];
 
-      // Send Service Provider Notification
+      // Send Service Client Notification
       $notification_info = "The data request relative to mission $mission_id performed by $provider_name ($provider_username) is available";
 
       $stm = $conn->prepare("
@@ -357,7 +334,7 @@
       try{
         $stm->execute(array($notification_info,
                             'FALSE',
-                            $provider_username,
+                            $client_username,
                             $mission_id,
                             $request_id
         ));
@@ -1205,25 +1182,15 @@
     // Notifies Service Provider of new buy request for old data
     // Get service client information
     $stm = $conn->prepare("
-      SELECT  mission.id                 AS mission_id,
-              request.id                 AS request_id,
-              request.sensor_type        AS request_sensor_type,
-              request.resolution_type    AS request_res_value,
-              service_client.id          AS client_id,
+      SELECT  service_client.id          AS client_id,
               service_client.client_name AS client_name,
               service_client.user_id     AS client_username
-      FROM  mission
-      INNER JOIN request_mission
-        ON  request_mission.mission_id = mission.id
-      INNER JOIN request
-        ON  request.id = request_mission.request_id
+      FROM  request
       INNER JOIN service_client
         ON  service_client.id = request.client_id
-      WHERE request.sensor_type     IS NOT NULL AND
-            request.resolution_type IS NOT NULL AND
-            mission.id   =   ?
+      WHERE request.id   =   ?
     ");
-    $stm->execute(array($mission_id));
+    $stm->execute(array($request_id));
     $results_1 = $stm->fetch();
 
     // Get service provider information
