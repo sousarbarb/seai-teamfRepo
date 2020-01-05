@@ -30,14 +30,17 @@ if ($error) {
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
 
-if (file_exists($target_file)) {
-    $_SESSION['error_messages'][]="File already exists";
-    $_SESSION['form_values']=$_POST;
-    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
-   }
-
-if (($_FILES['real-file']['size'] == 0) && ($_FILES['real-file']['error'] == 0)) {
+if ($_FILES['real-file']['size'] == 0) {
   $_SESSION['error_messages'][]="Entity file required";
+  $_SESSION['form_values']=$_POST;
+  die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+}
+
+// Check the file extension
+$extension  = strtolower( pathinfo( basename($_FILES['real-file']['name']) , PATHINFO_EXTENSION ) );
+// Checks the extension
+if ($extension != 'pdf') {
+  $_SESSION['error_messages'][] = 'Only PDF files are allowed';
   $_SESSION['form_values']=$_POST;
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 } else {
@@ -88,6 +91,11 @@ if ($return<0) {
 
 if ($send_image == '1') {
   $target_file = $target_dir . 'mission_'. $return . '_details_'.basename($_FILES["real-file"]["name"]);
+  if (file_exists($target_file)) {
+      $_SESSION['error_messages'][]="File already exists";
+      $_SESSION['form_values']=$_POST;
+      die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
   if (move_uploaded_file($_FILES["real-file"]["tmp_name"], $target_file)) {
     $file_path = "files/" . 'mission_'. $return . '_details_'.basename($_FILES["real-file"]["name"]);
     $stm = $conn->prepare("
