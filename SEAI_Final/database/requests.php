@@ -1,4 +1,28 @@
 <?php
+  function getSensorTypesResolutionValues($mission_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get sensor and resolution
+    $stm = $conn->prepare("
+      SELECT
+        request.resolution_type,
+        request.sensor_type
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id
+      INNER JOIN request
+        ON request.id = request_mission.request_id
+      WHERE
+        request.resolution_type IS NOT NULL AND
+        request.sensor_type     IS NOT NULL AND
+        mission.id   =   ?
+    ");
+    $stm->execute(array($mission_id));
+
+    // Return
+    return $stm->fetch();
+  }
   function updateAgreementPaymentServiceProvider($request_id, $mission_id){
     // Global variable: connection to the database
     global $conn;
@@ -1923,7 +1947,7 @@
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
-      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? , ? )
     ");
     try{
       $stm->execute(array($notification_info,
@@ -1992,7 +2016,7 @@
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
-      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? , ? )
     ");
     try{
       $stm->execute(array($notification_info,
