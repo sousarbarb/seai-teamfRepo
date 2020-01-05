@@ -131,3 +131,4 @@
 	</form>
 </div>
 </div>
+{include file='common/footer-short.tpl'}
