@@ -80,10 +80,11 @@
 
 
 {foreach $requests_old as $request_o}
+	{$result=getSensorTypesResolutionValues($request_o.mission_id)}
         <tr>
         <td>{$request_o.request_id}</td>
-        <td>{$request_o.sensor_type}</td>
-		<td>{$request_o.resolution_type}</td>
+		<td>{$result.sensor_type}</td>
+		<td>{$result.resolution_type}</td>
 		<td>{$request_o.client_name}</td>
 		<td>{$request_o.mission_id}</td>
 		<td>{if $request_o['mission_pdf']}<a href="{$BASE_URL}{$request_o['mission_pdf']}" class="button">Click Me</a>{else} No file found {/if}</td>
