@@ -160,8 +160,6 @@
         WHERE service_provider.id = ?
           AND (mission.status = 'Finish'
             OR mission.status = 'Refused')
-          AND request.sensor_type IS NOT NULL
-          AND request.resolution_type IS NOT NULL
     ");
     $stm->execute(array($provider_id));
     // Return finished missions of that service provider
