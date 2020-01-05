@@ -9,7 +9,7 @@
 	<p><label class="vehicle_info_label text-white" style="width:18rem; font-size:25px; text-decoration: underline; font-weight: bold;">New Data Requests</label></p>
     <table class='table_req' id="t_new">
     <tr>
-    <th>Request ID</th><th>Sensor Type</th><th>Resolution Type</th><th>Client</th><th>Mission ID</th><th>Mission Status</th><th>Start Time</th><th>Estimated Finished Time</th><th>Mission PDF</th><th>Service Provider Agreement</th><th>Client Agreement</th><th>Finish Request</th>
+    <th>Request ID</th><th>Sensor Type</th><th>Resolution Type</th><th>Client</th><th>Mission ID</th><th>Mission Status</th><th>Start Time</th><th>Estimated Finished Time</th><th>Mission PDF</th><th>Client Agreement</th><th>Service Provider Agreement</th><th>Finish Request</th>
     </tr>
 
 
@@ -45,9 +45,9 @@
 		</form>
         {/if}
         </td>
-		{if $request_n.request_agreement_client==true and request_agreement_provider==true }
-		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="">Finish</button>
+		{if $request_n.request_agreement_client==true and  $request_n.request_agreement_provider==true }
 		<td>
+		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="">Finish</button>
         {else}
 		<td>
         {/if}
@@ -60,7 +60,7 @@
 	<p><label class="vehicle_info_label text-white"  style="width:18rem; font-size:25px; text-decoration: underline; font-weight: bold;">Old Data Requests</label></p>
     <table class='table_req' id="t_old">
     <tr>
-    <th>Request ID</th><th>Sensor Type</th><th>Resolution Type</th><th>Client</th><th>Mission ID</th><th>Mission PDF</th><th>Service Provider Agreement</th><th>Client Agreement</th><th>Finish Request</th>
+    <th>Request ID</th><th>Sensor Type</th><th>Resolution Type</th><th>Client</th><th>Mission ID</th><th>Mission PDF</th><th>Client Agreement</th><th>Service Provider Agreement</th><th>Finish Request</th>
     </tr>
 
 
@@ -94,8 +94,8 @@
         {/if}
         </td>
 		{if $request_o.request_agreement_client==true and request_agreement_provider==true }
-		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="">Finish</button>
 		<td>
+		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="">Finish</button>
         {else}
 		<td>
         {/if}
