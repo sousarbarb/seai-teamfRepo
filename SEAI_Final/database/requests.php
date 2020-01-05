@@ -1703,7 +1703,7 @@
     global $conn;
 
     // Updating status
-    switch ($variable) {
+    switch ($mission_status) {
       case 'Refused':
         $stm = $conn->prepare("
           UPDATE  mission
