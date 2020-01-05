@@ -10,21 +10,21 @@
   // Process user type
   $type = getUserType( $_POST['userinfo_username'] );
   if($type=='provider') {
-    $acc_info=getSpecificServiceProviderInfo($_POST['userinfo_username']);
+    $acc_info_see=getSpecificServiceProviderInfo($_POST['userinfo_username']);
   }
   else if($type=='client') {
-    $acc_info=getSpecificServiceClientInfo($_POST['userinfo_username']);
+    $acc_info_see=getSpecificServiceClientInfo($_POST['userinfo_username']);
   }
   else if($type=='admin') {
-    $acc_info=getSpecificAdministratorInfo($_POST['userinfo_username']);
+    $acc_info_see=getSpecificAdministratorInfo($_POST['userinfo_username']);
   }
   else {
-    $acc_info='error';
+    $acc_info_see='error';
   }
 
   // Display template
   $smarty->assign('PREVIOUSPAGE', $_SERVER['HTTP_REFERER']);
   $smarty->assign('type', $type);
-  $smarty->assign('acc_info', $acc_info);
+  $smarty->assign('acc_info_see', $acc_info_see);
   $smarty->display('users/user_page.tpl');
 ?>

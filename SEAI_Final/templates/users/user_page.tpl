@@ -4,13 +4,13 @@
 
 <div class="menusLogin p-5">
   {if $type=="provider"}
-    <h2 class="display-4 text-white">{$acc_info.entity_name} (@{$acc_info.username})</h2>
+    <h2 class="display-4 text-white">{$acc_info_see.entity_name} (@{$acc_info_see.username})</h2>
     <p class="lead text-white mb-0">Service Provider information</p>
   {elseif $type=="client"}
-    <h2 class="display-4 text-white">{$acc_info.client_name} (@{$acc_info.username})</h2>
+    <h2 class="display-4 text-white">{$acc_info_see.client_name} (@{$acc_info_see.username})</h2>
     <p class="lead text-white mb-0">Service Client Account Information</p>
   {elseif $type=="admin"}
-    <h2 class="display-4 text-white">@{$acc_info.username}</h2>
+    <h2 class="display-4 text-white">@{$acc_info_see.username}</h2>
     <p class="lead text-white mb-0">Administrator Account Information</p>
   {/if}
   <div class="separator"></div>
@@ -26,38 +26,38 @@
   {/if}
     <div class="text-white">
       {if $type=="provider"}
-      <label class="myaccountlabel">Entity Name</label> <label class="lead">{$acc_info.entity_name}</label>
+      <label class="myaccountlabel">Entity Name</label> <label class="lead">{$acc_info_see.entity_name}</label>
       <br>
-      <label class="myaccountlabel">Entity Address</label> <label class="lead">{$acc_info.entity_address}</label>
+      <label class="myaccountlabel">Entity Address</label> <label class="lead">{$acc_info_see.entity_address}</label>
       <br>
-      <label class="myaccountlabel">Entity E-mail</label> <label class="lead">{$acc_info.entity_email}</label>
+      <label class="myaccountlabel">Entity E-mail</label> <label class="lead">{$acc_info_see.entity_email}</label>
       <br>
-      <label class="myaccountlabel">Entity Phone Number</label> <label class="lead">{$acc_info.entity_phonenumber}</label>
+      <label class="myaccountlabel">Entity Phone Number</label> <label class="lead">{$acc_info_see.entity_phonenumber}</label>
       <br>
       <br>
       {/if}
       {if $type=="client"}
-      <label class="myaccountlabel">Name</label> <label class="lead">{$acc_info.client_name}</label>
+      <label class="myaccountlabel">Name</label> <label class="lead">{$acc_info_see.client_name}</label>
       <br>
       {elseif $type=="provider"}
-      <label class="myaccountlabel">Official Representative</label> <label class="lead">{$acc_info.repres_name}</label>
+      <label class="myaccountlabel">Official Representative</label> <label class="lead">{$acc_info_see.repres_name}</label>
       <br>
       {/if}
       {if $type=="client"}
-      <label class="myaccountlabel">Address</label> <label class="lead">{$acc_info.client_address}</label>
+      <label class="myaccountlabel">Address</label> <label class="lead">{$acc_info_see.client_address}</label>
       <br>
-      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info.client_email}</label>
+      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info_see.client_email}</label>
       <br>
-      <label class="myaccountlabel">Phone Number</label> <label class="lead">{$acc_info.client_phonenumber}</label>
+      <label class="myaccountlabel">Phone Number</label> <label class="lead">{$acc_info_see.client_phonenumber}</label>
       <br>
       {/if}
       {if $type=="provider"}
-      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info.repres_email}</label>
+      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info_see.repres_email}</label>
       <br>
-      <label class="myaccountlabel">Phone Number</label> <label class="lead">{$acc_info.repres_phonenumber}</label>
+      <label class="myaccountlabel">Phone Number</label> <label class="lead">{$acc_info_see.repres_phonenumber}</label>
       <br>
       {elseif $type=="admin"}
-      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info.admin_email}</label>
+      <label class="myaccountlabel">E-mail</label> <label class="lead">{$acc_info_see.admin_email}</label>
       <br>
       {/if}
       <br>

@@ -28,7 +28,12 @@
         <td>{$request_n.request_id}</td>
         <td>{$request_n.sensor_type}</td>
 		<td>{$request_n.resolution_type}</td>
-		<td>{$request_n.client_name}</td>
+    <td>
+      <form id="{$request_n.request_id}_{$request_n.client_username}_seePersonnalPage_NewData" method="post" action="{$BASE_URL}pages/user_page.php">
+        <input type="hidden" name="userinfo_username" value="{$request_n.client_username}">
+        <a href="#" onclick="document.getElementById('{$request_n.request_id}_{$request_n.client_username}_seePersonnalPage_NewData').submit()" style="color:white;">{$request_n.client_name}</a>
+      </form>
+    </td>
 		<td>{$request_n.mission_id}</td>
 		<td>{$request_n.mission_status}</td>
 		<td>{$request_n.starting_time}</td>
@@ -85,7 +90,12 @@
         <td>{$request_o.request_id}</td>
 		<td>{$result.sensor_type}</td>
 		<td>{$result.resolution_type}</td>
-		<td>{$request_o.client_name}</td>
+    <td>
+      <form id="{$request_o.request_id}_{$request_o.client_username}_seePersonnalPage_OldData" method="post" action="{$BASE_URL}pages/user_page.php">
+        <input type="hidden" name="userinfo_username" value="{$request_o.client_username}">
+        <a href="#" onclick="document.getElementById('{$request_o.request_id}_{$request_o.client_username}_seePersonnalPage_OldData').submit()" style="color:white;">{$request_o.client_name}</a>
+      </form>
+    </td>
 		<td>{$request_o.mission_id}</td>
 		<td>{if $request_o['mission_pdf']}<a href="{$BASE_URL}{$request_o['mission_pdf']}" class="button">Click Me</a>{else} No file found {/if}</td>
      {if $request_o.request_agreement_client==true}
