@@ -41,7 +41,7 @@
       WHERE  id = ?
     ");
     try{
-      $stm->execute(array($data_id, $area_id));  
+      $stm->execute(array($data_id, $area_id));
     } catch (PDOexception $e) {
       return -3;
     }
@@ -52,6 +52,7 @@
     // Return 0
     return 0;
   }
+
   function getHistoryRequestsNewDataServiceClient( $client_id ){
     // Global variable: connection to the database
     global $conn;
@@ -69,11 +70,11 @@
              data.file_type 				      AS data_filetype
       FROM mission
       INNER JOIN request_mission
-        ON request_mission.mission_id = mission.id  
+        ON request_mission.mission_id = mission.id
       INNER JOIN request
         ON request_mission.request_id = request.id
       INNER JOIN area
-        ON area.id = request.area_id  
+        ON area.id = request.area_id
       INNER JOIN data
         ON data.id = area.data_id
       INNER JOIN service_client
@@ -89,6 +90,7 @@
     // Return finished new data requests
     return $stm->fetchAll();
   }
+
   function getHistoryRequestsOldDataServiceClient( $client_id ){
     // Global variable: connection to the database
     global $conn;
@@ -106,11 +108,11 @@
              data.file_type 				      AS data_filetype
       FROM mission
       INNER JOIN request_mission
-        ON request_mission.mission_id = mission.id  
+        ON request_mission.mission_id = mission.id
       INNER JOIN request
         ON request_mission.request_id = request.id
       INNER JOIN area
-        ON area.id = request.area_id  
+        ON area.id = request.area_id
       INNER JOIN data
         ON data.id = area.data_id
       INNER JOIN service_client
@@ -127,6 +129,7 @@
     // Return old data requests bought by client
     return $stm->fetchAll();
   }
+
   function getHistoryRequestsServiceProvider( $provider_id ){
     // Global variable: connection to the database
     global $conn;
@@ -142,11 +145,11 @@
              data.price 				          AS data_price
       FROM mission
       INNER JOIN request_mission
-        ON request_mission.mission_id = mission.id  
+        ON request_mission.mission_id = mission.id
       INNER JOIN request
         ON request_mission.request_id = request.id
       INNER JOIN area
-        ON area.id = request.area_id  
+        ON area.id = request.area_id
       INNER JOIN data
         ON data.id = area.data_id
       INNER JOIN service_client
