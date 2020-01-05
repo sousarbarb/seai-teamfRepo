@@ -1,5 +1,5 @@
 <?php
-  function associatedDataWithAArea($request_id, $data_path, $data_price, $data_filetype){
+  function associatedDataWithAArea($request_id, $mission_id, $data_path, $data_price, $data_filetype){
     // Global variable: connection to the database
     global $conn;
 
@@ -45,6 +45,9 @@
     } catch (PDOexception $e) {
       return -3;
     }
+
+    // Notifies change in status
+    updateMissionStatus($mission_id, 'Finish');
 
     // Return 0
     return 0;
@@ -163,9 +166,6 @@
     // Return finished missions of that service provider
     return $stm->fetchAll();
   }
-
-
-
   function getSensorTypesResolutionValues($mission_id){
     // Global variable: connection to the database
     global $conn;
