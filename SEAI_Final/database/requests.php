@@ -1,4 +1,46 @@
 <?php
+  function updateAgreementPayment($request_id, $mission_id, $agreement_client, $agreement_provider){
+
+    // Updates agreements
+    if( ($agreement_client != NULL) && ($agreement_provider != NULL) )
+      return 0;
+    else if ($agreement_client != NULL) {
+      $stm = $conn->prepare("
+        UPDATE request
+        SET    agreement_client = ?
+        WHERE  id = ?
+      ");
+      $stm->execute(array($agreement_client? 'TRUE':'FALSE',$request_id));
+
+      // Notify Service Provider
+      notifyServiceProviderOfServiceClientAgreementStatus($mission_id, $agreement_client);
+    }
+    else if ($agreement_provider != NULL) {
+      $stm = $conn->prepare("
+        UPDATE request
+        SET    agreement_provider = ?
+        WHERE  id = ?
+      ");
+      $stm->execute(array($agreement_provider? 'TRUE':'FALSE',$request_id));
+
+      // Notify Service Client
+      notifyServiceClientOfServiceProviderAgreementStatus($mission_id, $agreement_provider);
+    }
+    else
+      return 0;
+
+    // Returns 1 in case of success
+    return $stm->rowCount();
+  }
+
+  function updateAgreementPaymentServiceProvider(){
+    // Global variable: connection to the database
+    global $conn;
+
+    // update service provider agreement
+
+  }
+
   function getInProgressRequestsNewDataServiceProvider( $provider_id ){
     // Global variable: connection to the database
     global $conn;
@@ -270,6 +312,40 @@
   /****************************************************************************************************
    ***** GETREQUESTSWAITINGPROPOSALS
    ****************************************************************************************************/
+  function verifyIfRequestIsNotWaitingProposals( $request_id ){
+    // Global variable: connection to the database
+    global $conn;
+
+    // SQL
+    $stm = $conn->prepare("
+      SELECT
+        request.id              AS request_id         ,
+        request.deadline        AS request_deadline   ,
+        request.area_id         AS request_area_id    ,
+        request.comments        AS request_comments   ,
+        request.sensor_type     AS request_sensor_type,
+        request.resolution_type AS request_res_value  ,
+        request.restricted      AS request_restricted
+      FROM request
+      INNER JOIN request_mission
+        ON request_mission.request_id = request.id
+      INNER JOIN mission
+        ON mission.id = request_mission.mission_id
+      WHERE
+        request.sensor_type     IS NOT NULL AND
+        request.resolution_type IS NOT NULL AND
+        ( mission.status    = 'Finish'            OR
+          mission.status    = 'Waiting Agreement' OR
+          mission.status    = 'In Progress'       OR
+          mission.status    = 'Expired'
+        ) AND
+        request.id = ?
+    ");
+    $stm->execute(array($request_id));
+
+    // Return TRUE or FALSE
+    return ($stm->fetch());
+  }
   function getRequestsWaitingProposals( $client_id ){
     // Global variable: connection to the database
     global $conn;
