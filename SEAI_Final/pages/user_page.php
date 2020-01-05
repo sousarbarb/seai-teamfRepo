@@ -25,6 +25,7 @@
   // Display template
   $smarty->assign('PREVIOUSPAGE', $_SERVER['HTTP_REFERER']);
   $smarty->assign('type', $type);
+  $smarty->assign('menu', '');
   $smarty->assign('acc_info_see', $acc_info_see);
   $smarty->display('users/user_page.tpl');
 ?>
