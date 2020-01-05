@@ -23,7 +23,7 @@
 		<td>{$request_n.price}</td>
 		<td>{if $request_n['mission_path']}<a href="{$BASE_URL}{$request_n['mission_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
 		<td>{$request_n.data_filetype}</td>
-        <td>{if $request_n['data_path']}<a href="{$BASE_URL}{$request_n['data_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
+        <td>{if $request_n['data_path']}<a href="{$request_n['data_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
         </tr>
     {/foreach}
     </table>
@@ -46,7 +46,7 @@
 		<td>{$request_o.data_price}</td>
 		<td>{if $request_o['mission_path']}<a href="{$BASE_URL}{$request_o['mission_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
 		<td>{$request_o.mission_id}</td>
-		<td>{if $request_o['data_path']}<a href="{$BASE_URL}{$request_o['data_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
+		<td>{if $request_o['data_path']}<a href="{$request_o['data_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
         </td>
         </tr>
     {/foreach}

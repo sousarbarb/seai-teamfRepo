@@ -34,14 +34,14 @@
         </td>
 		{if $request_n.request_agreement_client==true}
 		<td style="background-color: green;">
-        Comfirmed
+        confirmed
         {else}
 		<td style="background-color: red;">
         <form id="{$request_n.request_id}" method="post" action="{$BASE_URL}actions/request_c_new.php">
 		<input type="hidden" name="mid" value="{$request_n.mission_id}">
 		<input type="hidden" name="rid" value="{$request_n.request_id}">
 		<input type="hidden" name="c_name" value="{$request_n.provider_name}">
-        <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}').submit();">Comfirm Agreement</button>
+        <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}').submit();">confirm Agreement</button>
 		</form>
         {/if}
         </td>
@@ -75,14 +75,14 @@
         </td>
 		{if $request_o.request_agreement_client==true}
 		<td style="background-color: green;">
-        Comfirmed
+        confirmed
         {else}
 		<td style="background-color: red;">
 		<form id="{$request_o.request_id}" method="post" action="{$BASE_URL}actions/request_c_old.php">
 		<input type="hidden" name="mid" value="{$request_o.mission_id}">
 		<input type="hidden" name="rid" value="{$request_o.request_id}">
 		<input type="hidden" name="c_name" value="{$request_o.provider_name}">
-        <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_o.request_id}').submit();">Comfirm Agreement</button>
+        <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_o.request_id}').submit();">confirm Agreement</button>
 		</form>
         {/if}
         </td>
