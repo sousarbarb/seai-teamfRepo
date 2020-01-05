@@ -93,7 +93,7 @@
 		</form>
         {/if}
         </td>
-		{if $request_o.request_agreement_client==true and request_agreement_provider==true }
+		{if $request_o.request_agreement_client==true and $request_o.request_agreement_provider==true }
 		<td>
 		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="">Finish</button>
         {else}
