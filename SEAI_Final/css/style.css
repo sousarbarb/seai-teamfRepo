@@ -965,6 +965,14 @@ opacity: 0.8;
   padding: 8px 8px;
 }
 
+/*------------------------ Waiting Proposals ---------------------------------*/
+
+.proposals_info_label {
+  width: 18rem;
+  font-size:1.25rem;
+  font-weight:300;
+}
+
 /*------------------------ Plan New Mission ----------------------------------*/
 .confirm{
  width:10em;
