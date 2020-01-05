@@ -121,7 +121,7 @@
 			<tr >
 				<td style="text-align: center"> Public </td>
 				<td>
-					<input type="radio" name="restrict" value="1" checked>
+					<input type="checkbox" name="restrict" value="1" checked>
 				</td>
 			</tr>
 		 </tbody>
