@@ -48,6 +48,13 @@
 
     // Notifies change in status
     updateMissionStatus($mission_id, 'Finish');
+    
+    // Updates table PROVIDER_REQUEST
+    $stm = $conn->prepare("
+      DELETE FROM provider_request
+      WHERE  request_id = ?
+    ");
+    $stm->execute($request_id);
 
     // Return 0
     return 0;
@@ -223,6 +230,33 @@
         updateMissionStatus($mission_id, 'In progress');
     }
   }
+  function updateAgreementPaymentServiceProviderOldData($request_id, $mission_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Update service provider agreement
+    $stm = $conn->prepare("
+      UPDATE request
+      SET    agreement_provider = TRUE
+      WHERE  id = ?
+      RETURNING agreement_provider, agreement_client
+    ");
+    $stm->execute(array($request_id));
+    $result = $stm->fetch();
+
+    // Change mission status if needed
+    if($result['agreement_provider'] == TRUE && $result['agreement_client'] == TRUE){
+      $stm = $conn->prepare("
+        SELECT *
+        FROM   mission
+        WHERE  id = ?
+      ");
+      $stm->execute(array($mission_id));
+      $result = $stm->fetch();
+      if( $result['status'] == 'Waiting Agreement' )
+        updateMissionStatus($mission_id, 'In progress');
+    }
+  }
   function updateAgreementPaymentServiceClient($request_id, $mission_id){
     // Global variable: connection to the database
     global $conn;
@@ -239,6 +273,33 @@
 
     // Notify Service Client
     notifyServiceProviderOfServiceClientAgreementStatus($mission_id, TRUE);
+
+    // Change mission status if needed
+    if($result['agreement_provider'] == TRUE && $result['agreement_client'] == TRUE){
+      $stm = $conn->prepare("
+        SELECT *
+        FROM   mission
+        WHERE  id = ?
+      ");
+      $stm->execute(array($mission_id));
+      $result = $stm->fetch();
+      if( $result['status'] == 'Waiting Agreement' )
+        updateMissionStatus($mission_id, 'In progress');
+    }
+  }
+  function updateAgreementPaymentServiceClientOldData($request_id, $mission_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Update service client agreement
+    $stm = $conn->prepare("
+      UPDATE request
+      SET    agreement_client = TRUE
+      WHERE  id = ?
+      RETURNING agreement_provider, agreement_client
+    ");
+    $stm->execute(array($request_id));
+    $result = $stm->fetch();
 
     // Change mission status if needed
     if($result['agreement_provider'] == TRUE && $result['agreement_client'] == TRUE){
@@ -2412,6 +2473,7 @@
     // Send Service Client Notification
     $AGGSTATUS = $agreement_status ? 'YES' : 'NO';
     $notification_info = "$provider_name ($provider_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
+    echo "<p>$notification_info</p>";
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
