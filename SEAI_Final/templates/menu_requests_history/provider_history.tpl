@@ -3,42 +3,25 @@
 {include file='../common/logout.tpl'}
 
 <div class="menusLogin p-5">
-    <h2 class="display-4 text-white">New Request - Existent Data</h2>
-    <div class="separator"></div>
-
-    <table class='table_pd'>
+    <h2 class="display-4 text-white">Requests History</h2>
+	<div class="separator"></div>
+    <br>
+    <table class='table_req' id="t_new">
     <tr>
-    <th style="text-align: center" >Mission ID</th>
-    <th style="text-align: center" >Service Client</th>
-    <th style="text-align: center" >Vehicles</th>
-    <th style="text-align: center" >Starting Time</th>
-    <th style="text-align: center">Finishing Time</th>
-    <th style="text-align: center" >Informations</th>
+    <th>Request ID</th><th>Client</th><th>Mission ID</th><th>Start Time</th><th>Finished Time</th><th>Mission PDF</th><th>Data Download</th><th>Price</th>
     </tr>
 
-    {*get requests from DB
-    .................*}
 
-    {$requests = [
-                    ["area"=>"100", "sp"=>"20", "date"=>"13", "specs"=>"x", "price"=>"13", "file"=>"files/teste.txt"],
-                    ["area"=>"100", "sp"=>"20", "date"=>"13", "specs"=>"x", "price"=>"13", "file"=>"files/teste.txt"],
-                    ["area"=>"100", "sp"=>"20", "date"=>"13", "specs"=>"x", "price"=>"13", "file"=>"files/teste.txt"]
-                ]}
-
-
-
-    {foreach $requests as $request}
+{foreach $requests_new as $request_n}
         <tr>
-        <td>{$request.area}</td><td>{$request.sp}</td><td>{$request.date}</td><td>{$request.specs}</td><td>{$request.price}</td>
-        <td>
-        <form method="POST" action="../actions/upload.php" enctype="multipart/form-data">
-        <input type="file" name="real-file" id="real-file" hidden="hidden"/>
-        <button type="button" id="custom-button" class="button4 button_provider_hist">Choose a File</button>
-        <span id="custom-text" class="custom-txt">No file chosen, yet</span>
-        <input type="submit" value="Confirmar" name="submit" class="button4 submitAsBtn button_provider_hist">
-        </form>
-
-
+        <td>{$request_n.request_id}</td>
+		<td>{$request_n.client_name}</td>
+		<td>{$request_n.mission_id}</td>
+		<td>{$request_n.starting_time}</td>
+		<td>{$request_n.finished_time}</td>
+		<td>{if $request_n['mission_path']}<a href="{$BASE_URL}{$request_n['mission_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
+		<td>{if $request_n['data_path']}<a href="{$BASE_URL}{$request_n['data_path']}" class="button">Click Me</a>{else} No file found {/if}</td>
+		<td>{$request_n.data_price}</td>
         </td>
         </tr>
     {/foreach}
@@ -46,7 +29,6 @@
     </table>
     <br>
 
-<br>
-
 </div>
 </div>
+{include file='common/footer-short.tpl'}

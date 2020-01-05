@@ -138,6 +138,7 @@
       SELECT mission.id 					        AS mission_id,
              request.id 					        AS request_id,
              service_client.user_id       AS client_username,
+			 service_client.client_name	      AS client_name,
              mission.starting_time        AS starting_time,
              mission.finished_time        AS finished_time,
              mission.path_pdf             AS mission_path,
