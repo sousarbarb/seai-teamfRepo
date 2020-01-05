@@ -26,7 +26,7 @@
       $stm->execute(array($mission_id));
       $result = $stm->fetch();
       if( $result['status'] == 'Waiting Agreement' )
-        updateMissionStatus($mission_id, 'In Progress');
+        updateMissionStatus($mission_id, 'In progress');
     }
   }
   function updateAgreementPaymentServiceClient($request_id, $mission_id){
@@ -55,7 +55,7 @@
       $stm->execute(array($mission_id));
       $result = $stm->fetch();
       if( $result['status'] == 'Waiting Agreement' )
-        updateMissionStatus($mission_id, 'In Progress');
+        updateMissionStatus($mission_id, 'In progress');
     }
   }
   function getInProgressRequestsNewDataServiceProvider( $provider_id ){
@@ -2230,7 +2230,7 @@
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
-      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? , ? )
     ");
     try{
       $stm->execute(array($notification_info,
@@ -2300,7 +2300,7 @@
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
-      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? )
+      VALUES ( CURRENT_TIMESTAMP(0) , ? , ? , ? , ? , ? )
     ");
     try{
       $stm->execute(array($notification_info,
