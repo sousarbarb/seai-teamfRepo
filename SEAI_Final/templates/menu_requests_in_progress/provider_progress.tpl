@@ -45,9 +45,14 @@
 		</form>
         {/if}
         </td>
-		{if $request_n.request_agreement_client==true and  $request_n.request_agreement_provider==true }
+		{if $request_n.request_agreement_client==true and $request_n.request_agreement_provider==true }
+    <form id="{$request_n.request_id}_finish" method="post" action="{$BASE_URL}pages/provider_finish_request.php">
+      <input type="hidden" name="mid" value="{$request_n.mission_id}">
+      <input type="hidden" name="rid" value="{$request_n.request_id}">
+      <input type="hidden" name="c_name" value="{$request_n.client_name}">
+		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
+    </form>
 		<td>
-		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="">Finish</button>
         {else}
 		<td>
         {/if}
@@ -94,8 +99,13 @@
         {/if}
         </td>
 		{if $request_o.request_agreement_client==true and $request_o.request_agreement_provider==true }
-		<td>
-		<button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="">Finish</button>
+    <form id="{$request_n.request_id}_finish" method="post" action="{$BASE_URL}pages/provider_finish_request.php">
+      <input type="hidden" name="mid" value="{$request_n.mission_id}">
+      <input type="hidden" name="rid" value="{$request_n.request_id}">
+      <input type="hidden" name="c_name" value="{$request_n.client_name}">
+    <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}_finish').submit();">Finish</button>
+    </form>
+    <td>
         {else}
 		<td>
         {/if}
@@ -104,7 +114,7 @@
  {/foreach}
     </table>
     <br>
- 
+
 <br>
 
 </div>
