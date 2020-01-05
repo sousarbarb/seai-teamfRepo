@@ -28,7 +28,10 @@
         <td>{$request_n.request_id}</td>
         <td>{$request_n.sensor_type}</td>
 		<td>{$request_n.resolution_type}</td>
-		<td>{$request_n.client_name}</td>
+		<td><form id="{$request_n.client_username}_{$request_n.request_id}_seePersonnalPage" method="post" action="{$BASE_URL}pages/user_page.php">
+             <input type="hidden" name="userinfo_username" value="{$request_n.client_username}">
+             <a href="#" onclick="document.getElementById('{$request_n.client_username}_{$request_n.request_id}_seePersonnalPage').submit()" style="color:white;">{$request_n.client_name}</a>
+        </form></td>
 		<td>{$request_n.mission_id}</td>
 		<td>{$request_n.mission_status}</td>
 		<td>{$request_n.starting_time}</td>
@@ -44,14 +47,14 @@
         </td>
 		{if $request_n.request_agreement_provider==true}
 		<td style="background-color: green;">
-        confirmed
+        Comfirmed
         {else}
 		<td style="background-color: red;">
         <form id="{$request_n.request_id}" method="post" action="{$BASE_URL}actions/request_p_new.php">
 		<input type="hidden" name="mid" value="{$request_n.mission_id}">
 		<input type="hidden" name="rid" value="{$request_n.request_id}">
 		<input type="hidden" name="c_name" value="{$request_n.client_name}">
-        <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}').submit();">confirm Agreement</button>
+        <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_n.request_id}').submit();">Comfirm Agreement</button>
 		</form>
         {/if}
         </td>
@@ -85,7 +88,10 @@
         <td>{$request_o.request_id}</td>
 		<td>{$result.sensor_type}</td>
 		<td>{$result.resolution_type}</td>
-		<td>{$request_o.client_name}</td>
+		<td><form id="{$request_o.client_username}_{$request_o.request_id}_seePersonnalPage" method="post" action="{$BASE_URL}pages/user_page.php">
+             <input type="hidden" name="userinfo_username" value="{$request_o.client_username}">
+             <a href="#" onclick="document.getElementById('{$request_o.client_username}_{$request_o.request_id}_seePersonnalPage').submit()" style="color:white;">{$request_o.client_name}</a>
+        </form></td>
 		<td>{$request_o.mission_id}</td>
 		<td>{if $request_o['mission_pdf']}<a href="{$BASE_URL}{$request_o['mission_pdf']}" class="button">Click Me</a>{else} No file found {/if}</td>
      {if $request_o.request_agreement_client==true}
@@ -98,14 +104,14 @@
         </td>
 		{if $request_o.request_agreement_provider==true}
 		<td style="background-color: green;">
-        confirmed
+        Comfirmed
         {else}
 		<td style="background-color: red;">
 		<form id="{$request_o.request_id}" method="post" action="{$BASE_URL}actions/request_p_old.php">
 		<input type="hidden" name="mid" value="{$request_o.mission_id}">
 		<input type="hidden" name="rid" value="{$request_o.request_id}">
 		<input type="hidden" name="c_name" value="{$request_o.client_name}">
-        <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_o.request_id}').submit();">confirm Agreement</button>
+        <button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="document.getElementById('{$request_o.request_id}').submit();">Comfirm Agreement</button>
 		</form>
         {/if}
         </td>
