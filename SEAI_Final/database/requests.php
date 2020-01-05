@@ -41,6 +41,7 @@
       RETURNING agreement_provider, agreement_client
     ");
     $stm->execute(array($request_id));
+    $result = $stm->fetch();
 
     // Notify Service Client
     notifyServiceProviderOfServiceClientAgreementStatus($mission_id, TRUE);
