@@ -1,4 +1,174 @@
 <?php
+  function associatedDataWithAArea($request_id, $data_path, $data_price, $data_filetype){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Get area id
+    $stm = $conn->prepare("
+      SELECT
+        area.id
+      FROM request
+      INNER JOIN area
+        ON area.id = request.area_id
+      WHERE request.id = ?
+    ");
+    $stm->execute(array($request_id));
+    $result  = $stm->fetch();
+    if($result == FALSE)
+      return -1;
+    $area_id = $result['id'];
+
+    // Insert new data in the platform
+    $stm = $conn->prepare("
+      INSERT INTO data (
+        path, price, date, file_type
+      )
+      VALUES (
+        ?, ?, CURRENT_TIMESTAMP(0), ?
+      )
+      RETURNING id
+    ");
+    try{
+      $stm->execute(array($data_path, $data_price, $data_filetype));
+    } catch (PDOexception $e) {
+      return -2;
+    }
+    $result  = $stm->fetch();
+    $data_id = $result['id'];
+    $stm = $conn->prepare("
+      UPDATE area
+      SET    data_id = ?
+      WHERE  id = ?
+    ");
+    try{
+      $stm->execute(array($data_id, $area_id));  
+    } catch (PDOexception $e) {
+      return -3;
+    }
+
+    // Return 0
+    return 0;
+  }
+
+
+  function getHistoryRequestsNewDataServiceClient( $client_id ){
+    // Global variable: connection to the database
+    global $conn;
+    // Execute query
+    $stm = $conn->prepare("
+      SELECT mission.id 					        AS mission_id,
+             request.id 					        AS request_id,
+             mission.price 				        AS price,
+             request.sensor_type 			    AS sensor_type,
+             request.resolution_type 	    AS resolution_type,
+             service_provider.entity_name AS provider_name,
+             mission.path_pdf             AS mission_path,
+             data.path 					          AS data_path,
+             data.date 					          AS data_acquired_date,
+             data.file_type 				      AS data_filetype
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id  
+      INNER JOIN request
+        ON request_mission.request_id = request.id
+      INNER JOIN area
+        ON area.id = request.area_id  
+      INNER JOIN data
+        ON data.id = area.data_id
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+      WHERE service_client.id = ?
+        AND mission.status = 'Finish'
+        AND request.sensor_type IS NOT NULL
+        AND request.resolution_type IS NOT NULL
+    ");
+    $stm->execute(array($client_id));
+    // Return finished new data requests
+    return $stm->fetchAll();
+  }
+  ​
+  function getHistoryRequestsOldDataServiceClient( $client_id ){
+    // Global variable: connection to the database
+    global $conn;
+    // Execute query
+    $stm = $conn->prepare("
+      SELECT mission.id 					        AS mission_id,
+             request.id 					        AS request_id,
+             data.price 				          AS data_price,
+             request.sensor_type 			    AS sensor_type,
+             request.resolution_type 	    AS resolution_type,
+             service_provider.entity_name AS provider_name,
+             mission.path_pdf             AS mission_path,
+             data.path 					          AS data_path,
+             data.date 					          AS data_acquired_date,
+             data.file_type 				      AS data_filetype
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id  
+      INNER JOIN request
+        ON request_mission.request_id = request.id
+      INNER JOIN area
+        ON area.id = request.area_id  
+      INNER JOIN data
+        ON data.id = area.data_id
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+        WHERE service_client.id = ?
+          AND request.sensor_type IS NULL
+          AND request.resolution_type IS NULL
+          AND request.agreement_provider = TRUE
+          AND request.agreement_client = TRUE
+    ");
+    $stm->execute(array($client_id));
+    // Return old data requests bought by client
+    return $stm->fetchAll();
+  }
+  ​
+  ​
+  ​
+  function getHistoryRequestsServiceProvider( $provider_id ){
+    // Global variable: connection to the database
+    global $conn;
+    // Execute query
+    $stm = $conn->prepare("
+      SELECT mission.id 					        AS mission_id,
+             request.id 					        AS request_id,
+             service_client.user_id       AS client_username,
+             mission.starting_time        AS starting_time,
+             mission.finished_time        AS finished_time,
+             mission.path_pdf             AS mission_path,
+             data.path 					          AS data_path,
+             data.price 				          AS data_price
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id  
+      INNER JOIN request
+        ON request_mission.request_id = request.id
+      INNER JOIN area
+        ON area.id = request.area_id  
+      INNER JOIN data
+        ON data.id = area.data_id
+      INNER JOIN service_client
+        ON service_client.id = request.client_id
+      INNER JOIN service_provider
+        ON service_provider.id = mission.provider_id
+        WHERE service_provider.id = ?
+          AND (mission.status = 'Finish'
+            OR mission.status = 'Refused')
+          AND request.sensor_type IS NOT NULL
+          AND request.resolution_type IS NOT NULL
+    ");
+    $stm->execute(array($provider_id));
+    // Return finished missions of that service provider
+    return $stm->fetchAll();
+  }
+
+
+
   function getSensorTypesResolutionValues($mission_id){
     // Global variable: connection to the database
     global $conn;
