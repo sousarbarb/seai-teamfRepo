@@ -79,7 +79,7 @@
                 <form id="{$mission['mission_id']}_accept" method="post" action="{$BASE_URL}actions/accept_waitingrequest.php">
                     <input type="hidden" name="mission_id" value="{$mission['mission_id']}">
                     <input type="hidden" name="request_id" value="{$request['request_id']}">
-                    <input type="hidden" name="provider_id" value="{$request['provider_id']}">
+                    <input type="hidden" name="provider_id" value="{$mission['provider_id']}">
                 </form>
 
                 <td><a href="#" onclick="document.getElementById('{$mission['mission_id']}_accept').submit()" class= "button4 submitAsBtn button_provider_hist" style="color:white;width: auto;">Accept</a></td>
@@ -87,7 +87,7 @@
                 <form id="{$mission['mission_id']}_ignore" method="post" action="{$BASE_URL}actions/ignore_waitingrequest.php">
                   <input type="hidden" name="mission_id" value="{$mission['mission_id']}">
                   <input type="hidden" name="request_id" value="{$request['request_id']}">
-                  <input type="hidden" name="provider_id" value="{$request['provider_id']}">
+                  <input type="hidden" name="provider_id" value="{$mission['provider_id']}">
                 </form>
 
                 <td><a href="#" onclick="document.getElementById('{$mission['mission_id']}_ignore').submit()" class= "button4 submitAsBtn button_provider_hist" style="color:white;width: auto;">Ignore</a></td>
