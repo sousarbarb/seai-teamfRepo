@@ -1554,6 +1554,7 @@
           WHERE id     = ?
         ");
         $stm->execute(array($mission_status,$mission_id));
+        notifyServiceProviderMissionStatus($mission_id, $mission_status);
       break;
 
       case 'Waiting Agreement':
@@ -1563,6 +1564,7 @@
           WHERE id     = ?
         ");
         $stm->execute(array($mission_status,$mission_id));
+        notifyServiceProviderMissionStatus($mission_id, $mission_status);
       break;
 
       case 'In progress':
@@ -1573,6 +1575,8 @@
           WHERE id     = ?
         ");
         $stm->execute(array($mission_status,$mission_id));
+        notifyServiceClientMissionStatus($mission_id, $mission_status);
+        notifyServiceProviderMissionStatus($mission_id, $mission_status);
       break;
 
       case 'Expired':
@@ -1582,6 +1586,8 @@
           WHERE id     = ?
         ");
         $stm->execute(array($mission_status,$mission_id));
+        notifyServiceClientMissionStatus($mission_id, $mission_status);
+        notifyServiceProviderMissionStatus($mission_id, $mission_status);
       break;
 
       case 'Finish':
@@ -1592,15 +1598,12 @@
           WHERE id     = ?
         ");
         $stm->execute(array($mission_status,$mission_id));
+        notifyServiceClientMissionStatus($mission_id, $mission_status);
       break;
 
       default:
         return -1;
     }
-
-    // Notify Service Client and Service Provider
-    notifyServiceClientMissionStatus($mission_id, $mission_status);
-    notifyServiceProviderMissionStatus($mission_id, $mission_status);
 
     // Return 0 or 1
     return $stm->rowCount();
@@ -1766,6 +1769,66 @@
    * - we can't alter the client and provider agreement at the same time!!!
    *   (... T/F,NULL OR ... NULL,T/F).
    ****************************************************************************************************/
+  function serviceClientAcceptMission($request_id, $mission_id, $client_id, $provider_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Updates Mission Status
+    $stm = $conn->prepare("
+      UPDATE mission
+      SET status = 'Waiting Agreement'
+      WHERE id = ?
+    ");
+    $stm->execute(array($mission_id));
+    updateMissionStatus($mission_id, 'Waiting Agreement');
+
+    // Refuses all other missions
+    $stm = $conn->prepare("
+      SELECT mission.id
+      FROM mission
+      INNER JOIN request_mission
+        ON request_mission.mission_id = mission.id
+      WHERE
+        request_mission.mission_id <> ? AND
+        request_mission.request_id  = ?
+    ");
+    $stm->execute(array($mission_id,$request_id));
+    $results = $stm->fetchAll();
+    foreach($results as $result){
+      updateMissionStatus($result['id'], 'Refused');
+    }
+
+    // Remove other providers from PROVIDER_REQUEST
+    $stm = $conn->prepare("
+      DELETE FROM provider_request
+      WHERE
+        request_id   = ? AND
+        provider_id <> ?
+    ");
+    $stm->execute(array($request_id, $mission_id));
+  }
+  function serviceClientIgnoreMission($request_id, $mission_id, $provider_id){
+    // Global variable: connection to the database
+    global $conn;
+
+    // Updates Mission Status
+    $stm = $conn->prepare("
+      UPDATE mission
+      SET status = 'Refused'
+      WHERE id = ?
+    ");
+    $stm->execute(array($mission_id));
+    updateMissionStatus($mission_id, 'Refused');
+
+    // Removes service provider from PROVIDER_REQUEST
+    $stm = $conn->prepare("
+      DELETE FROM provider_request
+      WHERE
+        request_id  = ? AND
+        provider_id = ?
+    ");
+    $stm->execute(array($request_id, $provider_id));
+  }
   function updateAgreementPayment($request_id, $mission_id, $agreement_client, $agreement_provider){
     // Global variable: connection to the database
     global $conn;
