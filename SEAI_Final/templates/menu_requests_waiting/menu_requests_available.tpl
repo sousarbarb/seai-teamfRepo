@@ -4,6 +4,7 @@
 
 <div class="menusLogin p-5">
     <h2 class="display-4 text-white">Available Requests</h2>
+    <p class="lead text-white mb-0">Request from clients waiting provider's missions to be proposed</p>
     <div class="separator"></div>
     {if (isset($success_messages))}
       {foreach $success_messages as $success}
