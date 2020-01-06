@@ -37,7 +37,7 @@ if ($error) {
 }
 
 if ($_FILES['real-file']['size'] == 0) {
-  $_SESSION['error_messages'][]="Entity file required";
+  $_SESSION['error_messages'][]="Mission details file required";
   $_SESSION['form_values']=$_POST;
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }

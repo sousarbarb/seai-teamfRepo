@@ -195,8 +195,8 @@ if ($_POST["selectform"]=='provider') {
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   } else {
     $name = test_input($_POST["name"]);
-    if ((strlen($name)<3) || !(preg_match('/^[a-zA-Z ]+$/', $name))) {
-      $_SESSION['error_messages'][]="Name should contain more than 3 characters and should only contain letters";
+    if (strlen($name)<3) {
+      $_SESSION['error_messages'][]="Name should contain more than 3 characters";
       $_SESSION['form_values']=$_POST;
       die(header('Location: ' . $_SERVER['HTTP_REFERER']));
     }

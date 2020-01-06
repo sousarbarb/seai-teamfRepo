@@ -18,7 +18,7 @@
   }
 
   // Testing resolution value
-  if(empty($_POST['value'])){
+  if(!isset($_POST['value']) || strlen($_POST['value'])==0){
     $_SESSION['error_messages'][]="Resolution value required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -28,10 +28,15 @@
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
+  if(floatval($_POST['value'])<==0){
+    $_SESSION['error_messages'][]="Resolution value must be greater than zero";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
   $value = test_input($_POST['value']);
 
   // Testing nominal velocity with vehicle running at resolution value specified
-  if(empty($_POST['vel_sampling'])){
+  if(!isset($_POST['vel_sampling']) || strlen($_POST['vel_sampling'])==0){
     $_SESSION['error_messages'][]="Velocity required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -41,10 +46,15 @@
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
+  if(floatval($_POST['vel_sampling'])<==0){
+    $_SESSION['error_messages'][]="Velocity must be greater than zero";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
   $vel_sampling = test_input($_POST['vel_sampling']);
 
   // Testing battery impact when sensor is running at VALUE resolution
-  if(empty($_POST['consumption'])){
+  if(!isset($_POST['consumption']) || strlen($_POST['consumption'])==0){
     $_SESSION['error_messages'][]="Consumption required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -57,7 +67,7 @@
   $consumption = test_input($_POST['consumption']);
 
   // Testing sensor swath
-  if(empty($_POST['swath'])){
+  if(!isset($_POST['swath']) || strlen($_POST['swath'])==0){
     $_SESSION['error_messages'][]="Sensor swath required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -67,10 +77,15 @@
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
+  if(floatval($_POST['swath'])<==0){
+    $_SESSION['error_messages'][]="Swath must be greater than zero";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
   $swath = test_input($_POST['swath']);
 
   // Testing cost per hour (monetary) of vehicle running at that resolution
-  if(empty($_POST['cost'])){
+  if(!isset($_POST['cost']) || strlen($_POST['cost'])==0){
     $_SESSION['error_messages'][]="Cost required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));

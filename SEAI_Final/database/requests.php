@@ -48,7 +48,7 @@
 
     // Notifies change in status
     updateMissionStatus($mission_id, 'Finish');
-    
+
     // Updates table PROVIDER_REQUEST
     $stm = $conn->prepare("
       DELETE FROM provider_request
@@ -93,6 +93,7 @@
         AND mission.status = 'Finish'
         AND request.sensor_type IS NOT NULL
         AND request.resolution_type IS NOT NULL
+      ORDER BY request_id DESC
     ");
     $stm->execute(array($client_id));
     // Return finished new data requests
@@ -133,6 +134,7 @@
           AND request.resolution_type IS NULL
           AND request.agreement_provider = TRUE
           AND request.agreement_client = TRUE
+        ORDER BY request_id DESC
     ");
     $stm->execute(array($client_id));
     // Return old data requests bought by client
@@ -155,6 +157,7 @@
            mission.finished_time        AS finished_time,
            mission.path_pdf             AS mission_path,
 		   mission.price                AS mission_price,
+       mission.status               AS mission_status,
            data.path 					AS data_path,
            data.price 				    AS data_price
     FROM mission
@@ -173,6 +176,7 @@
       WHERE  service_provider.id = ?
 	  		AND	(mission.status = 'Finish'
 		      OR mission.status = 'Refused')
+        ORDER BY mission_status ASC, finished_time DESC
     ");
     $stm->execute(array($provider_id));
     // Return finished missions of that service provider
@@ -1238,7 +1242,7 @@
       $stm->execute(array($request_id));
       return -8;
     }
-    
+
     // --------------------------------------------------------------------------------
     // Notifies Service Provider of new buy request for old data
     // Get service client information
@@ -2618,7 +2622,7 @@
     $provider_username = $results_2['provider_username'];
 
     // Send Service Client Notification
-    $AGGSTATUS = $agreement_status ? 'YES' : 'NO';
+    $AGGSTATUS = $agreement_status ? 'CONFIRMED' : 'NOT CONFIRMED';
     $notification_info = "$provider_name ($provider_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
     echo "<p>$notification_info</p>";
 
@@ -2689,7 +2693,7 @@
     $provider_username = $results_2['provider_username'];
 
     // Send Service Client Notification
-    $AGGSTATUS = $agreement_status ? 'YES' : 'NO';
+    $AGGSTATUS = $agreement_status ? 'CONFIRMED' : 'NOT CONFIRMED';
     $notification_info = "$provider_name ($provider_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
 
     $stm = $conn->prepare("
@@ -2749,7 +2753,7 @@
     $provider_username = $results_2['provider_username'];
 
     // Send Service Provider Notification
-    $AGGSTATUS = $agreement_status ? 'YES' : 'NO';
+    $AGGSTATUS = $agreement_status ? 'CONFIRMED' : 'NOT CONFIRMED';
     $notification_info = "$client_name ($client_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
 
     $stm = $conn->prepare("
@@ -2819,7 +2823,7 @@
     $provider_username = $results_2['provider_username'];
 
     // Send Service Provider Notification
-    $AGGSTATUS = $agreement_status ? 'YES' : 'NO';
+    $AGGSTATUS = $agreement_status ? 'CONFIRMED' : 'NOT CONFIRMED';
     $notification_info = "$client_name ($client_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
 
     $stm = $conn->prepare("

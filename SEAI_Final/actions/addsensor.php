@@ -54,10 +54,10 @@
   $type = test_input($_POST['type']);
   $comments     = test_input($_POST['comments']);
   $vehicle_name = test_input($_POST['vehicle_name']);
-    
+
   //guardar na DB todos os dados
   $result = createNewSensorAssociatedWithVehicle($sensor_name, $type, $comments, $vehicle_name);
-                    
+
   switch ($result) {
       case -1:
           $_SESSION['error_messages'][] = 'Vehicle is inactive';
@@ -79,7 +79,7 @@
           break;
       case 2:
           $_SESSION['success_messages'][] = 'Inserting a new sensor was completed successfully';
-          break; 
+          break;
   }
   if( $result > 0 ){
       $_SESSION['form_values']=$_POST;

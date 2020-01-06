@@ -29,7 +29,7 @@
   $type = test_input($_POST["type"]);
 
   // Testing Value MIN
-  if(empty($_POST["valuemin"])){
+  if(!isset($_POST["valuemin"]) || strlen($_POST['valuemin'])==0){
     $_SESSION['error_messages'][]="Value min required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -39,10 +39,15 @@
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
+  if(floatval($_POST['valuemin'])<0){
+    $_SESSION['error_messages'][]="Value min must be greater than zero";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
   $valuemin = test_input($_POST["valuemin"]);
 
   // Testing Value MAX
-  if(empty($_POST["valuemax"])){
+  if(!isset($_POST["valuemax"]) || strlen($_POST['valuemax'])==0){
     $_SESSION['error_messages'][]="Value max required";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -52,6 +57,18 @@
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
+  if(floatval($_POST['valuemax'])<0){
+    $_SESSION['error_messages'][]="Value max must be greater than zero";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
+
+  if(floatval($_POST['valuemax'])<floatval($_POST['valuemin'])){
+    $_SESSION['error_messages'][]="Value max must be greater or equal to value min";
+    $_SESSION['form_values']=$_POST;
+    die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+  }
+
   $valuemax = test_input($_POST["valuemax"]);
   $comments = test_input($_POST['comments']);
   $vehicle_name = test_input($_POST['vehicle_name']);

@@ -36,7 +36,7 @@
           </div>
         *}
         <tr>
-          <th>Vehicle Name</th><th>Localization</th><th>Active</th><th>Approved</th><th>Visibility</th><th>Service Provider</th>
+          <th>Vehicle Name</th><th>Localization</th><th>Approved</th><th>Visibility</th>
         </tr>
         <br>
         {if (empty($search_results))}
@@ -51,16 +51,12 @@
             <a href="#" onclick="document.getElementById('{$result['vehicle_id']}').submit()" style="color:white;">{$result['vehicle_name']}</a>
           </form></td>
           <td>{$result['vehicle_localization']}</td>
-          {if ($result['vehicle_active'])==TRUE}<td>Yes</td>
-          {elseif ($result['vehicle_active'])==FALSE}<td>No</td>
-          {/if}
           {if ($result['vehicle_approval'])==TRUE}<td>Yes</td>
           {elseif ($result['vehicle_approval'])==FALSE}<td>No</td>
           {/if}
           {if ($result['vehicle_public'])==TRUE}<td>Public</td>
           {elseif ($result['vehicle_public'])==FALSE}<td>Private</td>
           {/if}
-          <td>{$result['provider_entityname']}</td>
         </tr>
         {/foreach}
         </table>
@@ -71,7 +67,7 @@
         <a href="{$BASE_URL}pages/menu_vehicles_add.php" class="button4 buttonsAcc" style="text-decoration:none;color:white;"> Add Vehicle </a>
         <br><br>
         {/if}
-        <label class="vehicle_filtro_lbl" style="font-size:25px; text-decoration: underline;">Filters</label><br> 
+        <label class="vehicle_filtro_lbl" style="font-size:25px; text-decoration: underline;">Filters</label><br>
         <form method="post" action="{$BASE_URL}pages/menu_my_vehicles.php">
 
         <label class="vehicle_filtro_lbl">Approval Status</label><br>

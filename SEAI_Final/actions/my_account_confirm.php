@@ -33,16 +33,16 @@ foreach($required as $field) {
 }
 
 if ($acc_type=='provider') {
-  if ((strlen($_POST['name'])<3) || !(preg_match('/^[a-zA-Z ]+$/', $_POST['name']))) {
-    $_SESSION['error_messages'][]="Official Representative name should contain more than 3 characters and should only contain letters";
+  if (strlen($_POST['name'])<3) {
+    $_SESSION['error_messages'][]="Official Representative name should contain more than 3 characters";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
 }
 
 if ($acc_type=='client') {
-  if ((strlen($_POST['name'])<3) || !(preg_match('/^[a-zA-Z ]+$/', $_POST['name']))) {
-    $_SESSION['error_messages'][]="Name should contain more than 3 characters and should only contain letters";
+  if (strlen($_POST['name'])<3) {
+    $_SESSION['error_messages'][]="Name should contain more than 3 characters";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }

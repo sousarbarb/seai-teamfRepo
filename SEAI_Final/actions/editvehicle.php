@@ -8,7 +8,7 @@
       $data = strip_tags($data);
       return $data;
   }
-  
+
   // Test vehicle privaty settings
   if(!$_POST['vehicle_public']){
     $_SESSION['error_messages'][]="Vehicle privaty setting must be define";
@@ -38,10 +38,10 @@
   $comments     = test_input($_POST['comments']);
   $vehicle_id   = test_input($_POST['vehicle_id']);
 
-    
+
     //guardar na DB todos os dados
     $result = editVehicle( $vehicle_id, $vehicle_name, $localization, $comments, ($public == 'y')? TRUE:FALSE );
-                     
+
 
   switch ($result) {
     case -1:
