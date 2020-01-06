@@ -36,7 +36,7 @@
       value="{if isset($form_values)}{$form_values.finishing_time}{/if}">
       <br>
       <label class="myaccountlabel">Estimated Cost</label>
-      <input type="number" name="cost" class="lead" placeholder="Enter the total cost of the mission"
+      <input type="text" name="cost" class="lead" placeholder="Enter the total cost of the mission"
       value="{if isset($form_values)}{$form_values.cost}{/if}">
       <br>
       <label class="myaccountlabel">Vehicle</label>

@@ -24,6 +24,12 @@ $_SESSION['mid'] = $_POST['mission_id'];
 $_SESSION['rid'] = $_POST['request_id'];
 $_SESSION['c_name'] = $_POST['client_name'];
 
+if (!(filter_var($_POST['link'], FILTER_VALIDATE_URL)) {
+  $_SESSION['error_messages'][]="Link is not valid";
+  $_SESSION['form_values']=$_POST;
+  die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+}
+
 if ($error) {
   $_SESSION['error_messages'][]="All fields are required";
   $_SESSION['form_values']=$_POST;

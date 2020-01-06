@@ -24,6 +24,12 @@ $_SESSION['request_id'] = $_POST['request_id'];
 $_SESSION['request_sensor_type'] = $_POST['request_sensor_type'];
 $_SESSION['request_res_value'] = $_POST['request_res_value'];
 
+if (!is_numeric($_POST['cost'])) {
+  $_SESSION['error_messages'][]="Cost needs to be a number";
+  $_SESSION['form_values']=$_POST;
+  die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+}
+
 if ($error) {
   $_SESSION['error_messages'][]="All fields are required";
   $_SESSION['form_values']=$_POST;
