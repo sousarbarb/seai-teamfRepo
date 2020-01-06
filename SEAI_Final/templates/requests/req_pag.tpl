@@ -47,7 +47,7 @@
 	<article>
 			<p><label class="vehicle_info_label" style="margin-top:8px">Price:</label>{if $info['mission_status']=='Finish'} {$info['data_price']}€{else} Request waiting Service Provider submition {/if}</p>
 			{if $info['mission_status']=='Finish' and $info['mission_details']}
-			<p><a href="{$BASE_URL}{$info['mission_details']}" class="button"><label class="vehicle_info_label" style="width: 18rem;">Download Mission Details</label></a></p>
+			<p><a href="{$BASE_URL}{$info['mission_details']}" class="button" download><label class="vehicle_info_label" style="width: 18rem;">Download Mission Details</label></a></p>
 			{/if}
 	</article> 
 	 <a href="{$PREVIOUSPAGE}" class="button"><button type="button" class ="confirm" style="padding:8px;">Go back</button></a>

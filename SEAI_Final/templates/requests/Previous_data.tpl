@@ -16,6 +16,11 @@
   {/if}
 	<div class="grid-vehicles">
       <div class="text-white">
+	 {foreach $requests as $request}
+	 <form id="{$request.request_id}_{$request.provider_username}_seePersonnalPage" method="post" action="{$BASE_URL}pages/user_page.php">
+	<input type="hidden" name="userinfo_username" value="{$request.provider_username}">
+	</form>
+	{/foreach}
 	<form action="{$BASE_URL}actions/manage_request.php" name="league" method="post"><input id ="rid" name="rid" type="hidden"/>
 	<table class='table_pd' id="foo">
 			<tr>
@@ -30,7 +35,9 @@
 			{foreach $requests as $request}
 				<tr id={$request.request_id}>
 				<td>{number_format ($request.area_ratio*100, 4)}%</td>
-				<td>{$request.provider_name} ({$request.provider_username})</td>
+				<td>
+				<a href="#" onclick="document.getElementById('{$request.request_id}_{$request.provider_username}_seePersonnalPage').submit()" style="color:white;">{$request.provider_name} ({$request.provider_username})</a>
+		        </td>
 				<td>{$request.data_date}</td><td>{$request.data_price}€</td>
 				<td>{number_format ($request.price_area_ratio,5)}€/m</td>
 				<td><button type="button" class ="clickMe button4 submitAsBtn button_provider_hist" onclick="doFunction(this);">See Details</button></td>

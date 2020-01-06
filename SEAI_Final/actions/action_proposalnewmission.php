@@ -56,7 +56,7 @@ if ($extension != 'pdf') {
 $sensor_name = getSensorNameForMission($_POST['vehicle'], $_POST['request_sensor_type'], $_POST['request_res_value']);
 
 if (empty($sensor_name)) {
-  $_SESSION['error_messages'][]="Could not get sensor name for this request";
+  $_SESSION['error_messages'][]="Vehicle not valid for this mission";
   $_SESSION['form_values']=$_POST;
   die(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }

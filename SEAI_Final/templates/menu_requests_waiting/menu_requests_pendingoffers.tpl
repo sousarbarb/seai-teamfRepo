@@ -40,12 +40,17 @@
               <th>Estimated Finish Time</th>
               <th>Detailed Information</th>
             </tr>
-            {foreach $missions as $mission}
+            {foreach $pending_missions as $mission}
               <tr>
                 <form id="{$mission['request_id']}" method="post" action="{$BASE_URL}actions/open_req_pag.php">
                   <input type="hidden" name="request_id" value="{$mission['request_id']}">
                 </form>
-                <td>{$mission['client_name']}</td>
+                <td>
+				 <form id="{$mission['request_id']}_{$mission['client_username']}_seePersonnalPage" method="post" action="{$BASE_URL}pages/user_page.php">
+						<input type="hidden" name="userinfo_username" value="{$mission['client_username']}">
+						<a href="#" onclick="document.getElementById('{$mission['request_id']}_{$mission['client_username']}_seePersonnalPage').submit()" style="color:white;">{$mission['client_name']}</a>
+				</form>
+				</td>
                 <td><a href="#" onclick="document.getElementById('{$mission['request_id']}').submit()" style="color:white;">{$mission['request_id']}</a></td>
                 <td>{$mission['request_sensor_type']}</td>
                 <td>{$mission['request_res_value']}</td>

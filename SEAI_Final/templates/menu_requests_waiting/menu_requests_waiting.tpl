@@ -75,7 +75,11 @@
                   <td>{$mission['mission_estimated_start']}</td>
                   <td>{$mission['mission_estimated_finish']}</td>
                   <td>{$mission['mission_price']}</td>
-                  <td>{$mission['provider_name']}</td>
+                  <td><form id="{$mission['mission_id']}_{$mission['provider_username']}_seePersonnalPage" method="post" action="{$BASE_URL}pages/user_page.php">
+						<input type="hidden" name="userinfo_username" value="{$mission['provider_username']}">
+						<a href="#" onclick="document.getElementById('{$mission['mission_id']}_{$mission['provider_username']}_seePersonnalPage').submit()" style="color:white;">{$mission['provider_name']}</a>
+				    </form>
+				</td>
                   <td>{if !empty($mission['mission_path_pdf'])}<a href="{$BASE_URL}{$mission['mission_path_pdf']}" download style="text-decoration:underline;color:white;">Download PDF</a>{else}No file available{/if}</td>
                   <form id="{$mission['mission_id']}_accept" method="post" action="{$BASE_URL}actions/accept_waitingrequest.php">
                       <input type="hidden" name="mission_id" value="{$mission['mission_id']}">

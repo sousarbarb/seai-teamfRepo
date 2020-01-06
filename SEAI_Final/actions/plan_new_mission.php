@@ -2,13 +2,6 @@
 
 include_once('../config/init.php');
 	$pr=1;
-	 print_r($_SESSION["area"]);
-	 print_r($_SESSION["login"]);
-	 print_r($_POST['sensor']);
-	 print_r($_POST['resolution']);
-	 print_r($_POST['eday']);
-	 print_r($_POST['comment']);
-	 print_r($_POST['restrict']);
 	 if($_POST['restrict']==1){
 		 $pr=0;
 	 }
@@ -71,11 +64,5 @@ include_once('../config/init.php');
 		$_SESSION['success_messages'][] = 'Request was created Successfully';
 		die(header("Location: $BASE_URL". '/pages/plan_new_mission.php'));
 	}
-	
-   //header("Location: $BASE_URL" .'pages/users/user_management.php');
-	//elseif (isset($_POST['Plan'])) {     // go to next page change the file name
-	//	header("Location:  $BASE_URL" . 'pages/plan_new_mission.php');
-	//}
-
 
 ?>

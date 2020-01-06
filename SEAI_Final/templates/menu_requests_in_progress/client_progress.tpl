@@ -15,7 +15,12 @@
 
     {foreach $requests_new as $request_n}
         <tr>
-        <td>{$request_n.request_id}</td>
+        <td>
+		<form id="{$request_n.request_id}_re" method="post" action="{$BASE_URL}actions/open_req_pag.php">
+                  <input type="hidden" name="request_id" value="{$request_n.request_id}">
+				  <a href="#" onclick="document.getElementById('{$request_n.request_id}_re').submit()" style="color:white;">{$request_n.request_id}</a>
+        </form>
+		</td>
         <td>{$request_n.sensor_type}</td>
 		<td>{$request_n.resolution_type}</td>
     <td>
@@ -28,7 +33,7 @@
 		<td>{$request_n.mission_status}</td>
 		<td>{$request_n.starting_time}</td>
 		<td>{$request_n.estimated_finished_time}</td>
-		<td>{if $request_n['mission_pdf']}<a href="{$BASE_URL}{$request_n['mission_pdf']}" class="button">Click Me</a>{else} No file found {/if}</td>
+		<td>{if $request_n['mission_pdf']}<a href="{$BASE_URL}{$request_n['mission_pdf']}" class="button" download>Click Me</a>{else} No file found {/if}</td>
         {if $request_n.request_agreement_provider==true}
 		<td style="background-color: green;">
         Service Provider Agreed
@@ -64,7 +69,11 @@
     {foreach $requests_old as $request_o}
 	{$result=getSensorTypesResolutionValues($request_o.mission_id)}
         <tr>
-        <td>{$request_o.request_id}</td>
+        <td><form id="{$request_o.request_id}_re" method="post" action="{$BASE_URL}actions/open_req_pag.php">
+                  <input type="hidden" name="request_id" value="{$request_o.request_id}">
+				  <a href="#" onclick="document.getElementById('{$request_o.request_id}_re').submit()" style="color:white;">{$request_o.request_id}</a>
+        </form>
+		</td>
 		<td>{$result.sensor_type}</td>
 		<td>{$result.resolution_type}</td>
     <td>
@@ -74,7 +83,7 @@
       </form>
     </td>
 		<td>{$request_o.mission_id}</td>
-		<td>{if $request_o['mission_pdf']}<a href="{$BASE_URL}{$request_o['mission_pdf']}" class="button">Click Me</a>{else} No file found {/if}</td>
+		<td>{if $request_o['mission_pdf']}<a href="{$BASE_URL}{$request_o['mission_pdf']}" class="button" download>Click Me</a>{else} No file found {/if}</td>
       {if $request_o.request_agreement_provider==true}
 		<td style="background-color: green;">
         Service Provider Agreed
