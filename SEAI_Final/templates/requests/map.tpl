@@ -30,7 +30,8 @@
 	<p id="info"></p>
 
 	<div class="popup" onclick="myFunction()"> Help
-	  <span class="popuptext" id="myPopup">Instruction on how to use the interactive map: <br> -Double click the end point to finnish the area edition, <br> -Double click on an already created polygon to edit it,</span>
+	  <span class="popuptext" id="myPopup">Instruction on how to use the interactive map: <br> -Double click the end point to finish the area edition, <br> -Double click on an already created polygon to edit it,
+	  <br> -Control click on an already created polygon to delete it,<br></span>
 	</div>
 
 </div>

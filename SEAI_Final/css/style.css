@@ -828,7 +828,7 @@ opacity: 0.8;
   padding: 0.5em 0.3em 0.5em 0.3em ;
   position: absolute;
   z-index: 100000;
-  margin-top: -13.5em;
+  margin-top: -18em;
   margin-left: -7.692em;
   line-height: 1.5em;
 }
@@ -897,7 +897,7 @@ opacity: 0.8;
   border-collapse: collapse;
   Font-size:20px;
   margin-right:20em;
-  margin-bottom: 25em;
+  margin-bottom: 5em;
 }
 
 .table_pd th {
@@ -922,7 +922,7 @@ opacity: 0.8;
   background-color: #31ACF7;
   color: white;
   font-size: 20px;
-  margin-left:5em;
+  margin-left:4em;
   margin-top:1em;
 }
 .info {

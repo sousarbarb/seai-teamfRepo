@@ -54,7 +54,7 @@
         {/foreach}
         </table>
       </div>
-      <div class="text-white vehicles_sideText">
+      <div class="text-white vehicles_sideText" style="padding:10px;  border-radius: 25px;   background: rgba(0, 0, 0, 0.5);">
         {if ($acc_type=="provider")}
         &nbsp;&nbsp;
         <a href="{$BASE_URL}pages/menu_vehicles_add.php" class="button4 buttonsAcc" style="text-decoration:none;color:white;"> Add Vehicle </a>

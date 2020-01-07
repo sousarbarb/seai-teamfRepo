@@ -49,12 +49,12 @@
 			{/foreach}
 			</table>
 			<input type="submit" name="back" class="comfirm" value="Go back to Map" >
-			<input type="submit" name="Plan" class="comfirm" value="Plan new Mission" >
-			<input type="submit" name="buy" class="comfirm" value="Buy Request" >
+			<input type="submit" name="Plan" class="comfirm" value="Request New Mission" >
+			<input type="submit" name="buy" class="comfirm" value="Buy Data" >
 			</form>
 </div>
 	
-			<div class="text-white vehicles_sideText">
+			<div class="text-white vehicles_sideText" style="padding:10px;  border-radius: 25px;   background: rgba(0, 0, 0, 0.5);">
 			<label class="vehicle_filtro_lbl" style="font-size:25px; text-decoration: underline;">Filters</label><br>
 			<form method="post" action="{$BASE_URL}pages/show_previous_data.php">
       <label class="vehicle_filtro_lbl">Sensors</label><br>

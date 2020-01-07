@@ -353,7 +353,8 @@ function mapConfiguration() {
   
         link.href = '#';
         link.title = 'Get informations of all areas';
-        link.innerHTML = 'GET';
+        link.innerHTML = 'NEXT';
+		link.style.fontSize = "8px";
         L.DomEvent.on(link, 'click', L.DomEvent.stop)
                   .on(link, 'click', function () {
                     // Method associated with the clicking event in icon

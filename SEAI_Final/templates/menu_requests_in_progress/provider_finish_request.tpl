@@ -27,7 +27,7 @@
 
     <div class="text-white">
 
-      <label class="myaccountlabel" style="width:16em;">Cost</label>
+      <label class="myaccountlabel" style="width:16em;">Public sale Price</label>
       <input type="text" name="cost" class="lead" placeholder="Enter the total cost of the mission"
       value="{if isset($form_values)}{$form_values.cost}{/if}">
       <br>
