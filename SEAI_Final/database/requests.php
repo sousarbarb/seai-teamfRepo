@@ -288,6 +288,7 @@
 
       // Send Service Client Notification
       $notification_info = "The data request relative to mission $mission_id performed by $provider_name ($provider_username) is available";
+      send_mail_notification_client($client_username, "Request id $request_id: data available", $notification_info);
 
       $stm = $conn->prepare("
         INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -391,6 +392,7 @@
 
       // Send Service Client Notification
       $notification_info = "The data request relative to mission $mission_id performed by $provider_name ($provider_username) is available";
+      send_mail_notification_client($client_username, "Request id $request_id: data available", $notification_info);
 
       $stm = $conn->prepare("
         INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -1279,6 +1281,7 @@
 
     // Send Service Provider Notification
     $notification_info = "$client_name made a new proposal (request id: $request_id) to acquire data from mission $mission_id";
+    send_mail_notification_provider($provider_username, "New request (request id: $request_id) available to apply", $notification_info);
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -2093,6 +2096,7 @@
 
     // Notification text
     $notification_info = "Service Provider $provider_name ($provider_username) made a new proposal (mission id: $mission_id) for your request (request id: $request_id)";
+    send_mail_notification_client($client_username, "Request id $request_id: new mission (id: $mission_id) proposal", $notification_info);
 
     // Send to service client that a new proposal is available
     $stm = $conn->prepare("
@@ -2326,6 +2330,7 @@
 
     // Send Service Client Notification
     $notification_info = "Mission status (mission id: $mission_id) executed by $provider_name ($provider_username) from request $request_id changed: $mission_status";
+    send_mail_notification_client($client_username, "Request id $request_id: mission (id: $mission_id) status has changed", $notification_info);
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -2395,6 +2400,7 @@
 
     // Send Service provider Notification
     $notification_info = "Mission status (mission id: $mission_id) from request $request_id made by $client_name ($client_username) changed: $mission_status";
+    send_mail_notification_provider($provider_username, "Mission id $mission_id: mission status has changed", $notification_info);
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -2624,7 +2630,7 @@
     // Send Service Client Notification
     $AGGSTATUS = $agreement_status ? 'CONFIRMED' : 'NOT CONFIRMED';
     $notification_info = "$provider_name ($provider_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
-    echo "<p>$notification_info</p>";
+    send_mail_notification_client($client_username, "Request id $request_id: agreement status has changed", $notification_info);
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -2695,6 +2701,7 @@
     // Send Service Client Notification
     $AGGSTATUS = $agreement_status ? 'CONFIRMED' : 'NOT CONFIRMED';
     $notification_info = "$provider_name ($provider_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
+    send_mail_notification_client($client_username, "Request id $request_id: agreement status has changed", $notification_info);
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -2755,6 +2762,7 @@
     // Send Service Provider Notification
     $AGGSTATUS = $agreement_status ? 'CONFIRMED' : 'NOT CONFIRMED';
     $notification_info = "$client_name ($client_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
+    send_mail_notification_provider($provider_username, "Mission id $mission_id: agreement status has changed", $notification_info);
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
@@ -2825,6 +2833,7 @@
     // Send Service Provider Notification
     $AGGSTATUS = $agreement_status ? 'CONFIRMED' : 'NOT CONFIRMED';
     $notification_info = "$client_name ($client_username) has changed his agreement status relative to request $request_id: $AGGSTATUS";
+    send_mail_notification_provider($provider_username, "Mission id $mission_id: agreement status has changed", $notification_info);
 
     $stm = $conn->prepare("
       INSERT INTO notification( date , information , acknowledged , user_id , mission_id , request_id )
