@@ -9,6 +9,8 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login'])) {
       $vehicle_name = $_POST['vehicle_name'];
       $smarty->assign('vehicle_name', $vehicle_name);
     }
+    $sensors=getAllActiveDistinctSensorTypes();
+    $smarty->assign('sensors', $sensors);
     $smarty->assign('menu', '3');
     $smarty->display('menu_vehicles/addsensor.tpl');
     }

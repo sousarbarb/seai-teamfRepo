@@ -45,6 +45,21 @@ try {
 	$_SESSION['l_count']= $_SESSION['l_count']+1;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
+
+  // Check User status
+  switch ($login_data['status']) {
+    case 'Inactive':
+      $_SESSION['error_messages'][] = 'Account inactive. Please contact the administrators in order to obtain more informations';
+      $_SESSION['form_values'] = $_POST;
+      die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+      break;
+    case 'Waiting e-mail confirmation':
+      $_SESSION['error_messages'][] = 'Go to your e-mail in order to valide the account';
+      $_SESSION['form_values'] = $_POST;
+      die(header('Location: ' . $_SERVER['HTTP_REFERER']));
+      break;
+  }
+  
   //if (1) { $acc_type = 'provider';
   if(!empty($login_data['admin_id'])) {
     $_SESSION['user_id'] = $login_data['admin_id'];
@@ -66,20 +81,6 @@ try {
   } else {
     $_SESSION['error_messages'][] = 'Unexpected Error Occurred';
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
-  }
-
-  // Check User status
-  switch ($login_data['status']) {
-    case 'Inactive':
-      $_SESSION['error_messages'][] = 'Account inactive. Please contact the administrators in order to obtain more informations';
-      $_SESSION['form_values'] = $_POST;
-      die(header('Location: ' . $_SERVER['HTTP_REFERER']));
-      break;
-    case 'Waiting e-mail confirmation':
-      $_SESSION['error_messages'][] = 'Go to your e-mail in order to valide the account';
-      $_SESSION['form_values'] = $_POST;
-      die(header('Location: ' . $_SERVER['HTTP_REFERER']));
-      break;
   }
 
   /* //old teste

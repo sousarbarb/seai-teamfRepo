@@ -3,6 +3,13 @@
 {include file='common/logout.tpl'}
 
 <body>
+
+<datalist id="specifications">
+  {foreach $specifications as $specification}
+    <option value="{$specification['specification_type']}">
+  {/foreach}
+</datalist>
+
 <div class="menusLogin p-5">
   <h2 class="display-4 text-white">ADD SPECIFICATION</h2>
   <div class="separator"></div>
@@ -22,7 +29,7 @@
     <form method="post" action="../actions/addspecification.php">
       <table class="text-white">
         <tr><td class="gg">
-        Type: </td><td class="register"><input type="text" name="type"
+        Type: </td><td class="register"><input type="text" list="specifications" name="type"
                   value="{if (isset($form_values))}{$form_values.type}{/if}">
         </tr>
         <tr><td>

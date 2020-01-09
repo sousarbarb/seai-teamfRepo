@@ -28,7 +28,7 @@
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
-  if(floatval($_POST['value'])<==0){
+  if(floatval($_POST['value'])<=0){
     $_SESSION['error_messages'][]="Resolution value must be greater than zero";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -46,7 +46,7 @@
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
-  if(floatval($_POST['vel_sampling'])<==0){
+  if(floatval($_POST['vel_sampling'])<=0){
     $_SESSION['error_messages'][]="Velocity must be greater than zero";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
@@ -77,7 +77,7 @@
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
   }
-  if(floatval($_POST['swath'])<==0){
+  if(floatval($_POST['swath'])<=0){
     $_SESSION['error_messages'][]="Swath must be greater than zero";
     $_SESSION['form_values']=$_POST;
     die(header('Location: ' . $_SERVER['HTTP_REFERER']));
