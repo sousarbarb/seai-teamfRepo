@@ -23,15 +23,20 @@
 	  mapConfiguration();
 	 getsurveydata('../actions/action_send_area_fromps.php');
 	 getinicialdata('../actions/action_send_area.php');
-	 
+
 	</script>
 	<div class="filters"></div>
 	<div class="infotext">
 	<p id="info"></p>
 
 	<div class="popup" onclick="myFunction()"> Help
-	  <span class="popuptext" id="myPopup">Instruction on how to use the interactive map: <br> -Double click the end point to finish the area edition, <br> -Double click on an already created polygon to edit it,
-	  <br> -Control click on an already created polygon to delete it,<br></span>
+	  <span class="popuptext" id="myPopup">
+      <ul style="margin-bottom:0;list-style: outside;padding-left: 1.5em;line-height: 1.8em;">
+        <li>Double click the end point to finish the area edition</li>
+        <li>Double click on an already created polygon to edit it</li>
+	      <li>Control click on an already created polygon to delete it</li>
+      </ul>
+    </span>
 	</div>
 
 </div>

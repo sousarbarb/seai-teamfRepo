@@ -38,9 +38,10 @@
 			 mapConfiguration();
 			 getsurveydata('../actions/action_send_area_request.php');
 	 	</script>
+		{$result=getSensorTypesResolutionValues($info['mission_id'])}
 		<div class="filters">
-			<p><label class="vehicle_info_label" style="margin-left:15px">Sensor Type:</label>{$info['request_sensor_type']}</p>
-			<p><label class="vehicle_info_label" style="margin-left:15px">Resolution:</label>{$info['request_res_value']}</p>
+			<p><label class="vehicle_info_label" style="margin-left:15px">Sensor Type:</label>{if isset($info['request_sensor_type'])} {$info['request_sensor_type']} {else} {$result['sensor_type']} {/if}</p>
+			<p><label class="vehicle_info_label" style="margin-left:15px">Resolution:</label>{if isset($info['request_res_value'])} {$info['request_res_value']} {else} {$result['resolution_type']} {/if}</p>
 			<p><label class="vehicle_info_label" style="margin-left:15px">File Type:</label>{if $info['mission_status']=='Finish'} {$info['data_file_type']}{else} Request waiting Service Provider submition {/if}</p>
 		</div>
 	</article>
@@ -49,7 +50,7 @@
 			{if $info['mission_status']=='Finish' and $info['mission_details']}
 			<p><a href="{$BASE_URL}{$info['mission_details']}" class="button" download><label class="vehicle_info_label" style="width: 18rem;">Download Mission Details</label></a></p>
 			{/if}
-	</article> 
+	</article>
 	 <a href="{$PREVIOUSPAGE}" class="button"><button type="button" class ="confirm" style="padding:8px;">Go back</button></a>
 </div>
 {/if}

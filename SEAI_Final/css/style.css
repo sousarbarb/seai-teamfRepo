@@ -828,9 +828,10 @@ opacity: 0.8;
   padding: 0.5em 0.3em 0.5em 0.3em ;
   position: absolute;
   z-index: 100000;
-  margin-top: -18em;
+  margin-top: -17.6em;
   margin-left: -7.692em;
   line-height: 1.5em;
+  text-align: left;
 }
 
 /* Popup arrow */
@@ -842,6 +843,7 @@ opacity: 0.8;
   border-width: 5px;
   border-style: solid;
   border-color: #555 transparent transparent transparent;
+  text-align: left;
 }
 
 /* Toggle this class - hide and show the popup */
