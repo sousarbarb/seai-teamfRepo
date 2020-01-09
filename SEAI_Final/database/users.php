@@ -389,6 +389,7 @@
 
     // Notification text
     $information = 'Service Provider Account approved by the administration';
+    send_mail_notification_provider($provider_username, "Account Approved", $information);
 
     // Send to specific service provider the notification about its administrator approval
     $stm = $conn->prepare("

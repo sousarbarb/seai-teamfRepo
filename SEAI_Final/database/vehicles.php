@@ -1482,6 +1482,7 @@ SELECT * FROM vehicle_sensor_resolution;
 
     // Notification text
     $notification_info = "Vehicle $vehicle_name approved by the administration";
+    send_mail_notification_provider($provider_username, "Vehicle $vehicle_name Approved", $notification_info);
 
     // Send to specific service provider the notification about its new vehicle administrator approval
     $stm = $conn->prepare("
