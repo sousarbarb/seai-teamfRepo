@@ -41,12 +41,12 @@ function send_mail_notification_provider($username, $subject, $message){
     SELECT  mail_representative
     FROM  service_provider
     WHERE user_id = ?
-  ")
+  ");
   $stm->execute(array($username));
   $result = $stm->fetch();
 
   $to = $result['mail_representative'];
-  
+
   // Our message
   $headers = 'From:noreply@seaiteamf.com' . "\r\n"; // Set from headers
   mail($to, $subject, $message, $headers); // Send our email
@@ -60,12 +60,12 @@ function send_mail_notification_client($username, $subject, $message){
     SELECT  e_mail
     FROM  service_client
     WHERE username = ?
-  ")
+  ");
   $stm->execute(array($username));
   $result = $stm->fetch();
 
   $to = $result['e_mail'];
-  
+
   // Our message
   $headers = 'From:noreply@seaiteamf.com' . "\r\n"; // Set from headers
   mail($to, $subject, $message, $headers); // Send our email
