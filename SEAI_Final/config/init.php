@@ -34,18 +34,18 @@ include_once($BASE_DIR . 'database/requests.php');
 include_once($BASE_DIR . 'database/notifications.php');
 
 function send_mail_notification_provider($username, $subject, $message){
-  global $BASE_URL;
+	global $conn;
 
   // Get e-mail of service provider representative
   $stm = $conn->prepare("
-    SELECT  mail_representative
-    FROM  service_provider
-    WHERE user_id = ?
+		SELECT  e_mail
+		FROM  users
+		WHERE username = ?
   ");
   $stm->execute(array($username));
   $result = $stm->fetch();
 
-  $to = $result['mail_representative'];
+  $to = $result['e_mail'];
 
   // Our message
   $headers = 'From:noreply@seaiteamf.com' . "\r\n"; // Set from headers
@@ -53,12 +53,12 @@ function send_mail_notification_provider($username, $subject, $message){
 }
 
 function send_mail_notification_client($username, $subject, $message){
-  global $BASE_URL;
+  global $conn;
 
   // Get e-mail of service provider representative
   $stm = $conn->prepare("
     SELECT  e_mail
-    FROM  service_client
+    FROM  users
     WHERE username = ?
   ");
   $stm->execute(array($username));
