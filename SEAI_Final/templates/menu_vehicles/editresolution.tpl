@@ -54,19 +54,19 @@
   <form method="post" action="../actions/editresolution.php">
     <table class="text-white">
         <tr><td class="gg">
-        Vel sampling: </td><td class="register"><input type="text" name="vel_sampling"
+        Vel sampling (m/s): </td><td class="register"><input type="text" name="vel_sampling"
                   value="{if isset($form_values)}{$form_values.vel_sampling}{else}{$vel_sampling}{/if}">
         </tr>
         <tr><td class="gg">
-        Consumption: </td><td class="register"><input type="text" name="consumption"
+        Consumption (A/h): </td><td class="register"><input type="text" name="consumption"
                   value="{if isset($form_values)}{$form_values.consumption}{else}{$consumption}{/if}">
         </tr>
         <tr><td class="gg">
-        Swath: </td><td class="register"><input type="text" name="swath"
+        Swath (m): </td><td class="register"><input type="text" name="swath"
                   value="{if isset($form_values)}{$form_values.swath}{else}{$swath}{/if}">
         </tr>
         <tr><td class="gg">
-        Cost: </td><td class="register"><input type="text" name="cost"
+        Cost (€/h): </td><td class="register"><input type="text" name="cost"
                   value="{if isset($form_values)}{$form_values.cost}{else}{$cost}{/if}">
         </tr>
         <tr><td>

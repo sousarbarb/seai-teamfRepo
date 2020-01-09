@@ -29,8 +29,8 @@
 			<th style="text-align: center">Date</th>
 			<th style="text-align: center">Price</th>
 			<th style="text-align: center">Price per square meter</th>
-			<th></th>
-			<th></th>
+			<th style="min-width:4em;"></th>
+			<th style="min-width:4em;"></th>
 			</tr>
 			{foreach $requests as $request}
 				<tr id={$request.request_id}>
@@ -53,7 +53,7 @@
 			<input type="submit" name="buy" class="comfirm" value="Buy Data" >
 			</form>
 </div>
-	
+
 			<div class="text-white vehicles_sideText" style="padding:10px;  border-radius: 25px;   background: rgba(0, 0, 0, 0.5);">
 			<label class="vehicle_filtro_lbl" style="font-size:25px; text-decoration: underline;">Filters</label><br>
 			<form method="post" action="{$BASE_URL}pages/show_previous_data.php">
@@ -114,7 +114,7 @@
 			</div>
 
 	<br>
-	
+
 
 
 <br>

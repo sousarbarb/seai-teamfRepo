@@ -22,23 +22,23 @@
     <form method="post" action="../actions/addresolution.php">
       <table class="text-white">
         <tr><td class="gg">
-        Value: </td><td class="register"><input type="text" name="value"
+        Value (cm): </td><td class="register"><input type="text" name="value"
                   value="{if (isset($form_values))}{$form_values.value}{/if}">
         </tr>
         <tr><td class="gg">
-        Vel sampling: </td><td class="register"><input type="text" name="vel_sampling"
+        Vel sampling (m/s): </td><td class="register"><input type="text" name="vel_sampling"
                   value="{if (isset($form_values))}{$form_values.vel_sampling}{/if}">
         </tr>
         <tr><td class="gg">
-        Consumption: </td><td class="register"><input type="text" name="consumption"
+        Consumption (A/h): </td><td class="register"><input type="text" name="consumption"
                   value="{if (isset($form_values))}{$form_values.consumption}{/if}">
         </tr>
         <tr><td class="gg">
-        Swath: </td><td class="register"><input type="text" name="swath"
+        Swath (m): </td><td class="register"><input type="text" name="swath"
                   value="{if (isset($form_values))}{$form_values.swath}{/if}">
         </tr>
         <tr><td class="gg">
-        Cost: </td><td class="register"><input type="text" name="cost"
+        Cost (€/h): </td><td class="register"><input type="text" name="cost"
                   value="{if (isset($form_values))}{$form_values.cost}{/if}">
         </tr>
         <tr><td>

@@ -261,11 +261,11 @@
 						{foreach $resolutions as $resolution}
 							{if $resolution['res_sensorid'] == $sensor['sensor_id']}
 								<tr>
-									<td>{$resolution['res_value']}</td>
-									<td>{$resolution['res_consumption']}</td>
-									<td>{$resolution['res_velocity']}</td>
-									<td>{$resolution['res_cost']}</td>
-									<td>{$resolution['res_swath']}</td>
+									<td>{$resolution['res_value']} cm</td>
+									<td>{$resolution['res_consumption']} A/h</td>
+									<td>{$resolution['res_velocity']} m/s</td>
+									<td>{$resolution['res_cost']} €/h</td>
+									<td>{$resolution['res_swath']} m</td>
 									<td>{$resolution['res_comments']}</td>
 									{if $sameprovider}
 									<td>

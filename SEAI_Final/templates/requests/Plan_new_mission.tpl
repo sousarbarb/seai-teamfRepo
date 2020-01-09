@@ -87,11 +87,11 @@
 		  <tbody>
 		  <tr >
 				<td style="text-align: center"> Area min Depth </td>
-				<td style="text-align: center"> {$depth['depth_min']} </td>
+				<td style="text-align: center"> {$depth['depth_min']} m</td>
 			</tr>
 			<tr >
 				<td style="text-align: center"> Area max Depth </td>
-				<td style="text-align: center"> {$depth['depth_max']} </td>
+				<td style="text-align: center"> {$depth['depth_max']} m</td>
 			</tr>
 			<tr>
 				<td  style="text-align: center"> Sensor Type </td>
@@ -100,7 +100,7 @@
 					  {$sensors}
 				</td>
 			</tr><tr>
-				<td  style="text-align: center"> Resolution </td>
+				<td  style="text-align: center"> Resolution (cm)</td>
 				<td>
 					<input list="resolution" size="60" class="custom-select" id="inputGroupSelect04" name="resolution" required>
 					  {$resolutions}
@@ -119,7 +119,7 @@
 				</td>
 			</tr>
 			<tr >
-				<td style="text-align: center"> Public </td>
+				<td style="text-align: center"> Allow Data Resale </td>
 				<td>
 					<input type="checkbox" name="restrict" value="1" checked>
 				</td>

@@ -18,12 +18,27 @@
     {/if}
     <table class='table_avail'>
     <tr>
-    <th>Request ID</th><th>User</th><th>Sensor Type</th><th>Resolution</th><th>Comments</th>
+      <th>Request ID</th>
+      <th>User</th>
+      <th>Sensor Type</th>
+      <th>Resolution</th>
+      <th>Comments</th>
     </tr>
 
     {foreach $requests as $request}
         <tr>
-        <td>{$request['request_id']}</td><td>{$request['client_name']}</td><td>{$request['request_sensor_type']}</td><td>{$request['request_res_value']}</td><td>{$request['request_comments']}</td>
+          <form id="{$request['request_id']}" method="post" action="{$BASE_URL}actions/open_req_pag.php">
+            <input type="hidden" name="request_id" value="{$request['request_id']}">
+          </form>
+          <form id="{$request['request_id']}_{$request['client_name']}_seePersonnalPage" method="post" action="{$BASE_URL}pages/user_page.php">
+             <input type="hidden" name="userinfo_username" value="{$request['client_username']}">
+          </form>
+
+          <td><a href="#" onclick="document.getElementById('{$request['request_id']}').submit()" style="color:white;">{$request['request_id']}</a></td>
+          <td><a href="#" onclick="document.getElementById('{$request['request_id']}_{$request['client_name']}_seePersonnalPage').submit()" style="color:white;">{$request['client_name']}</a></td>
+          <td>{$request['request_sensor_type']}</td>
+          <td>{$request['request_res_value']}</td>
+          <td>{$request['request_comments']}</td>
 
         {*<td><a href="???">See Details</a></td>*}
 
