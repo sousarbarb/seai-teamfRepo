@@ -5,8 +5,8 @@ include_once('../config/init.php');
 	 if($_POST['restrict']==1){
 		 $pr=0;
 	 }
-	 
-	 
+
+
 	$result=newRequestForNewData($_SESSION["area"], $_SESSION["login"], $_POST['sensor'], $_POST['resolution'], $_POST['eday'], $_POST['comment'], $pr);
 	if($result==-1) {
 		$_SESSION['error_messages'][] = 'This user isnt regsitered in the platform';
@@ -53,14 +53,14 @@ include_once('../config/init.php');
 		die(header("Location: $BASE_URL". '/pages/plan_new_mission.php'));
 	}
 	elseif($result==-12) {
-		$_SESSION['error_messages'][] = 'There arent any Service Provider that can complete this request';
+		$_SESSION['error_messages'][] = "There aren't any Service Providers that can fulfill this request";
 		die(header("Location: $BASE_URL". '/pages/plan_new_mission.php'));
 	}
 	elseif($result==-20) {
 		$_SESSION['error_messages'][] = 'The selected area must be on the ocean';
 		die(header("Location: $BASE_URL". '/pages/plan_new_mission.php'));
 	}
-	else{ 
+	else{
 		$_SESSION['success_messages'][] = 'Request was created Successfully';
 		die(header("Location: $BASE_URL". '/pages/plan_new_mission.php'));
 	}

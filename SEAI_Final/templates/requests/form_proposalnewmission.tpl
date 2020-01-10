@@ -35,7 +35,7 @@
       <input type="date" name="finishing_time" class="lead" style="line-height:1em" placeholder="Enter the finishing time of the mission"
       value="{if isset($form_values)}{$form_values.finishing_time}{/if}">
       <br>
-      <label class="myaccountlabel">Estimated Cost</label>
+      <label class="myaccountlabel">Estimated Cost (€)</label>
       <input type="text" name="cost" class="lead" placeholder="Enter the total cost of the mission"
       value="{if isset($form_values)}{$form_values.cost}{/if}">
       <br>

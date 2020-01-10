@@ -2,7 +2,7 @@
 {include file='../common/navbar_logged_in.tpl'}
 {include file='../common/logout.tpl'}
 <div class="menusLogin p-5">
-	<h2 class="display-4 text-white">New Request - Existent Data</h2>
+	<h2 class="display-4 text-white">New Request - Available Data</h2>
 	<div class="separator"></div>
 	{if (isset($success_messages))}
     {foreach $success_messages as $success}
