@@ -19,7 +19,7 @@
       {/foreach}
     {/if}
     <div class="modal-body"  align="center">
-      <iframe width="70%" height="200" src="https://www.youtube.com/embed/b1QVbFAn8a0"></iframe>
+      <iframe width="35%" height="200" src="https://www.youtube.com/embed/b1QVbFAn8a0" frameborder="0" allowfullscreen></iframe>
     </div>
     <div class="row text-white">
       <div class="col-lg-6">
@@ -38,13 +38,13 @@
        <div class="col-lg-6">
          <p class="lead text-white mb-0"> Registering as Service Provider</p>
          <div class="modal-body"  align="center">
-           <iframe width="70%" height="200" src="https://www.youtube.com/embed/nFBXnsMV5H4"></iframe>
+           <iframe width="70%" height="200" src="https://www.youtube.com/embed/nFBXnsMV5H4" frameborder="0" allowfullscreen></iframe>
          </div>
          <!--<p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>-->
 
          <p class="lead text-white mb-0"> Registering as Service Client</p>
            <div class="modal-body"  align="center">
-             <iframe width="70%" height="200" src="https://www.youtube.com/embed/GQmO-ulHZQk"></iframe>
+             <iframe width="70%" height="200" src="https://www.youtube.com/embed/GQmO-ulHZQk" frameborder="0" allowfullscreen></iframe>
            </div>
          <!--<p class="lead font-italic mb-0 text-muted"> Put video on how to register and navigate through the site</p>-->
        </div>
